@@ -1,0 +1,223 @@
+/* Modern Admin Panel CSS - Al-Safua */
+
+:root {
+    --primary-color: #4f46e5; /* Indigo */
+    --primary-hover: #4338ca;
+    --secondary-color: #64748b; /* Slate */
+    --success-color: #10b981;
+    --info-color: #3b82f6;
+    --warning-color: #f59e0b;
+    --danger-color: #ef4444;
+    --light-bg: #f3f4f6;
+    --card-bg: #ffffff;
+    --text-main: #1f2937;
+    --text-muted: #6b7280;
+    --border-radius: 0.75rem;
+    --shadow-soft:
+        0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+body {
+    font-family: "Tajawal", sans-serif !important;
+    background-color: var(--light-bg);
+    color: var(--text-main);
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-weight: 700;
+    color: #111827;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    margin-bottom: 1.5rem;
+    background-color: var(--card-bg);
+}
+
+.card-header {
+    background-color: transparent;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 1rem 1.25rem;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-main);
+    float: right; /* RTL */
+}
+
+.card-tools {
+    float: left; /* RTL */
+}
+
+/* Sidebar */
+.main-sidebar {
+    background-color: #1e293b; /* Slate 800 */
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.1);
+}
+
+.brand-link {
+    border-bottom: 1px solid #334155;
+    background-color: #0f172a;
+}
+
+.sidebar-dark-primary .nav-sidebar > .nav-item > .nav-link.active,
+.sidebar-light-primary .nav-sidebar > .nav-item > .nav-link.active {
+    background-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+    border-radius: 0.5rem;
+}
+
+.nav-sidebar .nav-item {
+    margin-bottom: 0.25rem;
+}
+
+.nav-link {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+}
+
+.nav-sidebar .nav-link p {
+    font-weight: 500;
+    margin-right: 0.75rem;
+    margin-left: 0;
+}
+
+.nav-icon {
+    font-size: 1.1rem;
+    margin-left: 0.5rem;
+}
+
+/* Navbar */
+.main-header {
+    border-bottom: none;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: var(--text-muted);
+    font-weight: 500;
+}
+
+/* Buttons */
+.btn {
+    border-radius: 0.5rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    border-color: var(--primary-hover);
+}
+
+/* Form Controls */
+.form-control {
+    border-radius: 0.5rem;
+    border: 1px solid #d1d5db;
+    padding: 0.6rem 1rem;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+}
+
+/* Tables */
+.table {
+    margin-bottom: 0;
+}
+
+.table thead th {
+    border-bottom: 2px solid #e5e7eb;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background-color: #f9fafb;
+}
+
+.table td {
+    vertical-align: middle;
+    color: #4b5563;
+    border-top: 1px solid #f3f4f6;
+}
+
+/* Info Boxes */
+.info-box {
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-soft);
+    border: none;
+}
+
+.info-box-icon {
+    border-radius: 0.75rem;
+    width: 70px;
+    height: 70px;
+    font-size: 1.75rem;
+}
+
+/* RTL Specific Overrides for Layout */
+.layout-fixed .main-sidebar {
+    right: 0;
+    left: auto;
+}
+
+.content-wrapper {
+    margin-right: 250px;
+    margin-left: 0;
+}
+
+@media (max-width: 768px) {
+    .content-wrapper {
+        margin-right: 0;
+    }
+}
+
+/* Float & Text Alignment Helpers */
+.float-right {
+    float: left !important;
+}
+.float-left {
+    float: right !important;
+}
+.text-right {
+    text-align: left !important;
+}
+.text-left {
+    text-align: right !important;
+}
+
+/* Flex Utilities fix for RTL */
+.mr-auto {
+    margin-left: auto !important;
+    margin-right: 0 !important;
+}
+.ml-auto {
+    margin-right: auto !important;
+    margin-left: 0 !important;
+}
+
+/* Pagination */
+.page-item.active .page-link {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
