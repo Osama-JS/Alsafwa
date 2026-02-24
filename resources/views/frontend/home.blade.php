@@ -300,7 +300,8 @@
     .max-w-600 { max-width: 600px; }
     .floating-experience-card {
         position: absolute;
-        bottom: -30px; right: -20px;
+        bottom: -30px; 
+        inset-inline-end: -20px;
         background: var(--primary-dark);
         padding: 2.5rem;
         border-radius: 24px;

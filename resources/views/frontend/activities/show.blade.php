@@ -16,7 +16,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb custom-breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('الرئيسية') }}</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('activities.index') }}">{{ __('أنشطتنا') }}</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('activities.index') }}">{{ __('الأنشطة') }}</a></li>
                     <li class="breadcrumb-item active" aria-current="page">{{ $activity->{'title_' . app()->getLocale()} }}</li>
                 </ol>
             </nav>

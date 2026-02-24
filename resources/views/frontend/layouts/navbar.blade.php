@@ -194,9 +194,17 @@
 
         <a href="{{ route('agencies.index') }}" class="mobile-nav-link">{{ __('الوكالات') }}</a>
         <a href="{{ route('products.index') }}" class="mobile-nav-link">{{ __('المنتجات') }}</a>
-        <a href="{{ route('activities.index') }}" class="mobile-nav-link">{{ __('الأنشطة') }}</a>
         <a href="{{ route('branches.index') }}" class="mobile-nav-link">{{ __('الفروع') }}</a>
-        <a href="{{ route('about') }}" class="mobile-nav-link">{{ __('من نحن') }}</a>
+
+        <a href="#" class="mobile-nav-link" data-submenu="mobileAbout">
+            <span>{{ __('من نحن') }}</span>
+            <i class="fas fa-chevron-down fs-6 opacity-25"></i>
+        </a>
+        <div class="mobile-submenu" id="mobileAbout">
+            <a href="{{ route('about') }}">{{ __('قصتنا') }}</a>
+            <a href="{{ route('activities.index') }}">{{ __('الأنشطة') }}</a>
+        </div>
+
         <a href="{{ route('contact') }}" class="mobile-nav-link text-accent">
             <span>{{ __('تواصل معنا') }}</span>
             <i class="fas fa-phone-alt fs-6"></i>

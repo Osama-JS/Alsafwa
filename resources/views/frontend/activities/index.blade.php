@@ -75,7 +75,8 @@
     .activity-img-wrap img { height: 100%; width: 100%; object-fit: cover; }
     .activity-cat-badge {
         position: absolute;
-        top: 20px; right: 20px;
+        top: 20px; 
+        inset-inline-end: 20px;
         background: var(--accent);
         color: #000;
         padding: 5px 15px;

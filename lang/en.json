@@ -1,7 +1,7 @@
 {
     "آخر المستجدات": "Latest Updates",
     "أحدث أنشطتنا": "Our Latest Activities",
-    "أرسل رسالة": "Send a Message",
+    "أرسل رسالة": "Send Message",
     "أين تجدنا؟": "Where to Find Us?",
     "اتصل بنا": "Get in Touch",
     "اطلب استشارة": "Request a Consultation",
@@ -29,7 +29,7 @@
     "الوكالات التي نفخر بتمثيلها": "Agencies We Proudly Represent",
     "أنشطتنا": "Our Activities",
     "استكشف باقة واسعة من الخدمات الاحترافية": "Explore our wide range of professional services",
-    "اسمك الكريم": "Your Name",
+    "اسمك الكريم": "Your Full Name",
     "تجدوننا في كافة أنحاء المملكة": "Find us all across the Kingdom",
     "تواصل بلا حدود": "Seamless Connection",
     "تواصل معنا": "Contact Us",
@@ -98,5 +98,18 @@
     "الموقع قيد الصيانة": "Site Under Maintenance",
     "يتم الآن التحديث والتحسين": "Update and Improvement in Progress",
     "نعمل على تحسين تجربتكم": "We are working on improving your experience",
-    "نحن حالياً في مهمة لتحديث خدماتنا وتطوير الموقع لتقديم الأفضل لكم. سنعود قريباً جداً ببنية تحتية أقوى وأداء أسرع.": "We are currently on a mission to update our services and evolve the site to serve you better. We'll be back very soon with stronger infrastructure and faster performance."
+    "نحن حالياً في مهمة لتحديث خدماتنا وتطوير الموقع لتقديم الأفضل لكم. سنعود قريباً جداً ببنية تحتية أقوى وأداء أسرع.": "We are currently on a mission to update our services and develop the site to provide the best for you. We will be back very soon with a stronger infrastructure and faster performance.",
+    "منتجاتنا": "Our Products",
+    "أبرز المنتجات": "Featured Products",
+    "خصم": "Sale",
+    "ر.س": "SAR",
+    "سواء كان لديك استفسار أو ترغب في بدء تعاون جديد، نحن دائماً هنا للمساعدة.": "Whether you have a question or want to start a new collaboration, we are always here to help.",
+    "جميع الأنشطة": "All Activities",
+    "تسوّق الآن": "Shop Now",
+    "لا توجد منتجات حالياً": "No products available currently",
+    "سيتم إضافة المنتجات قريباً، تابعونا!": "Products will be added soon, stay tuned!",
+    "تفاصيل المنتج": "Product Details",
+    "تواصل معنا للطلب": "Contact Us to Order",
+    "منتجات ذات صلة": "Related Products",
+    "المنتجات": "Products"
 }
