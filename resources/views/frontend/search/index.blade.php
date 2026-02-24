@@ -7,7 +7,7 @@
 <section class="inner-page-hero">
     <div class="inner-hero-bg" style="background-image: url('https://images.unsplash.com/photo-1454165833967-0746e126c04f?w=1600&q=80')"></div>
     <div class="inner-hero-overlay"></div>
-    <div class="container position-relative" style="z-index: 2;">
+    <div class="container position-relative" style="z-index: 2; padding-top:80px">
         <div class="inner-hero-content">
             <span class="section-suptitle text-white opacity-75">{{ __('البحث الذكي') }}</span>
             <h1 class="inner-title">{{ __('نتائج البحث') }}</h1>

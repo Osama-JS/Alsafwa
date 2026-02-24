@@ -8,7 +8,7 @@
 <section class="inner-page-hero">
     <div class="inner-hero-bg" style="background-image: url('{{ $product->image ? asset('storage/' . $product->image) : 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1600&q=80' }}')"></div>
     <div class="inner-hero-overlay"></div>
-    <div class="container position-relative" style="z-index: 2;">
+    <div class="container position-relative" style="z-index: 2; padding-top:80px">
         <div class="inner-hero-content">
             <span class="section-suptitle text-white opacity-75">{{ __('تفاصيل المنتج') }}</span>
             <h1 class="inner-title">{{ $product->{'title_' . app()->getLocale()} }}</h1>

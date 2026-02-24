@@ -15,7 +15,7 @@
                     <div class="hero-slide-item">
                         <div class="hero-slide-bg" style="background-image: url('{{ $slider->image && Storage::disk('public')->exists($slider->image) ? asset('storage/' . $slider->image) : asset('images/hero-fallback.jpg') }}');"></div>
                         <div class="hero-overlay-legend"></div>
-                        <div class="container position-relative z-10">
+                        <div class="container position-relative z-10 pt-5" style="padding-top:160px">
                             <div class="hero-content-wrap">
                                 <span class="hero-subtitle-top">{{ $slider->{'subtitle_' . app()->getLocale()} }}</span>
                                 <h1 class="hero-title-mega">
@@ -40,7 +40,7 @@
                     <div class="hero-slide-item">
                         <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80');"></div>
                         <div class="hero-overlay-legend"></div>
-                        <div class="container position-relative z-10">
+                        <div class="container position-relative z-10" style="padding-top:160px">
                             <div class="hero-content-wrap">
                                 <span class="hero-subtitle-top">{{ setting('company_tagline_' . app()->getLocale(), __('للتجارة والاستثمار')) }}</span>
                                 <h1 class="hero-title-mega">

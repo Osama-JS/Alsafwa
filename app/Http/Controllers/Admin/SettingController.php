@@ -20,6 +20,15 @@ class SettingController extends Controller
     {
         $data = $request->except(['_token', '_method']);
 
+        // Handle boolean/select toggles that are unchecked (not sent in request)
+        // We only target keys that are present in the database to avoid side effects
+        $booleanSettings = Setting::whereIn('type', ['boolean', 'select'])->pluck('key')->toArray();
+        foreach ($booleanSettings as $key) {
+            if (!$request->has($key)) {
+                Setting::where('key', $key)->update(['value' => '0']);
+            }
+        }
+
         foreach ($data as $key => $value) {
             // Handle file uploads
             if ($request->hasFile($key)) {

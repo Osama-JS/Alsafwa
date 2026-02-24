@@ -71,111 +71,171 @@
     <!-- AOS JS -->
     <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
 
+
     <script>
-        // High-priority toggle logic to run early
-        (function() {
-            function initMenu() {
-                const mobMenu = document.getElementById('mobileMenu');
-                const openBtn = document.getElementById('mobileMenuToggle');
-                const closeBtn = document.getElementById('closeMobileMenu');
+(function () {
 
-                if (openBtn && mobMenu) {
-                    openBtn.onclick = function(e) {
-                        e.preventDefault();
-                        mobMenu.classList.add('open');
-                        document.body.style.overflow = 'hidden';
-                    };
-                }
-                if (closeBtn && mobMenu) {
-                    closeBtn.onclick = function(e) {
-                        e.preventDefault();
-                        mobMenu.classList.remove('open');
-                        document.body.style.overflow = '';
-                    };
-                }
-            }
+    console.log("MOBILE MENU SCRIPT LOADED");
 
-            if (document.readyState === 'loading') {
-                document.addEventListener('DOMContentLoaded', initMenu);
-            } else {
-                initMenu();
-            }
-        })();
+    const mobMenu   = document.getElementById('mobileMenu');
+    const closeBtn  = document.getElementById('closeMobileMenu');
 
-        // Secondary logic
-        document.addEventListener('DOMContentLoaded', function() {
-            try {
-                if (typeof AOS !== 'undefined') {
-                    AOS.init({ duration: 700, once: true, offset: 60 });
-                }
-            } catch(e) {}
+    if (!mobMenu) {
+        console.error('mobileMenu element NOT FOUND');
+        return;
+    }
 
-            const navbar = document.getElementById('siteNavbar');
-            if (navbar) {
-                window.addEventListener('scroll', function() {
-                    if (window.scrollY > 50) navbar.classList.add('scrolled');
-                    else navbar.classList.remove('scrolled');
-                });
-            }
+    /* ========================
+       OPEN MOBILE MENU (FORCED)
+       ======================== */
+    document.addEventListener('click', function (e) {
+        const openBtn = e.target.closest('#mobileMenuToggle');
+        if (!openBtn) return;
 
-            document.querySelectorAll('.mobile-nav-link[data-submenu]').forEach(function(link) {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const target = document.getElementById(this.dataset.submenu);
-                    if (target) {
-                        const isOpen = target.classList.toggle('open');
-                        const icon = this.querySelector('i');
-                        if (icon) {
-                            icon.classList.toggle('fa-chevron-down', !isOpen);
-                            icon.classList.toggle('fa-chevron-up', isOpen);
-                        }
-                    }
-                });
-            });
+        console.log('MOBILE MENU OPEN');
 
-            const backBtn = document.getElementById('backToTop');
-            if (backBtn) {
-                window.addEventListener('scroll', function() {
-                    if (window.scrollY > 400) backBtn.classList.add('visible');
-                    else backBtn.classList.remove('visible');
-                });
-                backBtn.onclick = function() { window.scrollTo({ top: 0, behavior: 'smooth' }); };
-            }
+        e.preventDefault();
+        e.stopPropagation();
 
-            const dot = document.getElementById('cursorDot');
-            if (dot && window.innerWidth > 991) {
-                document.addEventListener('mousemove', function(e) {
-                    dot.style.transform = 'translate(' + e.clientX + 'px, ' + e.clientY + 'px)';
-                });
-            }
+        mobMenu.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }, true);
 
-            const counters = document.querySelectorAll('.stat-number');
-            if (counters.length && typeof IntersectionObserver !== 'undefined') {
-                const observer = new IntersectionObserver(function(entries) {
-                    entries.forEach(function(entry) {
-                        if (entry.isIntersecting) {
-                            const el = entry.target;
-                            const target = parseInt(el.dataset.target || el.innerText.replace(/\D/g, '')) || 0;
-                            const suffix = el.dataset.suffix || '';
-                            let current = 0;
-                            const duration = 1500;
-                            const startTime = performance.now();
-                            function update(currentTime) {
-                                const elapsed = currentTime - startTime;
-                                const progress = Math.min(elapsed / duration, 1);
-                                current = Math.floor(progress * target);
-                                el.innerText = current.toLocaleString('en-US') + suffix;
-                                if (progress < 1) requestAnimationFrame(update);
-                            }
-                            requestAnimationFrame(update);
-                            observer.unobserve(el);
-                        }
-                    });
-                }, { threshold: 0.5 });
-                counters.forEach(function(c) { observer.observe(c); });
+
+    /* ========================
+       CLOSE MOBILE MENU
+       ======================== */
+    document.addEventListener('click', function (e) {
+        const closeBtnClicked = e.target.closest('#closeMobileMenu');
+        const overlayClicked = e.target.closest('.mobile-menu-overlay');
+
+        if (!closeBtnClicked && !overlayClicked) return;
+
+        console.log('MOBILE MENU CLOSE');
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        mobMenu.classList.remove('open');
+        document.body.style.overflow = '';
+    }, true);
+
+
+    /* ========================
+       CLOSE ON ESC
+       ======================== */
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && mobMenu.classList.contains('open')) {
+            mobMenu.classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    });
+
+
+    /* ========================
+       SUBMENU TOGGLE
+       ======================== */
+    document.querySelectorAll('.mobile-nav-link[data-submenu]').forEach(function (link) {
+        link.addEventListener('click', function (e) {
+            e.preventDefault();
+
+            const target = document.getElementById(this.dataset.submenu);
+            if (!target) return;
+
+            const isOpen = target.classList.toggle('open');
+            const icon   = this.querySelector('i');
+
+            if (icon) {
+                icon.classList.toggle('fa-chevron-down', !isOpen);
+                icon.classList.toggle('fa-chevron-up', isOpen);
             }
         });
-    </script>
+    });
+
+
+    console.log("MOBILE MENU READY");
+
+})();
+
+/* ============================================================
+   GLOBAL SITE INTERACTIONS (RESTORED)
+   ============================================================ */
+document.addEventListener('DOMContentLoaded', function() {
+    // 1. AOS Animations
+    if (typeof AOS !== 'undefined') {
+        AOS.init({ duration: 800, once: true, offset: 50 });
+    }
+
+    // 2. Navbar Scroll Effect & Back-to-Top
+    const navbar = document.getElementById('siteNavbar');
+    const backBtn = document.getElementById('backToTop');
+    
+    window.addEventListener('scroll', function() {
+        const scrolled = window.scrollY > 50;
+        if (navbar) navbar.classList.toggle('scrolled', scrolled);
+        if (backBtn) backBtn.classList.toggle('visible', window.scrollY > 400);
+    });
+
+    if (backBtn) {
+        backBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    }
+
+    // 3. Mega Menu Logic (Desktop Hover + Mobile Click)
+    const isMobile = () => window.innerWidth <= 991;
+    const megaTriggers = document.querySelectorAll('.mega-trigger');
+    const megaMenus = document.querySelectorAll('.mega-menu-v3');
+
+    // Handle Mobile Click
+    megaTriggers.forEach(trigger => {
+        trigger.addEventListener('click', function(e) {
+            if (!isMobile()) return;
+            e.preventDefault();
+            e.stopPropagation();
+            const menu = this.closest('.has-mega-menu').querySelector('.mega-menu-v3');
+            if (menu) {
+                const isActive = menu.classList.contains('active');
+                megaMenus.forEach(m => m.classList.remove('active'));
+                if (!isActive) menu.classList.add('active');
+            }
+        });
+    });
+
+    // Close Mega Menus on Outside Click (Mobile)
+    document.addEventListener('click', function(e) {
+        if (isMobile() && !e.target.closest('.has-mega-menu')) {
+            megaMenus.forEach(m => m.classList.remove('active'));
+        }
+    });
+
+    // 4. Statistics Counters
+    const counters = document.querySelectorAll('.stat-number');
+    if (counters.length && typeof IntersectionObserver !== 'undefined') {
+        const obs = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseInt(el.dataset.target || 0);
+                    const suffix = el.dataset.suffix || '';
+                    let current = 0;
+                    const duration = 2000;
+                    const startTime = performance.now();
+
+                    function animate(time) {
+                        const progress = Math.min((time - startTime) / duration, 1);
+                        current = Math.floor(progress * target);
+                        el.innerText = current.toLocaleString() + suffix;
+                        if (progress < 1) requestAnimationFrame(animate);
+                    }
+                    requestAnimationFrame(animate);
+                    obs.unobserve(el);
+                }
+            });
+        }, { threshold: 0.2 });
+        counters.forEach(c => obs.observe(c));
+    }
+});
+</script>
+
 
     @stack('scripts')
 </body>

@@ -7,7 +7,7 @@
 <section class="inner-page-hero">
     <div class="inner-hero-bg" style="background-image: url('https://images.unsplash.com/photo-1542031026-64c8d5573752?w=1600&q=80')"></div>
     <div class="inner-hero-overlay"></div>
-    <div class="container position-relative" style="z-index: 2;">
+    <div class="container position-relative" style="z-index: 2; padding-top:80px">
         <div class="inner-hero-content">
             <span class="section-suptitle text-white opacity-75">{{ __('توثيق الإنجازات') }}</span>
             <h1 class="inner-title">{{ __('معرض الصور') }}</h1>

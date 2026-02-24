@@ -7,7 +7,7 @@
 <section class="inner-page-hero">
     <div class="inner-hero-bg" style="background-image: url('{{ $activity->image ? asset('storage/' . $activity->image) : 'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1600&q=80' }}')"></div>
     <div class="inner-hero-overlay"></div>
-    <div class="container position-relative" style="z-index: 2;">
+    <div class="container position-relative" style="z-index: 2; padding-top:80px">
         <div class="inner-hero-content" data-aos="fade-up">
             @if($activity->category)
                 <span class="section-suptitle text-white opacity-75">{{ $activity->category->{'name_' . app()->getLocale()} }}</span>

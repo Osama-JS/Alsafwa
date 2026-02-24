@@ -210,9 +210,9 @@ img {
 
 .mega-menu-v3 {
     position: absolute;
-    top: calc(100% + 15px);
+    top: 100%;
     left: 50%;
-    transform: translateX(-50%) translateY(20px);
+    transform: translateX(-50%) translateY(10px);
     width: 100%;
     max-width: 1200px;
     background: rgba(255, 255, 255, 0.95);
@@ -223,16 +223,45 @@ img {
     box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.15);
     opacity: 0;
     visibility: hidden;
-    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition:
+        all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1),
+        visibility 0s 0.1s,
+        opacity 0.4s 0.1s;
     pointer-events: none;
     z-index: 2100;
 }
 
-.has-mega-menu:hover .mega-menu-v3 {
+@media (min-width: 992px) {
+    .has-mega-menu:hover .mega-menu-v3 {
+        opacity: 1;
+        visibility: visible;
+        transform: translateX(-50%) translateY(0);
+        pointer-events: auto;
+        transition-delay: 0s;
+    }
+}
+
+.mega-menu-v3.active {
     opacity: 1;
     visibility: visible;
     transform: translateX(-50%) translateY(0);
     pointer-events: auto;
+    transition-delay: 0s;
+}
+
+@media (max-width: 575px) {
+    .navbar-inner {
+        padding: 0 0.5rem;
+    }
+    .navbar-cta {
+        padding: 0.5rem 0.7rem !important;
+        font-size: 0.7rem !important;
+        gap: 0.3rem !important;
+        white-space: nowrap;
+    }
+    .navbar-brand-wrap {
+        gap: 0.2rem !important;
+    }
 }
 
 .mega-service-item {
