@@ -56,11 +56,11 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">وصف (عربي)</label>
-                                <textarea name="description_ar" class="form-control" rows="4">{{ old('description_ar') }}</textarea>
+                                <textarea name="description_ar" class="form-control editor-rich" rows="4">{{ old('description_ar') }}</textarea>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">وصف (إنجليزي)</label>
-                                <textarea name="description_en" class="form-control" rows="4">{{ old('description_en') }}</textarea>
+                                <textarea name="description_en" class="form-control editor-rich" rows="4">{{ old('description_en') }}</textarea>
                             </div>
                         </div>
 

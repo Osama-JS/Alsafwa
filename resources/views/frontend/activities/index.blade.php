@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 
-@section('title', __('أنشطتنا'))
+@section('title', __('المركز الإعلامي'))
 
 @section('content')
 {{-- Inner Page Hero --}}
@@ -10,11 +10,11 @@
     <div class="container position-relative" style="z-index: 2; padding-top:80px">
         <div class="inner-hero-content">
             <span class="section-suptitle text-white opacity-75">{{ __('الحيوية والتفاعل') }}</span>
-            <h1 class="inner-title">{{ __('الأنشطة والفعاليات') }}</h1>
+            <h1 class="inner-title">{{ __('المركز الإعلامي') }}</h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb custom-breadcrumb">
                     <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('الرئيسية') }}</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ __('أنشطتنا') }}</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ __('المركز الإعلامي') }}</li>
                 </ol>
             </nav>
         </div>
@@ -46,7 +46,7 @@
                 </div>
             @empty
                 <div class="col-12 text-center py-5">
-                    <h3 class="text-muted">{{ __('لا توجد أنشطة حالياً') }}</h3>
+                    <h3 class="text-muted">{{ __('لا توجد أخبار حالياً') }}</h3>
                 </div>
             @endforelse
         </div>

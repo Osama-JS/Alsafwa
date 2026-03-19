@@ -37,27 +37,53 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الوصف (عربي)</label>
-                                <textarea name="description_ar" class="form-control" rows="4">{{ old('description_ar', $product->description_ar) }}</textarea>
+                                <textarea name="description_ar" class="form-control editor-rich" rows="4">{{ old('description_ar', $product->description_ar) }}</textarea>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الوصف (إنجليزي)</label>
-                                <textarea name="description_en" class="form-control" rows="4">{{ old('description_en', $product->description_en) }}</textarea>
+                                <textarea name="description_en" class="form-control editor-rich" rows="4">{{ old('description_en', $product->description_en) }}</textarea>
                             </div>
                         </div>
 
-                        <!-- Image -->
-                        <div class="mb-4">
-                            <label class="form-label fw-bold small">صورة المنتج</label>
-                            <input type="file" name="image" class="form-control" onchange="previewImage(this, 'product-preview')">
-                            <div class="mt-2 text-muted text-xs">اتركها فارغة إذا لم ترد التغيير.</div>
-                            <div class="mt-2">
-                                @if($product->image)
-                                    <img id="product-preview" src="{{ asset('storage/' . $product->image) }}" alt="Preview" style="max-width: 300px; height: auto; max-height: 200px; border-radius: 8px; object-fit: cover;">
-                                @else
-                                    <img id="product-preview" src="#" alt="Preview" style="display: none; max-width: 300px; height: auto; max-height: 200px; border-radius: 8px; object-fit: cover;">
-                                @endif
+                        <!-- Image Section -->
+                        <div class="row g-4 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small">الصورة الرئيسية</label>
+                                <input type="file" name="image" class="form-control" onchange="previewImage(this, 'product-preview')">
+                                <div class="mt-2 text-muted text-xs">اتركها فارغة إذا لم ترد التغيير.</div>
+                                <div class="mt-2">
+                                    @if($product->image)
+                                        <img id="product-preview" src="{{ asset('storage/' . $product->image) }}" alt="Preview" style="max-width: 100%; height: auto; max-height: 150px; border-radius: 8px; object-fit: cover;">
+                                    @else
+                                        <img id="product-preview" src="#" alt="Preview" style="display: none; max-width: 100%; height: auto; max-height: 150px; border-radius: 8px; object-fit: cover;">
+                                    @endif
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small">إضافة صور للمعرض</label>
+                                <input type="file" name="gallery[]" class="form-control" multiple>
+                                <div class="mt-2 text-muted text-xs">يمكنك اختيار عدة صور جديدة لإضافتها للمعرض.</div>
                             </div>
                         </div>
+
+                        <!-- Existing Gallery Management -->
+                        @if($product->gallery && count($product->gallery) > 0)
+                            <div class="mb-4">
+                                <label class="form-label fw-bold small mb-3">إدارة صور المعرض الحالية (حدد للحذف)</label>
+                                <div class="row g-2">
+                                    @foreach($product->gallery as $galImg)
+                                        <div class="col-6 col-md-3 col-lg-2">
+                                            <div class="position-relative gallery-manage-item">
+                                                <img src="{{ asset('storage/' . $galImg) }}" class="img-thumbnail w-100" style="height: 100px; object-fit: cover;">
+                                                <div class="position-absolute top-0 end-0 p-1">
+                                                    <input type="checkbox" name="remove_gallery_images[]" value="{{ $galImg }}" class="form-check-input bg-danger border-danger">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
 
                         <!-- Price & Discount -->
                         <div class="row g-3 mb-3">

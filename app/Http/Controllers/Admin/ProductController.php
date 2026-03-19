@@ -51,6 +51,7 @@ class ProductController extends Controller
             'description_ar' => 'nullable|string',
             'description_en' => 'nullable|string',
             'image' => 'required|image|max:2048',
+            'gallery.*' => 'nullable|image|max:2048',
             'price' => 'nullable|numeric|min:0',
             'discount' => 'nullable|numeric|min:0',
             'agency_id' => 'nullable|exists:agencies,id',
@@ -62,6 +63,14 @@ class ProductController extends Controller
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('products', 'public');
+        }
+
+        if ($request->hasFile('gallery')) {
+            $galleryPaths = [];
+            foreach ($request->file('gallery') as $file) {
+                $galleryPaths[] = $file->store('products/gallery', 'public');
+            }
+            $validated['gallery'] = $galleryPaths;
         }
 
         Product::create($validated);
@@ -84,6 +93,8 @@ class ProductController extends Controller
             'description_ar' => 'nullable|string',
             'description_en' => 'nullable|string',
             'image' => 'nullable|image|max:2048',
+            'gallery.*' => 'nullable|image|max:2048',
+            'remove_gallery_images' => 'nullable|array',
             'price' => 'nullable|numeric|min:0',
             'discount' => 'nullable|numeric|min:0',
             'agency_id' => 'nullable|exists:agencies,id',
@@ -91,12 +102,32 @@ class ProductController extends Controller
             'order' => 'nullable|integer',
         ]);
 
+        // Handle Main Image
         if ($request->hasFile('image')) {
             if ($product->image) {
                 Storage::disk('public')->delete($product->image);
             }
             $validated['image'] = $request->file('image')->store('products', 'public');
         }
+
+        // Handle Gallery Deletions
+        $currentGallery = $product->gallery ?? [];
+        if ($request->filled('remove_gallery_images')) {
+            foreach ($request->remove_gallery_images as $imgPath) {
+                if (in_array($imgPath, $currentGallery)) {
+                    Storage::disk('public')->delete($imgPath);
+                    $currentGallery = array_values(array_diff($currentGallery, [$imgPath]));
+                }
+            }
+        }
+
+        // Handle Gallery New Uploads
+        if ($request->hasFile('gallery')) {
+            foreach ($request->file('gallery') as $file) {
+                $currentGallery[] = $file->store('products/gallery', 'public');
+            }
+        }
+        $validated['gallery'] = $currentGallery;
 
         $product->update($validated);
 

@@ -5,48 +5,42 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Agency extends Model
+class Partner extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'slug',
         'name_ar',
         'name_en',
-        'description_ar',
-        'description_en',
         'logo',
-        'website',
-        'phone',
-        'email',
-        'map_url',
+        'url',
         'status',
         'order',
         'created_by',
         'updated_by',
     ];
 
-    protected $casts = [
-        'order' => 'integer',
-    ];
-
+    /**
+     * Get the user who created the partner.
+     */
     public function creator()
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
+    /**
+     * Get the user who updated the partner.
+     */
     public function updater()
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
 
-    public function scopePublished($query)
+    /**
+     * Scope a query to only include active partners.
+     */
+    public function scopeActive($query)
     {
-        return $query->where('status', 'published');
-    }
-
-    public function products()
-    {
-        return $this->hasMany(Product::class);
+        return $query->where('status', 'active');
     }
 }

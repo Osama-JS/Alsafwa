@@ -106,25 +106,25 @@
                                         <div class="col-md-6">
                                             <a href="{{ route('activities.index') }}" class="mega-service-item">
                                                 <div class="mega-service-icon">
-                                                    <i class="fas fa-calendar-alt"></i>
+                                                    <i class="fas fa-newspaper"></i>
                                                 </div>
                                                 <div class="mega-service-text">
-                                                    <span class="d-block fw-bold text-dark fs-sm">{{ __('الأنشطة') }}</span>
-                                                    <span class="text-xs text-secondary opacity-75">{{ __('أحدث مستجداتنا وفعالياتنا') }}</span>
+                                                    <span class="d-block fw-bold text-dark fs-sm">{{ __('المركز الإعلامي') }}</span>
+                                                    <span class="text-xs text-secondary opacity-75">{{ __('أحدث مستجداتنا وأخبارنا') }}</span>
                                                 </div>
                                             </a>
                                         </div>
                                         {{-- Placeholder for future items --}}
-                                        <div class="col-md-6 opacity-50">
-                                            <div class="mega-service-item cursor-default">
+                                        <div class="col-md-6">
+                                            <a href="{{ route('distributors.index') }}" class="mega-service-item">
                                                 <div class="mega-service-icon">
-                                                    <i class="fas fa-plus-circle"></i>
+                                                    <i class="fas fa-truck-loading"></i>
                                                 </div>
                                                 <div class="mega-service-text">
-                                                    <span class="d-block fw-bold text-dark fs-sm">{{ __('قريباً') }}</span>
-                                                    <span class="text-xs text-secondary opacity-75">{{ __('المزيد من المعلومات') }}</span>
+                                                    <span class="d-block fw-bold text-dark fs-sm">{{ __('الموزعون') }}</span>
+                                                    <span class="text-xs text-secondary opacity-75">{{ __('وكلاؤنا وموزعونا المعتمدون') }}</span>
                                                 </div>
-                                            </div>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -202,7 +202,8 @@
         </a>
         <div class="mobile-submenu" id="mobileAbout">
             <a href="{{ route('about') }}">{{ __('قصتنا') }}</a>
-            <a href="{{ route('activities.index') }}">{{ __('الأنشطة') }}</a>
+            <a href="{{ route('activities.index') }}">{{ __('المركز الإعلامي') }}</a>
+            <a href="{{ route('distributors.index') }}">{{ __('الموزعون') }}</a>
         </div>
 
         <a href="{{ route('contact') }}" class="mobile-nav-link text-accent">

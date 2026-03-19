@@ -156,6 +156,25 @@
         }
     </script>
 
+    <!-- CKEditor 5 -->
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.1.0/classic/ckeditor.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const editors = document.querySelectorAll('.editor-rich');
+            editors.forEach(editor => {
+                ClassicEditor
+                    .create(editor, {
+                        language: 'ar',
+                        toolbar: ['heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'insertTable', 'undo', 'redo'],
+                        dir: 'rtl'
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            });
+        });
+    </script>
+
     @stack('scripts')
 
     {{-- Sidebar Toggle (inline — always fresh, no cache issues) --}}

@@ -109,6 +109,17 @@
                 </div>
             </div>
         </div>
+
+        {{-- Map Section --}}
+        @if(setting('company_map'))
+            <div class="row mt-5 pt-4">
+                <div class="col-12">
+                    <div class="map-container-v2 rounded-4 overflow-hidden border shadow-soft" style="height: 500px;">
+                        {!! setting('company_map') !!}
+                    </div>
+                </div>
+            </div>
+        @endif
     </div>
 </section>
 @endsection
@@ -147,6 +158,12 @@
         background: #fff;
         border-color: var(--primary);
         box-shadow: 0 10px 30px -10px rgba(26, 58, 107, 0.1);
+    }
+    
+    .map-container-v2 iframe {
+        width: 100% !important;
+        height: 100% !important;
+        border: 0 !important;
     }
 </style>
 @endpush

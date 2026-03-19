@@ -12,7 +12,7 @@ class Product extends Model
     protected $fillable = [
         'title_ar', 'title_en',
         'description_ar', 'description_en',
-        'slug', 'image',
+        'slug', 'image', 'gallery',
         'price', 'discount',
         'agency_id',
         'status', 'order',
@@ -22,11 +22,17 @@ class Product extends Model
         'price' => 'decimal:2',
         'discount' => 'decimal:2',
         'order' => 'integer',
+        'gallery' => 'array',
     ];
 
     public function agency()
     {
         return $this->belongsTo(Agency::class);
+    }
+
+    public function distributors()
+    {
+        return $this->belongsToMany(Distributor::class);
     }
 
     public function scopeActive($query)

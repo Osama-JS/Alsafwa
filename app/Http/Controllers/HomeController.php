@@ -5,14 +5,18 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Slider;
 use App\Models\Service;
-use App\Models\Broadcast; // Assuming we might use this later, but for now logic is simpler
+use App\Models\Partner;
 use App\Models\Page;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        $sliders = Slider::whereIn('status', ['active', 'published'])
+        // Normalize old 'published'/'draft' statuses to new 'active'/'inactive'
+        Slider::where('status', 'published')->update(['status' => 'active']);
+        Slider::where('status', 'draft')->update(['status' => 'inactive']);
+
+        $sliders = Slider::where('status', 'active')
             ->orderBy('order')
             ->get();
 
@@ -44,7 +48,11 @@ class HomeController extends Controller
             ->take(8)
             ->get();
 
-        return view('frontend.home', compact('sliders', 'services', 'agencies', 'activities', 'about', 'counters', 'products'));
+        $partners = Partner::where('status', 'active')
+            ->orderBy('order')
+            ->get();
+
+        return view('frontend.home', compact('sliders', 'services', 'agencies', 'activities', 'about', 'counters', 'products', 'partners'));
     }
 
     public function about()

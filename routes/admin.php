@@ -44,6 +44,8 @@ Route::middleware(['admin'])->group(function () {
     Route::resource('gallery', \App\Http\Controllers\Admin\GalleryImageController::class);
     Route::resource('branches', \App\Http\Controllers\Admin\BranchController::class);
     Route::resource('counters', \App\Http\Controllers\Admin\CounterController::class);
+    Route::resource('partners', \App\Http\Controllers\Admin\PartnerController::class);
+    Route::resource('distributors', \App\Http\Controllers\Admin\DistributorController::class);
     Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
 
     // Reports

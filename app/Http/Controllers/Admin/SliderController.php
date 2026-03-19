@@ -51,12 +51,17 @@ class SliderController extends Controller
             'title_en' => 'required|string|max:255',
             'subtitle_ar' => 'nullable|string|max:255',
             'subtitle_en' => 'nullable|string|max:255',
-            'image' => 'required|image|max:2048',
+            'image' => 'required|image|max:10240',
             'link' => 'nullable|url',
             'button_text_ar' => 'nullable|string|max:50',
             'button_text_en' => 'nullable|string|max:50',
             'status' => 'required|in:active,inactive',
             'order' => 'nullable|integer',
+        ], [
+            'image.max' => 'حجم الصورة كبير جداً، الحد الأقصى المسموح به هو 10 ميجابايت',
+            'image.required' => 'يرجى اختيار صورة للسلايدر',
+            'title_ar.required' => 'العنوان العربي مطلوب',
+            'title_en.required' => 'العنوان الإنجليزي مطلوب',
         ]);
 
         if ($request->hasFile('image')) {
@@ -81,12 +86,16 @@ class SliderController extends Controller
             'title_en' => 'required|string|max:255',
             'subtitle_ar' => 'nullable|string|max:255',
             'subtitle_en' => 'nullable|string|max:255',
-            'image' => 'nullable|image|max:2048',
+            'image' => 'nullable|image|max:10240',
             'link' => 'nullable|url',
             'button_text_ar' => 'nullable|string|max:50',
             'button_text_en' => 'nullable|string|max:50',
             'status' => 'required|in:active,inactive',
             'order' => 'nullable|integer',
+        ], [
+            'image.max' => 'حجم الصورة كبير جداً، الحد الأقصى المسموح به هو 10 ميجابايت',
+            'title_ar.required' => 'العنوان العربي مطلوب',
+            'title_en.required' => 'العنوان الإنجليزي مطلوب',
         ]);
 
         if ($request->hasFile('image')) {

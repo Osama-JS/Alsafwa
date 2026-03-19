@@ -4,66 +4,46 @@
 
 @section('content')
 
+
+
 {{-- ================================================================
-     LEGENDARY HERO SECTION
+     HERO SLIDER SECTION
      ================================================================ --}}
-<section class="hero-section hero-legendary-main">
-    <div class="swiper heroSwiper" style="height: 100%;">
+<section class="hero-slider-section">
+    <div class="swiper heroSwiper">
         <div class="swiper-wrapper">
-            @forelse($sliders as $slider)
+            @foreach($sliders as $slider)
                 <div class="swiper-slide">
-                    <div class="hero-slide-item">
-                        <div class="hero-slide-bg" style="background-image: url('{{ $slider->image && Storage::disk('public')->exists($slider->image) ? asset('storage/' . $slider->image) : asset('images/hero-fallback.jpg') }}');"></div>
-                        <div class="hero-overlay-legend"></div>
-                        <div class="container position-relative z-10 pt-5" style="padding-top:160px">
-                            <div class="hero-content-wrap">
-                                <span class="hero-subtitle-top">{{ $slider->{'subtitle_' . app()->getLocale()} }}</span>
-                                <h1 class="hero-title-mega">
-                                    {{ $slider->{'title_' . app()->getLocale()} }}
-                                    <span class="stroked-text">{{ setting('company_name_' . app()->getLocale(), __('الصفوة')) }}</span>
-                                </h1>
-                                <div class="hero-btn-group mt-5">
-                                    <a href="{{ $slider->link ?: route('services.index') }}" class="btn-legendary">
+                    <div class="hero-slide" style="background-image: url('{{ $slider->image && Storage::disk('public')->exists($slider->image) ? asset('storage/' . $slider->image) : asset('images/hero-fallback.jpg') }}');">
+                        <div class="hero-slide-overlay"></div>
+                        <div class="container hero-slide-content">
+                            <div class="hero-text-box">
+                                @if($slider->{'subtitle_' . app()->getLocale()})
+                                    <span class="hero-badge">{{ $slider->{'subtitle_' . app()->getLocale()} }}</span>
+                                @endif
+                                <h1 class="hero-main-title">{{ $slider->{'title_' . app()->getLocale()} }}</h1>
+                                <div class="hero-cta-group">
+                                    <a href="{{ $slider->link ?: route('services.index') }}" class="btn-hero-primary">
                                         {{ $slider->{'button_text_' . app()->getLocale()} ?: __('اكتشف المزيد') }}
-                                        <i class="fas fa-chevron-left ms-2 fs-6 opacity-50"></i>
-                                    </a>
-                                    <a href="{{ route('contact') }}" class="btn-hero-outline">
-                                        {{ __('تواصل معنا') }}
                                     </a>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            @empty
-                <div class="swiper-slide">
-                    <div class="hero-slide-item">
-                        <div class="hero-slide-bg" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1920&q=80');"></div>
-                        <div class="hero-overlay-legend"></div>
-                        <div class="container position-relative z-10" style="padding-top:160px">
-                            <div class="hero-content-wrap">
-                                <span class="hero-subtitle-top">{{ setting('company_tagline_' . app()->getLocale(), __('للتجارة والاستثمار')) }}</span>
-                                <h1 class="hero-title-mega">
-                                    {{ setting('company_name_' . app()->getLocale(), __('الصفوة')) }}
-                                    <span class="stroked-text">{{ __('رؤيتك.. واقعنا') }}</span>
-                                </h1>
-                                <div class="hero-btn-group mt-5">
-                                    <a href="{{ route('services.index') }}" class="btn-legendary">
-                                        {{ __('خدماتنا') }}
-                                    </a>
-                                    <a href="{{ route('contact') }}" class="btn-hero-outline">
-                                        {{ __('تواصل معنا') }}
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            @endforelse
+            @endforeach
         </div>
-        <div class="swiper-pagination"></div>
+
+        <div class="swiper-button-prev hero-nav-prev"></div>
+        <div class="swiper-button-next hero-nav-next"></div>
+        <div class="swiper-pagination hero-pagination"></div>
+
+        <div class="hero-slide-counter">
+            <span class="current-num">1</span> / <span class="total-num">{{ $sliders->count() }}</span>
+        </div>
     </div>
 </section>
+
 
 {{-- ================================================================
      GLOWING STATS
@@ -192,10 +172,10 @@
     <div class="container">
         <div class="d-flex justify-content-between align-items-end mb-5">
             <div>
-                <span class="section-suptitle">{{ __('آخر المستجدات') }}</span>
-                <h2 class="section-maintitle mb-0">{{ __('أحدث أنشطتنا') }}</h2>
+                <span class="section-suptitle">{{ __('الأخبار والفعاليات') }}</span>
+                <h2 class="section-maintitle mb-0">{{ __('أحدث أخبارنا') }}</h2>
             </div>
-            <a href="{{ route('activities.index') }}" class="text-primary fw-bold">{{ __('جميع الأنشطة') }} <i class="fas fa-arrow-left ms-2"></i></a>
+            <a href="{{ route('activities.index') }}" class="text-primary fw-bold">{{ __('المركز الإعلامي') }} <i class="fas fa-arrow-left ms-2"></i></a>
         </div>
         <div class="row g-4">
             @forelse($activities as $activity)
@@ -291,30 +271,280 @@
     </div>
 </section>
 
+    {{-- ── Partners Section ── --}}
+    @if(isset($partners) && $partners->count() > 0)
+    <section class="partners-section py-5" style="background: rgba(var(--primary-rgb), 0.02);">
+        <div class="container" data-aos="fade-up">
+            <div class="section-header text-center mb-5">
+                <h6 class="text-primary text-uppercase fw-bold mb-2">{{ app()->getLocale() == 'ar' ? 'شركاء النجاح' : 'Success Partners' }}</h6>
+                <h2 class="fw-bold">{{ app()->getLocale() == 'ar' ? 'نعتز بثقتهم' : 'Our Trusted Partners' }}</h2>
+            </div>
+
+            <!-- Partners Swiper -->
+            <div class="swiper partnersSwiper">
+                <div class="swiper-wrapper align-items-center">
+                    @foreach($partners as $partner)
+                    <div class="swiper-slide text-center px-4">
+                        @if($partner->url)
+                            <a href="{{ $partner->url }}" target="_blank" class="partner-logo-link">
+                        @endif
+                        <img src="{{ asset('storage/' . $partner->logo) }}" 
+                             alt="{{ $partner->name_ar }}" 
+                             class="img-fluid partner-logo grayscale hover-color transition-300" 
+                             style="max-height: 80px; width: auto; object-fit: contain;">
+                        @if($partner->url)
+                            </a>
+                        @endif
+                    </div>
+                    @endforeach
+                </div>
+                <!-- Pagination if needed -->
+                {{-- <div class="swiper-pagination mt-4"></div> --}}
+            </div>
+        </div>
+    </section>
+
+    @push('styles')
+    <style>
+        .partner-logo {
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: all 0.4s ease;
+        }
+        .partner-logo:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        .partner-logo-link {
+            display: inline-block;
+        }
+    </style>
+    @endpush
+
+    @endif
+
 @endsection
 
 @push('styles')
 <style>
+    /* ──────────────────────────────────────────
+       HERO SLIDER
+    ────────────────────────────────────────── */
+    .hero-slider-section {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        min-height: 600px;
+        max-height: 900px;
+        overflow: hidden;
+    }
+    .heroSwiper {
+        width: 100%;
+        height: 100%;
+    }
+    .heroSwiper .swiper-wrapper {
+        width: 100%;
+        height: 100%;
+    }
+    .heroSwiper .swiper-slide {
+        width: 100%;
+        height: 100%;
+        flex-shrink: 0;
+    }
+
+    .hero-slide {
+        width: 100%;
+        height: 100%;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+        display: flex;
+        align-items: center;
+    }
+    .hero-slide-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(10,25,55,0.85) 0%, rgba(10,30,70,0.5) 60%, rgba(0,0,0,0.2) 100%);
+    }
+    .hero-slide-content {
+        position: relative;
+        z-index: 5;
+        padding-top: 120px;
+        padding-bottom: 60px;
+    }
+    .hero-text-box {
+        max-width: 750px;
+    }
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        background: rgba(255,255,255,0.12);
+        backdrop-filter: blur(6px);
+        border: 1px solid rgba(255,255,255,0.2);
+        color: #fff;
+        padding: 8px 20px;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        margin-bottom: 1.5rem;
+    }
+    .hero-main-title {
+        color: #fff;
+        font-size: clamp(2.2rem, 5vw, 4rem);
+        font-weight: 900;
+        line-height: 1.2;
+        margin-bottom: 1.5rem;
+        text-shadow: 0 4px 30px rgba(0,0,0,0.3);
+    }
+    .hero-divider {
+        width: 80px;
+        height: 4px;
+        border-radius: 4px;
+        background: var(--accent, #c9a84c);
+        margin-bottom: 2rem;
+    }
+    .hero-cta-group { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
+    .btn-hero-primary {
+        display: inline-flex;
+        align-items: center;
+        background: var(--accent, #c9a84c);
+        color: #0f1e3d;
+        padding: 16px 36px;
+        border-radius: 50px;
+        font-weight: 800;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 30px rgba(201,168,76,0.35);
+    }
+    .btn-hero-primary:hover {
+        background: #e8c96a;
+        transform: translateY(-3px);
+        box-shadow: 0 12px 40px rgba(201,168,76,0.5);
+        color: #0f1e3d;
+    }
+    .btn-hero-secondary {
+        display: inline-flex;
+        align-items: center;
+        border: 2px solid rgba(255,255,255,0.5);
+        color: #fff;
+        padding: 14px 32px;
+        border-radius: 50px;
+        font-weight: 700;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(4px);
+    }
+    .btn-hero-secondary:hover {
+        border-color: #fff;
+        background: rgba(255,255,255,0.15);
+        color: #fff;
+        transform: translateY(-3px);
+    }
+
+    /* ── Nav Arrows (Swiper standard buttons, custom styled) ── */
+    .hero-nav-prev,
+    .hero-nav-next {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 100;
+        width: 54px;
+        height: 54px;
+        border-radius: 50%;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(8px);
+        border: 1.5px solid rgba(255,255,255,0.3);
+        color: #fff;
+        transition: all 0.3s ease;
+        margin: 0;
+        cursor: pointer;
+        pointer-events: auto !important;
+    }
+    .hero-nav-prev::after,
+    .hero-nav-next::after {
+        font-size: 1.1rem;
+        font-weight: 900;
+        color: #fff;
+    }
+    .hero-nav-prev:hover,
+    .hero-nav-next:hover {
+        background: var(--accent, #c9a84c);
+        border-color: var(--accent, #c9a84c);
+    }
+    .hero-nav-prev:hover::after,
+    .hero-nav-next:hover::after { color: #0f1e3d; }
+    .hero-nav-prev { left: 30px !important; right: auto !important; }
+    .hero-nav-next { right: 30px !important; left: auto !important; }
+    @media (max-width: 767px) {
+        .hero-nav-prev { left: 12px !important; }
+        .hero-nav-next { right: 12px !important; }
+    }
+
+    /* ── Pagination ── */
+    .hero-pagination {
+        bottom: 30px !important;
+        z-index: 20;
+    }
+    .hero-pagination .swiper-pagination-bullet {
+        width: 10px;
+        height: 10px;
+        background: rgba(255,255,255,0.4);
+        opacity: 1;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+    }
+    .hero-pagination .swiper-pagination-bullet-active {
+        background: var(--accent, #c9a84c);
+        width: 30px;
+    }
+
+    /* ── Slide Counter ── */
+    .hero-slide-counter {
+        position: absolute;
+        bottom: 30px;
+        inset-inline-start: 30px;
+        z-index: 20;
+        color: rgba(255,255,255,0.6);
+        font-size: 0.85rem;
+        font-weight: 700;
+        letter-spacing: 2px;
+    }
+    .hero-slide-counter .current-num {
+        color: var(--accent, #c9a84c);
+        font-size: 1.4rem;
+        font-weight: 900;
+        line-height: 1;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 767px) {
+        .hero-slider-section { height: 100svh; max-height: 700px; }
+        .hero-main-title { font-size: 2rem; }
+        .btn-hero-primary, .btn-hero-secondary { padding: 12px 24px; font-size: 0.9rem; }
+        .hero-nav-btn { width: 40px; height: 40px; font-size: 0.9rem; }
+        .hero-prev { inset-inline-start: 12px; }
+        .hero-next { inset-inline-end: 12px; }
+        .hero-slide-counter { display: none; }
+    }
+
+    /* ── Other ── */
     .stat-label-v3 { font-weight: 800; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; opacity: 0.5; }
     .fw-black { font-weight: 900; }
     .max-w-600 { max-width: 600px; }
     .floating-experience-card {
-        position: absolute;
-        bottom: -30px; 
-        inset-inline-end: -20px;
-        background: var(--primary-dark);
-        padding: 2.5rem;
-        border-radius: 24px;
-        box-shadow: var(--shadow-strong);
-        text-align: center;
+        position: absolute; bottom: -30px; inset-inline-end: -20px;
+        background: var(--primary-dark); padding: 2.5rem; border-radius: 24px;
+        box-shadow: var(--shadow-strong); text-align: center;
     }
     .cta-box-legendary {
         background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
-        padding: 100px 50px;
-        border-radius: var(--radius-xl);
-        box-shadow: var(--shadow-strong);
-        position: relative;
-        overflow: hidden;
+        padding: 100px 50px; border-radius: var(--radius-xl); box-shadow: var(--shadow-strong);
+        position: relative; overflow: hidden;
     }
     .cta-box-legendary::before {
         content: ""; position: absolute; inset: 0;
@@ -326,34 +556,43 @@
 
 @push('scripts')
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Hero Swiper
-        const heroSlides = document.querySelectorAll('.heroSwiper .swiper-slide');
-        if (heroSlides.length > 0) {
-            new Swiper('.heroSwiper', {
-                loop: heroSlides.length > 1,
-                speed: 1200,
-                autoplay: { delay: 6000, disableOnInteraction: false },
-                effect: 'fade',
-                fadeEffect: { crossFade: true },
-                pagination: { el: '.swiper-pagination', clickable: true },
-            });
-        }
+window.addEventListener('load', function() {
+    try {
+        if (typeof Swiper === 'undefined') return;
 
-        // Agencies Swiper
-        const agencySlides = document.querySelectorAll('.agenciesSwiper .swiper-slide');
-        if (agencySlides.length > 0) {
-            new Swiper('.agenciesSwiper', {
-                slidesPerView: 2,
-                spaceBetween: 30,
-                loop: agencySlides.length > 5, // Enable loop only if we have more slides than visible
-                autoplay: { delay: 3000, disableOnInteraction: false },
-                breakpoints: {
-                    640: { slidesPerView: 3 },
-                    1024: { slidesPerView: 5 },
+        const heroBox = document.querySelector('.heroSwiper');
+        const hSlides = heroBox ? heroBox.querySelectorAll('.swiper-slide') : [];
+        
+        if (heroBox && hSlides.length > 0) {
+            const heroPagination = heroBox.querySelector('.hero-pagination');
+            const heroPrev = heroBox.querySelector('.hero-nav-prev');
+            const heroNext = heroBox.querySelector('.hero-nav-next');
+
+            new Swiper(heroBox, {
+                loop: true,
+                speed: 1000,
+                autoplay: { delay: 5000, disableOnInteraction: false },
+                pagination: { el: heroPagination, clickable: true },
+                navigation: { nextEl: heroNext, prevEl: heroPrev },
+                observer: true,
+                observeParents: true,
+                loopAdditionalSlides: 2,
+                on: {
+                    slideChange: function() {
+                        const cur = document.querySelector('.hero-slide-counter .current-num');
+                        if (cur) cur.textContent = this.realIndex + 1;
+                    }
                 }
             });
         }
-    });
+
+        const agencyBox = document.querySelector('.agenciesSwiper');
+        if (agencyBox) new Swiper(agencyBox, { slidesPerView: 2, loop: true, autoplay: true, breakpoints: { 1024: { slidesPerView: 5 } } });
+        
+        const partnersBox = document.querySelector('.partnersSwiper');
+        if (partnersBox) new Swiper(partnersBox, { slidesPerView: 2, loop: true, autoplay: true, breakpoints: { 992: { slidesPerView: 5 } } });
+
+    } catch (err) { console.error("Swiper Error:", err); }
+});
 </script>
 @endpush

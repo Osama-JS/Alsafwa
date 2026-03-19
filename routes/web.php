@@ -26,6 +26,7 @@ Route::group(
 
     // Agencies
     Route::get('/agencies', [\App\Http\Controllers\AgencyController::class, 'index'])->name('agencies.index');
+    Route::get('/agencies/{slug}', [\App\Http\Controllers\AgencyController::class, 'show'])->name('agencies.show');
 
     // Activities
     Route::get('/activities', [\App\Http\Controllers\ActivityController::class, 'index'])->name('activities.index');
@@ -36,6 +37,10 @@ Route::group(
 
     // Branches
     Route::get('/branches', [\App\Http\Controllers\BranchController::class, 'index'])->name('branches.index');
+
+    // Distributors
+    Route::get('/distributors', [\App\Http\Controllers\DistributorController::class, 'index'])->name('distributors.index');
+    Route::get('/distributors/{id}', [\App\Http\Controllers\DistributorController::class, 'show'])->name('distributors.show');
 
     // Products
     Route::get('/products', [\App\Http\Controllers\ProductController::class, 'index'])->name('products.index');

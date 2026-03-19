@@ -47,11 +47,11 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">المحتوى الكامل (عربي)</label>
-                                <textarea name="content_ar" class="form-control" rows="5">{{ old('content_ar', $service->content_ar) }}</textarea>
+                                <textarea name="content_ar" class="form-control editor-rich" rows="5">{{ old('content_ar', $service->content_ar) }}</textarea>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">المحتوى الكامل (إنجليزي)</label>
-                                <textarea name="content_en" class="form-control" rows="5">{{ old('content_en', $service->content_en) }}</textarea>
+                                <textarea name="content_en" class="form-control editor-rich" rows="5">{{ old('content_en', $service->content_en) }}</textarea>
                             </div>
                         </div>
 

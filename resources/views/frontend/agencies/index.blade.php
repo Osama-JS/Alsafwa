@@ -27,21 +27,21 @@
         <div class="row g-4">
             @forelse($agencies as $agency)
                 <div class="col-lg-3 col-md-4 col-6" data-aos="zoom-in" data-aos-delay="{{ $loop->index * 60 }}">
-                    <div class="agency-card-v3">
-                        <div class="agency-logo-inner">
-                            @if($agency->logo)
-                                <img src="{{ asset('storage/' . $agency->logo) }}" alt="{{ $agency->name_ar }}">
-                            @else
-                                <span class="fw-black text-primary fs-4">{{ $agency->{'name_' . app()->getLocale()} }}</span>
-                            @endif
+                    <a href="{{ route('agencies.show', $agency->slug) }}" class="text-decoration-none">
+                        <div class="agency-card-v3">
+                            <div class="agency-logo-inner">
+                                @if($agency->logo)
+                                    <img src="{{ asset('storage/' . $agency->logo) }}" alt="{{ $agency->name_ar }}">
+                                @else
+                                    <span class="fw-black text-primary fs-4">{{ $agency->{'name_' . app()->getLocale()} }}</span>
+                                @endif
+                            </div>
+                            <div class="agency-info-overlay">
+                                <h6 class="fw-black mb-1 p-2 text-dark">{{ $agency->{'name_' . app()->getLocale()} }}</h6>
+                                <span class="btn-legendary p-1 px-3 fs-xs rounded-pill" style="font-size:.7rem;">{{ __('عرض التفاصيل') }}</span>
+                            </div>
                         </div>
-                        <div class="agency-info-overlay">
-                            <h6 class="fw-black mb-1 p-2">{{ $agency->{'name_' . app()->getLocale()} }}</h6>
-                            @if($agency->website)
-                                <a href="{{ $agency->website }}" target="_blank" class="btn-legendary p-1 px-3 fs-xs rounded-pill" style="font-size:.7rem;">{{ __('الموقع الرسمي') }}</a>
-                            @endif
-                        </div>
-                    </div>
+                    </a>
                 </div>
             @empty
                 <div class="col-12 text-center py-5">

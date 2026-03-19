@@ -48,17 +48,30 @@
                                 <label class="form-label fw-bold small">الموقع الإلكتروني</label>
                                 <input type="url" name="website" class="form-control" value="{{ old('website', $agency->website) }}">
                             </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small">رقم الهاتف</label>
+                                <input type="text" name="phone" class="form-control" value="{{ old('phone', $agency->phone) }}" placeholder="+967 ...">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small">البريد الإلكتروني</label>
+                                <input type="email" name="email" class="form-control" value="{{ old('email', $agency->email) }}" placeholder="agency@example.com">
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-bold small">رابط الخريطة (Google Maps URL)</label>
+                                <input type="text" name="map_url" class="form-control" value="{{ old('map_url', $agency->map_url) }}" placeholder="https://goo.gl/maps/...">
+                                <div class="form-text small text-muted">أدخل رابط الموقع من خرائط جوجل لعرضه في صفحة الوكيل.</div>
+                            </div>
                         </div>
 
                         <!-- Descriptions -->
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">وصف (عربي)</label>
-                                <textarea name="description_ar" class="form-control" rows="4">{{ old('description_ar', $agency->description_ar) }}</textarea>
+                                <textarea name="description_ar" class="form-control editor-rich" rows="4">{{ old('description_ar', $agency->description_ar) }}</textarea>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">وصف (إنجليزي)</label>
-                                <textarea name="description_en" class="form-control" rows="4">{{ old('description_en', $agency->description_en) }}</textarea>
+                                <textarea name="description_en" class="form-control editor-rich" rows="4">{{ old('description_en', $agency->description_en) }}</textarea>
                             </div>
                         </div>
 

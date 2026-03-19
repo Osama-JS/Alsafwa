@@ -53,6 +53,9 @@ class AgencyController extends Controller
             'description_en' => 'nullable|string',
             'logo' => 'required|image|max:2048',
             'website' => 'nullable|url',
+            'phone' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255',
+            'map_url' => 'nullable|string',
             'status' => 'required|in:published,draft,archived',
             'order' => 'nullable|integer',
         ]);
@@ -92,6 +95,9 @@ class AgencyController extends Controller
             'description_en' => 'nullable|string',
             'logo' => 'nullable|image|max:2048',
             'website' => 'nullable|url',
+            'phone' => 'nullable|string|max:20',
+            'email' => 'nullable|email|max:255',
+            'map_url' => 'nullable|string',
             'status' => 'required|in:published,draft,archived',
             'order' => 'nullable|integer',
         ]);

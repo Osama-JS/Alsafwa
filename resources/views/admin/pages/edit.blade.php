@@ -35,11 +35,11 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">المحتوى (عربي) <span class="text-danger">*</span></label>
-                                <textarea name="content_ar" class="form-control" rows="8" required>{{ old('content_ar', $page->content_ar) }}</textarea>
+                                <textarea name="content_ar" class="form-control editor-rich" rows="8" required>{{ old('content_ar', $page->content_ar) }}</textarea>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">المحتوى (إنجليزي) <span class="text-danger">*</span></label>
-                                <textarea name="content_en" class="form-control" rows="8" required>{{ old('content_en', $page->content_en) }}</textarea>
+                                <textarea name="content_en" class="form-control editor-rich" rows="8" required>{{ old('content_en', $page->content_en) }}</textarea>
                             </div>
                         </div>
 

@@ -434,7 +434,7 @@
                         <div class="row g-4">
                             @foreach($groupSettings as $setting)
                                 @php
-                                    $colClass = in_array($setting->type, ['textarea', 'image']) ? 'col-12' : 'col-md-6';
+                                    $colClass = in_array($setting->type, ['textarea', 'text', 'image']) ? 'col-12' : 'col-md-6';
                                 @endphp
                                 <div class="{{ $colClass }} setting-field">
                                     @if($setting->type !== 'boolean')
@@ -447,7 +447,7 @@
                                                 <i class="fas fa-link text-success"></i>
                                             @elseif($setting->type === 'color')
                                                 <i class="fas fa-palette text-warning"></i>
-                                            @elseif($setting->type === 'textarea')
+                                            @elseif($setting->type === 'textarea' || $setting->type === 'text')
                                                 <i class="fas fa-align-left text-secondary"></i>
                                             @else
                                                 <i class="fas fa-pen text-muted"></i>
@@ -486,7 +486,7 @@
                                         </div>
 
                                     {{-- TEXTAREA --}}
-                                    @elseif($setting->type === 'textarea')
+                                    @elseif($setting->type === 'textarea' || $setting->type === 'text')
                                         <textarea name="{{ $setting->key }}"
                                                   class="form-control"
                                                   rows="4"

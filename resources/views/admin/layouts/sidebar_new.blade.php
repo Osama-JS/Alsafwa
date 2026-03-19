@@ -44,8 +44,8 @@
 
         <div class="menu-item">
             <a href="{{ route('admin.activities.index') }}" class="menu-link {{ request()->routeIs('admin.activities.*') ? 'active' : '' }}">
-                <i class="fas fa-clipboard-list menu-icon"></i>
-                <span>الأنشطة</span>
+                <i class="fas fa-newspaper menu-icon"></i>
+                <span>المركز الإعلامي</span>
             </a>
         </div>
 
@@ -74,6 +74,20 @@
             <a href="{{ route('admin.products.index') }}" class="menu-link {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
                 <i class="fas fa-box menu-icon"></i>
                 <span>المنتجات</span>
+            </a>
+        </div>
+        
+        <div class="menu-item">
+            <a href="{{ route('admin.partners.index') }}" class="menu-link {{ request()->routeIs('admin.partners.*') ? 'active' : '' }}">
+                <i class="fas fa-handshake menu-icon"></i>
+                <span>الشركاء</span>
+            </a>
+        </div>
+
+        <div class="menu-item">
+            <a href="{{ route('admin.distributors.index') }}" class="menu-link {{ request()->routeIs('admin.distributors.*') ? 'active' : '' }}">
+                <i class="fas fa-truck-loading menu-icon"></i>
+                <span>الموزعين</span>
             </a>
         </div>
 

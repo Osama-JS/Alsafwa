@@ -41,6 +41,56 @@
             --accent-dark:   {{ setting('theme_accent_dark', '#a8893a') }};
             --accent-light:  {{ setting('theme_accent_light', '#e8c96a') }};
         }
+
+        /* ── CMS Content Typography ── */
+        .cms-content, .typography-rich {
+            line-height: 1.8;
+            color: #475569;
+        }
+        .cms-content h2, .typography-rich h2,
+        .cms-content h3, .typography-rich h3,
+        .cms-content h4, .typography-rich h4 {
+            color: var(--primary-dark);
+            font-weight: 800;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        .cms-content ul, .typography-rich ul,
+        .cms-content ol, .typography-rich ol {
+            margin-bottom: 1.5rem;
+            padding-inline-start: 1.5rem;
+        }
+        .cms-content li, .typography-rich li {
+            margin-bottom: 0.5rem;
+        }
+        .cms-content p, .typography-rich p {
+            margin-bottom: 1.2rem;
+        }
+        .cms-content a, .typography-rich a {
+            color: var(--primary);
+            text-decoration: underline;
+        }
+        .cms-content blockquote, .typography-rich blockquote {
+            border-inline-start: 4px solid var(--accent);
+            padding: 1rem 1.5rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            font-style: italic;
+            margin-bottom: 1.5rem;
+        }
+        .cms-content table, .typography-rich table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+        .cms-content table td, .cms-content table th,
+        .typography-rich table td, .typography-rich table th {
+            border: 1px solid #e2e8f0;
+            padding: 0.75rem;
+        }
+        .cms-content table th, .typography-rich table th {
+            background: #f1f5f9;
+        }
     </style>
 
     @stack('styles')

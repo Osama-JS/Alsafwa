@@ -19,7 +19,7 @@ class ProductController extends Controller
 
     public function show($slug)
     {
-        $product = Product::where('slug', $slug)->firstOrFail();
+        $product = Product::with('distributors')->where('slug', $slug)->firstOrFail();
         $relatedProducts = Product::active()
             ->where('id', '!=', $product->id)
             ->when($product->agency_id, function($q) use ($product) {

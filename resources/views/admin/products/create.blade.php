@@ -36,21 +36,29 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الوصف (عربي)</label>
-                                <textarea name="description_ar" class="form-control" rows="4">{{ old('description_ar') }}</textarea>
+                                <textarea name="description_ar" class="form-control editor-rich" rows="4">{{ old('description_ar') }}</textarea>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الوصف (إنجليزي)</label>
-                                <textarea name="description_en" class="form-control" rows="4">{{ old('description_en') }}</textarea>
+                                <textarea name="description_en" class="form-control editor-rich" rows="4">{{ old('description_en') }}</textarea>
                             </div>
                         </div>
 
                         <!-- Image -->
-                        <div class="mb-4">
-                            <label class="form-label fw-bold small">صورة المنتج <span class="text-danger">*</span></label>
-                            <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" onchange="previewImage(this, 'product-preview')" required>
-                            @error('image') <div class="invalid-feedback">{{ $message }}</div> @enderror
-                            <div class="mt-2">
-                                <img id="product-preview" src="#" alt="Preview" style="display: none; max-width: 300px; height: auto; max-height: 200px; border-radius: 8px; object-fit: cover;">
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small">الصورة الرئيسية <span class="text-danger">*</span></label>
+                                <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" onchange="previewImage(this, 'product-preview')" required>
+                                @error('image') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                <div class="mt-2">
+                                    <img id="product-preview" src="#" alt="Preview" style="display: none; max-width: 100%; height: auto; max-height: 150px; border-radius: 8px; object-fit: cover;">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold small">صور إضافية (المعرض)</label>
+                                <input type="file" name="gallery[]" class="form-control @error('gallery.*') is-invalid @enderror" multiple>
+                                @error('gallery.*') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                <div class="mt-2 text-muted text-xs">يمكنك اختيار عدة صور معاً.</div>
                             </div>
                         </div>
 
