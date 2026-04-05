@@ -109,12 +109,17 @@ class ServiceController extends Controller
 
     public function destroy(Service $service)
     {
-        if ($service->image) {
-            Storage::disk('public')->delete($service->image);
-        }
+        try {
+            if ($service->image) {
+                Storage::disk('public')->delete($service->image);
+            }
 
-        $service->delete();
-        return redirect()->route('admin.services.index')
-            ->with('success', 'تم حذف الخدمة بنجاح');
+            $service->delete();
+            return redirect()->route('admin.services.index')
+                ->with('success', 'تم حذف الخدمة بنجاح');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.services.index')
+                ->with('error', 'عذراً، لا يمكن حذف هذه الخدمة لارتباطها ببيانات أخرى.');
+        }
     }
 }

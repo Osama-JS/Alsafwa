@@ -48,7 +48,7 @@
                 <option value="">الكل</option>
                 @foreach($categories as $category)
                     <option value="{{ $category->id }}" {{ request('category_id') == $category->id ? 'selected' : '' }}>
-                        {{ $category->title_ar }}
+                        {{ $category->name_ar }}
                     </option>
                 @endforeach
             </select>
@@ -100,7 +100,7 @@
                         </td>
                         <td>
                             <span style="background:#f1f5f9;color:#475569;padding:4px 10px;border-radius:20px;font-size:0.78rem;font-weight:600;">
-                                {{ optional($activity->category)->title_ar ?? 'عام' }}
+                                {{ optional($activity->category)->name_ar ?? 'عام' }}
                             </span>
                         </td>
                         <td>

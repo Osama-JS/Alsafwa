@@ -23,11 +23,13 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">اسم الموزع (عربي) <span class="text-danger">*</span></label>
-                                <input type="text" name="name_ar" class="form-control" value="{{ old('name_ar', $distributor->name_ar) }}" required>
+                                <input type="text" name="name_ar" class="form-control @error('name_ar') is-invalid @enderror" value="{{ old('name_ar', $distributor->name_ar) }}" required>
+                                @error('name_ar') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">اسم الموزع (إنجليزي) <span class="text-danger">*</span></label>
-                                <input type="text" name="name_en" class="form-control" value="{{ old('name_en', $distributor->name_en) }}" required>
+                                <input type="text" name="name_en" class="form-control @error('name_en') is-invalid @enderror" value="{{ old('name_en', $distributor->name_en) }}" required>
+                                @error('name_en') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
@@ -35,11 +37,13 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">العنوان (عربي)</label>
-                                <input type="text" name="address_ar" class="form-control" value="{{ old('address_ar', $distributor->address_ar) }}">
+                                <input type="text" name="address_ar" class="form-control @error('address_ar') is-invalid @enderror" value="{{ old('address_ar', $distributor->address_ar) }}">
+                                @error('address_ar') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">العنوان (إنجليزي)</label>
-                                <input type="text" name="address_en" class="form-control" value="{{ old('address_en', $distributor->address_en) }}">
+                                <input type="text" name="address_en" class="form-control @error('address_en') is-invalid @enderror" value="{{ old('address_en', $distributor->address_en) }}">
+                                @error('address_en') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
@@ -47,11 +51,13 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">تفاصيل (عربي)</label>
-                                <textarea name="description_ar" class="form-control" rows="3">{{ old('description_ar', $distributor->description_ar) }}</textarea>
+                                <textarea name="description_ar" class="form-control @error('description_ar') is-invalid @enderror" rows="3">{{ old('description_ar', $distributor->description_ar) }}</textarea>
+                                @error('description_ar') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">تفاصيل (إنجليزي)</label>
-                                <textarea name="description_en" class="form-control" rows="3">{{ old('description_en', $distributor->description_en) }}</textarea>
+                                <textarea name="description_en" class="form-control @error('description_en') is-invalid @enderror" rows="3">{{ old('description_en', $distributor->description_en) }}</textarea>
+                                @error('description_en') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
@@ -59,11 +65,13 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">رقم الهاتف (اختياري)</label>
-                                <input type="text" name="phone" class="form-control" value="{{ old('phone', $distributor->phone) }}" placeholder="مثال: 0500000000">
+                                <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone', $distributor->phone) }}" placeholder="مثال: 0500000000">
+                                @error('phone') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">رابط خريطة جوجل (Iframe URL)</label>
-                                <input type="text" name="map_url" class="form-control" value="{{ old('map_url', $distributor->map_url) }}">
+                                <input type="text" name="map_url" class="form-control @error('map_url') is-invalid @enderror" value="{{ old('map_url', $distributor->map_url) }}">
+                                @error('map_url') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
@@ -71,24 +79,27 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">رابط الموقع الإلكتروني</label>
-                                <input type="url" name="url" class="form-control" value="{{ old('url', $distributor->url) }}" placeholder="https://example.com">
+                                <input type="url" name="url" class="form-control @error('url') is-invalid @enderror" value="{{ old('url', $distributor->url) }}" placeholder="https://example.com">
+                                @error('url') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">المنتجات المرتبطة</label>
-                                <select name="products[]" class="form-select select2" multiple>
+                                <select name="products[]" class="form-select select2 @error('products') is-invalid @enderror" multiple>
                                     @foreach($products as $product)
                                         <option value="{{ $product->id }}" {{ in_array($product->id, old('products', $distributorProducts)) ? 'selected' : '' }}>
                                             {{ $product->title_ar }}
                                         </option>
                                     @endforeach
                                 </select>
+                                @error('products') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
                         <!-- Logo -->
                         <div class="mb-4">
                             <label class="form-label fw-bold small">شعار الموزع (اتركه فارغاً لعدم التغيير)</label>
-                            <input type="file" name="logo" class="form-control" onchange="previewImage(this, 'distributor-preview')">
+                            <input type="file" name="logo" class="form-control @error('logo') is-invalid @enderror" onchange="previewImage(this, 'distributor-preview')">
+                            @error('logo') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             <div class="mt-3">
                                 <div class="d-flex gap-4 align-items-end">
                                     <div>
@@ -108,14 +119,16 @@
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الحالة</label>
-                                <select name="status" class="form-select">
+                                <select name="status" class="form-select @error('status') is-invalid @enderror">
                                     <option value="active" {{ old('status', $distributor->status) == 'active' ? 'selected' : '' }}>نشط</option>
                                     <option value="inactive" {{ old('status', $distributor->status) == 'inactive' ? 'selected' : '' }}>غير نشط</option>
                                 </select>
+                                @error('status') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الترتيب</label>
-                                <input type="number" name="order" class="form-control" value="{{ old('order', $distributor->order) }}">
+                                <input type="number" name="order" class="form-control @error('order') is-invalid @enderror" value="{{ old('order', $distributor->order) }}">
+                                @error('order') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 

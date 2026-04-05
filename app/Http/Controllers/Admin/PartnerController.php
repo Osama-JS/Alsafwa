@@ -97,13 +97,18 @@ class PartnerController extends Controller
 
     public function destroy(Partner $partner)
     {
-        if ($partner->logo) {
-            Storage::disk('public')->delete($partner->logo);
+        try {
+            if ($partner->logo) {
+                Storage::disk('public')->delete($partner->logo);
+            }
+
+            $partner->delete();
+
+            return redirect()->route('admin.partners.index')
+                ->with('success', 'تم حذف الشريك بنجاح');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.partners.index')
+                ->with('error', 'عذراً، لا يمكن حذف هذا الشريك لارتباطه ببيانات أخرى.');
         }
-
-        $partner->delete();
-
-        return redirect()->route('admin.partners.index')
-            ->with('success', 'تم حذف الشريك بنجاح');
     }
 }

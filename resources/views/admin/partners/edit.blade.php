@@ -23,11 +23,13 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">اسم الشريك (عربي) <span class="text-danger">*</span></label>
-                                <input type="text" name="name_ar" class="form-control" value="{{ old('name_ar', $partner->name_ar) }}" required>
+                                <input type="text" name="name_ar" class="form-control @error('name_ar') is-invalid @enderror" value="{{ old('name_ar', $partner->name_ar) }}" required>
+                                @error('name_ar') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">اسم الشريك (إنجليزي) <span class="text-danger">*</span></label>
-                                <input type="text" name="name_en" class="form-control" value="{{ old('name_en', $partner->name_en) }}" required>
+                                <input type="text" name="name_en" class="form-control @error('name_en') is-invalid @enderror" value="{{ old('name_en', $partner->name_en) }}" required>
+                                @error('name_en') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
@@ -36,14 +38,16 @@
                             <label class="form-label fw-bold small">رابط الموقع الإلكتروني (اختياري)</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light"><i class="fas fa-link text-muted"></i></span>
-                                <input type="url" name="url" class="form-control" value="{{ old('url', $partner->url) }}" placeholder="https://example.com">
+                                <input type="url" name="url" class="form-control @error('url') is-invalid @enderror" value="{{ old('url', $partner->url) }}" placeholder="https://example.com">
                             </div>
+                            @error('url') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                         </div>
 
                         <!-- Logo -->
                         <div class="mb-4">
                             <label class="form-label fw-bold small">شعار الشريك (اتركه فارغاً للإبقاء على الشعار الحالي)</label>
-                            <input type="file" name="logo" class="form-control" onchange="previewImage(this, 'partner-preview')">
+                            <input type="file" name="logo" class="form-control @error('logo') is-invalid @enderror" onchange="previewImage(this, 'partner-preview')">
+                            @error('logo') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             <div class="mt-3">
                                 <div class="d-flex gap-4 align-items-end">
                                     <div>
@@ -63,14 +67,16 @@
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الحالة</label>
-                                <select name="status" class="form-select">
+                                <select name="status" class="form-select @error('status') is-invalid @enderror">
                                     <option value="active" {{ old('status', $partner->status) == 'active' ? 'selected' : '' }}>نشط</option>
                                     <option value="inactive" {{ old('status', $partner->status) == 'inactive' ? 'selected' : '' }}>غير نشط</option>
                                 </select>
+                                @error('status') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الترتيب</label>
-                                <input type="number" name="order" class="form-control" value="{{ old('order', $partner->order) }}">
+                                <input type="number" name="order" class="form-control @error('order') is-invalid @enderror" value="{{ old('order', $partner->order) }}">
+                                @error('order') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 

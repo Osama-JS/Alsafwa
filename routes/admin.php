@@ -38,6 +38,7 @@ Route::middleware(['admin'])->group(function () {
     // Other Content Management
     Route::resource('agencies', \App\Http\Controllers\Admin\AgencyController::class);
     Route::resource('activities', \App\Http\Controllers\Admin\ActivityController::class);
+    Route::resource('activity-categories', \App\Http\Controllers\Admin\ActivityCategoryController::class);
     // Custom gallery routes MUST come before the resource to avoid {gallery} wildcard conflict
     Route::get('/gallery/bulk-upload', [\App\Http\Controllers\Admin\GalleryImageController::class, 'bulkUpload'])->name('gallery.bulk-upload');
     Route::post('/gallery/upload-multiple', [\App\Http\Controllers\Admin\GalleryImageController::class, 'uploadMultiple'])->name('gallery.upload-multiple');

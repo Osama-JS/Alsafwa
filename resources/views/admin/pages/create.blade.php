@@ -22,11 +22,13 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">العنوان (عربي) <span class="text-danger">*</span></label>
-                                <input type="text" name="title_ar" class="form-control" value="{{ old('title_ar') }}" required>
+                                <input type="text" name="title_ar" class="form-control @error('title_ar') is-invalid @enderror" value="{{ old('title_ar') }}" required>
+                                @error('title_ar') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">العنوان (إنجليزي) <span class="text-danger">*</span></label>
-                                <input type="text" name="title_en" class="form-control" value="{{ old('title_en') }}" required>
+                                <input type="text" name="title_en" class="form-control @error('title_en') is-invalid @enderror" value="{{ old('title_en') }}" required>
+                                @error('title_en') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
@@ -34,18 +36,21 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">المحتوى (عربي) <span class="text-danger">*</span></label>
-                                <textarea name="content_ar" class="form-control editor-rich" rows="8" required>{{ old('content_ar') }}</textarea>
+                                <textarea name="content_ar" class="form-control editor-rich @error('content_ar') is-invalid @enderror" rows="8" required>{{ old('content_ar') }}</textarea>
+                                @error('content_ar') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">المحتوى (إنجليزي) <span class="text-danger">*</span></label>
-                                <textarea name="content_en" class="form-control editor-rich" rows="8" required>{{ old('content_en') }}</textarea>
+                                <textarea name="content_en" class="form-control editor-rich @error('content_en') is-invalid @enderror" rows="8" required>{{ old('content_en') }}</textarea>
+                                @error('content_en') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
                         <!-- Image -->
                         <div class="mb-4">
                             <label class="form-label fw-bold small">صورة الصفحة</label>
-                            <input type="file" name="image" class="form-control" onchange="previewImage(this, 'page-preview')">
+                            <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" onchange="previewImage(this, 'page-preview')">
+                            @error('image') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             <div class="mt-2">
                                 <img id="page-preview" src="#" alt="Preview" style="display: none; max-width: 200px; border-radius: 8px;">
                             </div>
@@ -55,14 +60,16 @@
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الحالة</label>
-                                <select name="status" class="form-select">
+                                <select name="status" class="form-select @error('status') is-invalid @enderror">
                                     <option value="published" selected>منشور</option>
                                     <option value="draft">مسودة</option>
                                 </select>
+                                @error('status') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الترتيب</label>
-                                <input type="number" name="order" class="form-control" value="{{ old('order', 0) }}">
+                                <input type="number" name="order" class="form-control @error('order') is-invalid @enderror" value="{{ old('order', 0) }}">
+                                @error('order') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 

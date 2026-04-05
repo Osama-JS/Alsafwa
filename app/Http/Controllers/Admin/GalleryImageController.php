@@ -146,15 +146,20 @@ class GalleryImageController extends Controller
 
     public function destroy($id)
     {
-        $image = GalleryImage::findOrFail($id);
+        try {
+            $image = GalleryImage::findOrFail($id);
 
-        if ($image->image) {
-            Storage::disk('public')->delete($image->image);
+            if ($image->image) {
+                Storage::disk('public')->delete($image->image);
+            }
+
+            $image->delete();
+            return redirect()->route('admin.gallery.index')
+                ->with('success', 'تم حذف الصورة بنجاح');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.gallery.index')
+                ->with('error', 'عذراً، لا يمكن حذف هذه الصورة لارتباطها ببيانات أخرى.');
         }
-
-        $image->delete();
-        return redirect()->route('admin.gallery.index')
-            ->with('success', 'تم حذف الصورة بنجاح');
     }
 }
 

@@ -113,12 +113,17 @@ class SliderController extends Controller
 
     public function destroy(Slider $slider)
     {
-        if ($slider->image) {
-            Storage::disk('public')->delete($slider->image);
-        }
+        try {
+            if ($slider->image) {
+                Storage::disk('public')->delete($slider->image);
+            }
 
-        $slider->delete();
-        return redirect()->route('admin.sliders.index')
-            ->with('success', 'تم حذف الشريحة بنجاح');
+            $slider->delete();
+            return redirect()->route('admin.sliders.index')
+                ->with('success', 'تم حذف الشريحة بنجاح');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.sliders.index')
+                ->with('error', 'عذراً، لا يمكن حذف هذه الشريحة لارتباطها ببيانات أخرى.');
+        }
     }
 }

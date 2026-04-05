@@ -23,11 +23,13 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الاسم (عربي) <span class="text-danger">*</span></label>
-                                <input type="text" name="name_ar" class="form-control" value="{{ old('name_ar', $agency->name_ar) }}" required>
+                                <input type="text" name="name_ar" class="form-control @error('name_ar') is-invalid @enderror" value="{{ old('name_ar', $agency->name_ar) }}" required>
+                                @error('name_ar') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الاسم (إنجليزي)</label>
-                                <input type="text" name="name_en" class="form-control" value="{{ old('name_en', $agency->name_en) }}">
+                                <input type="text" name="name_en" class="form-control @error('name_en') is-invalid @enderror" value="{{ old('name_en', $agency->name_en) }}">
+                                @error('name_en') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
@@ -35,7 +37,9 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الشعار (Logo)</label>
-                                <input type="file" name="logo" class="form-control" onchange="previewImage(this, 'logo-preview')">
+                                <input type="file" name="logo" class="form-control @error('logo') is-invalid @enderror" onchange="previewImage(this, 'logo-preview')">
+                                @error('logo') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                <div class="mt-2 text-muted text-xs">اتركها فارغة إذا لم ترد التغيير.</div>
                                 <div class="mt-2">
                                     @if($agency->logo)
                                         <img id="logo-preview" src="{{ asset('storage/' . $agency->logo) }}" alt="Logo" style="max-width:150px; border-radius:8px;">
@@ -46,19 +50,23 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الموقع الإلكتروني</label>
-                                <input type="url" name="website" class="form-control" value="{{ old('website', $agency->website) }}">
+                                <input type="url" name="website" class="form-control @error('website') is-invalid @enderror" value="{{ old('website', $agency->website) }}">
+                                @error('website') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">رقم الهاتف</label>
-                                <input type="text" name="phone" class="form-control" value="{{ old('phone', $agency->phone) }}" placeholder="+967 ...">
+                                <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone', $agency->phone) }}" placeholder="+967 ...">
+                                @error('phone') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">البريد الإلكتروني</label>
-                                <input type="email" name="email" class="form-control" value="{{ old('email', $agency->email) }}" placeholder="agency@example.com">
+                                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email', $agency->email) }}" placeholder="agency@example.com">
+                                @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-12">
                                 <label class="form-label fw-bold small">رابط الخريطة (Google Maps URL)</label>
-                                <input type="text" name="map_url" class="form-control" value="{{ old('map_url', $agency->map_url) }}" placeholder="https://goo.gl/maps/...">
+                                <input type="text" name="map_url" class="form-control @error('map_url') is-invalid @enderror" value="{{ old('map_url', $agency->map_url) }}" placeholder="https://goo.gl/maps/...">
+                                @error('map_url') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 <div class="form-text small text-muted">أدخل رابط الموقع من خرائط جوجل لعرضه في صفحة الوكيل.</div>
                             </div>
                         </div>
@@ -67,11 +75,13 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">وصف (عربي)</label>
-                                <textarea name="description_ar" class="form-control editor-rich" rows="4">{{ old('description_ar', $agency->description_ar) }}</textarea>
+                                <textarea name="description_ar" class="form-control editor-rich @error('description_ar') is-invalid @enderror" rows="4">{{ old('description_ar', $agency->description_ar) }}</textarea>
+                                @error('description_ar') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">وصف (إنجليزي)</label>
-                                <textarea name="description_en" class="form-control editor-rich" rows="4">{{ old('description_en', $agency->description_en) }}</textarea>
+                                <textarea name="description_en" class="form-control editor-rich @error('description_en') is-invalid @enderror" rows="4">{{ old('description_en', $agency->description_en) }}</textarea>
+                                @error('description_en') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
@@ -79,15 +89,17 @@
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الحالة</label>
-                                <select name="status" class="form-select">
-                                    <option value="published" {{ $agency->status == 'published' ? 'selected' : '' }}>منشور</option>
-                                    <option value="draft" {{ $agency->status == 'draft' ? 'selected' : '' }}>مسودة</option>
-                                    <option value="archived" {{ $agency->status == 'archived' ? 'selected' : '' }}>مؤرشف</option>
+                                <select name="status" class="form-select @error('status') is-invalid @enderror">
+                                    <option value="published" {{ old('status', $agency->status) == 'published' ? 'selected' : '' }}>منشور</option>
+                                    <option value="draft" {{ old('status', $agency->status) == 'draft' ? 'selected' : '' }}>مسودة</option>
+                                    <option value="archived" {{ old('status', $agency->status) == 'archived' ? 'selected' : '' }}>مؤرشف</option>
                                 </select>
+                                @error('status') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الترتيب</label>
-                                <input type="number" name="order" class="form-control" value="{{ old('order', $agency->order) }}">
+                                <input type="number" name="order" class="form-control @error('order') is-invalid @enderror" value="{{ old('order', $agency->order) }}">
+                                @error('order') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 

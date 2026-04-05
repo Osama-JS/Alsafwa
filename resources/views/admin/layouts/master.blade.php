@@ -67,11 +67,17 @@
 
                 @if($errors->any())
                     <div class="alert alert-danger alert-dismissible fade show border-0 shadow-sm" role="alert">
-                        <ul class="mb-0 list-unstyled">
-                            @foreach($errors->all() as $error)
-                                <li><i class="fas fa-exclamation-triangle me-2"></i> {{ $error }}</li>
-                            @endforeach
-                        </ul>
+                        <div class="d-flex">
+                            <i class="fas fa-exclamation-triangle me-2 mt-1"></i>
+                            <div>
+                                <h6 class="fw-bold mb-1">يرجى تصحيح الأخطاء التالية:</h6>
+                                <ul class="mb-0 ps-3 small">
+                                    @foreach($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif

@@ -125,14 +125,19 @@ class DistributorController extends Controller
 
     public function destroy(Distributor $distributor)
     {
-        if ($distributor->logo) {
-            Storage::disk('public')->delete($distributor->logo);
+        try {
+            if ($distributor->logo) {
+                Storage::disk('public')->delete($distributor->logo);
+            }
+
+            $distributor->products()->detach();
+            $distributor->delete();
+
+            return redirect()->route('admin.distributors.index')
+                ->with('success', 'تم حذف الموزع بنجاح');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.distributors.index')
+                ->with('error', 'عذراً، لا يمكن حذف هذا الموزع لارتباطه ببيانات أخرى.');
         }
-
-        $distributor->products()->detach();
-        $distributor->delete();
-
-        return redirect()->route('admin.distributors.index')
-            ->with('success', 'تم حذف الموزع بنجاح');
     }
 }

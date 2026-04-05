@@ -21,13 +21,15 @@
                         <!-- Title -->
                         <div class="mb-3">
                             <label class="form-label fw-bold small">العنوان (اختياري)</label>
-                            <input type="text" name="title" class="form-control" value="{{ old('title') }}" placeholder="وصف مختصر للصورة">
+                            <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title') }}" placeholder="وصف مختصر للصورة">
+                            @error('title') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
                         <!-- Image -->
                         <div class="mb-4">
                             <label class="form-label fw-bold small">الصورة <span class="text-danger">*</span></label>
-                            <input type="file" name="image" class="form-control" onchange="previewImage(this, 'gallery-preview')" required accept="image/*">
+                            <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" onchange="previewImage(this, 'gallery-preview')" required accept="image/*">
+                            @error('image') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             <div class="mt-3 text-center">
                                 <img id="gallery-preview" src="#" alt="Preview" style="display:none; max-width:100%; max-height:300px; border-radius:10px; object-fit:contain; border:2px dashed #dee2e6; padding:5px;">
                             </div>
@@ -37,7 +39,7 @@
                         @if(isset($categories) && count($categories) > 0)
                         <div class="mb-3">
                             <label class="form-label fw-bold small">القسم</label>
-                            <select name="gallery_category_id" class="form-select">
+                            <select name="gallery_category_id" class="form-select @error('gallery_category_id') is-invalid @enderror">
                                 <option value="">اختر القسم</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}" {{ old('gallery_category_id') == $category->id ? 'selected' : '' }}>
@@ -45,6 +47,7 @@
                                     </option>
                                 @endforeach
                             </select>
+                            @error('gallery_category_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
                         @endif
 
@@ -52,14 +55,16 @@
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الحالة</label>
-                                <select name="status" class="form-select">
+                                <select name="status" class="form-select @error('status') is-invalid @enderror">
                                     <option value="published" selected>منشور</option>
                                     <option value="draft">مسودة</option>
                                 </select>
+                                @error('status') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الترتيب</label>
-                                <input type="number" name="order" class="form-control" value="{{ old('order', 0) }}">
+                                <input type="number" name="order" class="form-control @error('order') is-invalid @enderror" value="{{ old('order', 0) }}">
+                                @error('order') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 

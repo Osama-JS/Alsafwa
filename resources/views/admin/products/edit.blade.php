@@ -37,11 +37,13 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الوصف (عربي)</label>
-                                <textarea name="description_ar" class="form-control editor-rich" rows="4">{{ old('description_ar', $product->description_ar) }}</textarea>
+                                <textarea name="description_ar" class="form-control editor-rich @error('description_ar') is-invalid @enderror" rows="4">{{ old('description_ar', $product->description_ar) }}</textarea>
+                                @error('description_ar') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الوصف (إنجليزي)</label>
-                                <textarea name="description_en" class="form-control editor-rich" rows="4">{{ old('description_en', $product->description_en) }}</textarea>
+                                <textarea name="description_en" class="form-control editor-rich @error('description_en') is-invalid @enderror" rows="4">{{ old('description_en', $product->description_en) }}</textarea>
+                                @error('description_en') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
@@ -49,7 +51,8 @@
                         <div class="row g-4 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الصورة الرئيسية</label>
-                                <input type="file" name="image" class="form-control" onchange="previewImage(this, 'product-preview')">
+                                <input type="file" name="image" class="form-control @error('image') is-invalid @enderror" onchange="previewImage(this, 'product-preview')">
+                                @error('image') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 <div class="mt-2 text-muted text-xs">اتركها فارغة إذا لم ترد التغيير.</div>
                                 <div class="mt-2">
                                     @if($product->image)
@@ -61,7 +64,8 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">إضافة صور للمعرض</label>
-                                <input type="file" name="gallery[]" class="form-control" multiple>
+                                <input type="file" name="gallery[]" class="form-control @error('gallery.*') is-invalid @enderror" multiple>
+                                @error('gallery.*') <div class="invalid-feedback">{{ $message }}</div> @enderror
                                 <div class="mt-2 text-muted text-xs">يمكنك اختيار عدة صور جديدة لإضافتها للمعرض.</div>
                             </div>
                         </div>
@@ -90,25 +94,28 @@
                             <div class="col-md-4">
                                 <label class="form-label fw-bold small">السعر (اختياري)</label>
                                 <div class="input-group">
-                                    <input type="number" step="0.01" min="0" name="price" class="form-control" value="{{ old('price', $product->price) }}" placeholder="0.00">
+                                    <input type="number" step="0.01" min="0" name="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price', $product->price) }}" placeholder="0.00">
                                     <span class="input-group-text">ر.س</span>
                                 </div>
+                                @error('price') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label fw-bold small">الخصم (اختياري)</label>
                                 <div class="input-group">
-                                    <input type="number" step="0.01" min="0" name="discount" class="form-control" value="{{ old('discount', $product->discount) }}" placeholder="0.00">
+                                    <input type="number" step="0.01" min="0" name="discount" class="form-control @error('discount') is-invalid @enderror" value="{{ old('discount', $product->discount) }}" placeholder="0.00">
                                     <span class="input-group-text">ر.س</span>
                                 </div>
+                                @error('discount') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-4">
                                 <label class="form-label fw-bold small">الوكالة (اختياري)</label>
-                                <select name="agency_id" class="form-select">
+                                <select name="agency_id" class="form-select @error('agency_id') is-invalid @enderror">
                                     <option value="">بدون وكالة</option>
                                     @foreach($agencies as $agency)
                                         <option value="{{ $agency->id }}" {{ old('agency_id', $product->agency_id) == $agency->id ? 'selected' : '' }}>{{ $agency->name_ar }}</option>
                                     @endforeach
                                 </select>
+                                @error('agency_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
@@ -116,14 +123,16 @@
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الحالة</label>
-                                <select name="status" class="form-select">
-                                    <option value="active" {{ $product->status == 'active' ? 'selected' : '' }}>نشط</option>
-                                    <option value="inactive" {{ $product->status == 'inactive' ? 'selected' : '' }}>غير نشط</option>
+                                <select name="status" class="form-select @error('status') is-invalid @enderror">
+                                    <option value="active" {{ old('status', $product->status) == 'active' ? 'selected' : '' }}>نشط</option>
+                                    <option value="inactive" {{ old('status', $product->status) == 'inactive' ? 'selected' : '' }}>غير نشط</option>
                                 </select>
+                                @error('status') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الترتيب</label>
-                                <input type="number" name="order" class="form-control" value="{{ old('order', $product->order) }}">
+                                <input type="number" name="order" class="form-control @error('order') is-invalid @enderror" value="{{ old('order', $product->order) }}">
+                                @error('order') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 

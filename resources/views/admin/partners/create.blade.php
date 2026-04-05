@@ -22,11 +22,13 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">اسم الشريك (عربي) <span class="text-danger">*</span></label>
-                                <input type="text" name="name_ar" class="form-control" value="{{ old('name_ar') }}" placeholder="مثال: شركة الصفوة" required>
+                                <input type="text" name="name_ar" class="form-control @error('name_ar') is-invalid @enderror" value="{{ old('name_ar') }}" placeholder="مثال: شركة الصفوة" required>
+                                @error('name_ar') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">اسم الشريك (إنجليزي) <span class="text-danger">*</span></label>
-                                <input type="text" name="name_en" class="form-control" value="{{ old('name_en') }}" placeholder="Example: Al-Safwa Co." required>
+                                <input type="text" name="name_en" class="form-control @error('name_en') is-invalid @enderror" value="{{ old('name_en') }}" placeholder="Example: Al-Safwa Co." required>
+                                @error('name_en') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
@@ -35,14 +37,16 @@
                             <label class="form-label fw-bold small">رابط الموقع الإلكتروني (اختياري)</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-light"><i class="fas fa-link text-muted"></i></span>
-                                <input type="url" name="url" class="form-control" value="{{ old('url') }}" placeholder="https://example.com">
+                                <input type="url" name="url" class="form-control @error('url') is-invalid @enderror" value="{{ old('url') }}" placeholder="https://example.com">
                             </div>
+                            @error('url') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                         </div>
 
                         <!-- Logo -->
                         <div class="mb-4">
                             <label class="form-label fw-bold small">شعار الشريك <span class="text-danger">*</span></label>
-                            <input type="file" name="logo" class="form-control" onchange="previewImage(this, 'partner-preview')" required>
+                            <input type="file" name="logo" class="form-control @error('logo') is-invalid @enderror" onchange="previewImage(this, 'partner-preview')" required>
+                            @error('logo') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             <div class="mt-3">
                                 <div id="partner-preview-container" class="preview-box d-none" style="width: 150px; height: 100px; border: 2px dashed #e2e8f0; border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #f8fafc;">
                                     <img id="partner-preview" src="#" alt="Preview" style="max-width: 100%; max-height: 100%; object-fit: contain;">
@@ -54,14 +58,16 @@
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الحالة</label>
-                                <select name="status" class="form-select">
+                                <select name="status" class="form-select @error('status') is-invalid @enderror">
                                     <option value="active" selected>نشط</option>
                                     <option value="inactive">غير نشط</option>
                                 </select>
+                                @error('status') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الترتيب</label>
-                                <input type="number" name="order" class="form-control" value="{{ old('order', 0) }}">
+                                <input type="number" name="order" class="form-control @error('order') is-invalid @enderror" value="{{ old('order', 0) }}">
+                                @error('order') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 

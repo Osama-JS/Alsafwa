@@ -21,18 +21,21 @@
                         <!-- Name -->
                         <div class="mb-3">
                             <label class="form-label fw-bold small">اسم الفرع <span class="text-danger">*</span></label>
-                            <input type="text" name="name" class="form-control" value="{{ old('name') }}" required>
+                            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}" required>
+                            @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
                         <!-- Address -->
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">العنوان (عربي) <span class="text-danger">*</span></label>
-                                <textarea name="address_ar" class="form-control" rows="3" required>{{ old('address_ar') }}</textarea>
+                                <textarea name="address_ar" class="form-control @error('address_ar') is-invalid @enderror" rows="3" required>{{ old('address_ar') }}</textarea>
+                                @error('address_ar') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">العنوان (إنجليزي)</label>
-                                <textarea name="address_en" class="form-control" rows="3">{{ old('address_en') }}</textarea>
+                                <textarea name="address_en" class="form-control @error('address_en') is-invalid @enderror" rows="3">{{ old('address_en') }}</textarea>
+                                @error('address_en') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
@@ -40,11 +43,13 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الهاتف</label>
-                                <input type="text" name="phone" class="form-control" value="{{ old('phone') }}" placeholder="+966 5X XXX XXXX">
+                                <input type="text" name="phone" class="form-control @error('phone') is-invalid @enderror" value="{{ old('phone') }}" placeholder="+966 5X XXX XXXX">
+                                @error('phone') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">البريد الإلكتروني</label>
-                                <input type="email" name="email" class="form-control" value="{{ old('email') }}" placeholder="branch@example.com">
+                                <input type="email" name="email" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" placeholder="branch@example.com">
+                                @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
@@ -52,32 +57,37 @@
                         <div class="row g-3 mb-3">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">ساعات العمل (عربي)</label>
-                                <input type="text" name="working_hours_ar" class="form-control" value="{{ old('working_hours_ar') }}" placeholder="مثال: السبت - الخميس، 8 ص - 5 م">
+                                <input type="text" name="working_hours_ar" class="form-control @error('working_hours_ar') is-invalid @enderror" value="{{ old('working_hours_ar') }}" placeholder="مثال: السبت - الخميس، 8 ص - 5 م">
+                                @error('working_hours_ar') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">ساعات العمل (إنجليزي)</label>
-                                <input type="text" name="working_hours_en" class="form-control" value="{{ old('working_hours_en') }}" placeholder="Ex: Sat - Thu, 8AM - 5PM">
+                                <input type="text" name="working_hours_en" class="form-control @error('working_hours_en') is-invalid @enderror" value="{{ old('working_hours_en') }}" placeholder="Ex: Sat - Thu, 8AM - 5PM">
+                                @error('working_hours_en') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 
                         <!-- Map URL -->
                         <div class="mb-3">
                             <label class="form-label fw-bold small">رابط الخريطة (Google Maps)</label>
-                            <input type="url" name="map_url" class="form-control" value="{{ old('map_url') }}" placeholder="https://maps.google.com/...">
+                            <input type="url" name="map_url" class="form-control @error('map_url') is-invalid @enderror" value="{{ old('map_url') }}" placeholder="https://maps.google.com/...">
+                            @error('map_url') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
 
                         <!-- Status & Order -->
                         <div class="row g-3 mb-4">
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الحالة</label>
-                                <select name="status" class="form-select">
-                                    <option value="1" selected>نشط</option>
-                                    <option value="0">غير نشط</option>
+                                <select name="status" class="form-select @error('status') is-invalid @enderror">
+                                    <option value="1" {{ old('status', '1') == '1' ? 'selected' : '' }}>نشط</option>
+                                    <option value="0" {{ old('status') == '0' ? 'selected' : '' }}>غير نشط</option>
                                 </select>
+                                @error('status') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label fw-bold small">الترتيب</label>
-                                <input type="number" name="order" class="form-control" value="{{ old('order', 0) }}">
+                                <input type="number" name="order" class="form-control @error('order') is-invalid @enderror" value="{{ old('order', 0) }}">
+                                @error('order') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
                         </div>
 

@@ -479,22 +479,24 @@
                                             @endif
                                             <input type="{{ $setting->type }}"
                                                    name="{{ $setting->key }}"
-                                                   class="form-control {{ in_array($setting->type, ['email','url','number']) ? '' : '' }}"
-                                                   value="{{ $setting->value }}"
+                                                   class="form-control @error($setting->key) is-invalid @enderror"
+                                                   value="{{ old($setting->key, $setting->value) }}"
                                                    style="{{ in_array($setting->type, ['email','url','number']) ? 'border-radius:0 10px 10px 0;' : '' }}"
                                                    placeholder="{{ $setting->label ?? $setting->key }}">
+                                            @error($setting->key) <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         </div>
 
                                     {{-- TEXTAREA --}}
                                     @elseif($setting->type === 'textarea' || $setting->type === 'text')
                                         <textarea name="{{ $setting->key }}"
-                                                  class="form-control"
+                                                  class="form-control @error($setting->key) is-invalid @enderror"
                                                   rows="4"
                                                   maxlength="500"
                                                   oninput="updateCharCount(this)"
-                                                  data-counter="counter_{{ $loop->index }}">{{ $setting->value }}</textarea>
+                                                  data-counter="counter_{{ $loop->index }}">{{ old($setting->key, $setting->value) }}</textarea>
+                                        @error($setting->key) <div class="invalid-feedback">{{ $message }}</div> @enderror
                                         <div class="char-counter" id="counter_{{ $loop->index }}">
-                                            {{ strlen($setting->value ?? '') }} / 500
+                                            {{ strlen(old($setting->key, $setting->value) ?? '') }} / 500
                                         </div>
 
                                     {{-- IMAGE --}}
@@ -506,7 +508,9 @@
                                                      ondragleave="this.style.borderColor='#cbd5e1';"
                                                      ondrop="handleDrop(event, '{{ $setting->key }}')">
                                                     <input type="file" name="{{ $setting->key }}" accept="image/*"
+                                                           class="@error($setting->key) is-invalid @enderror"
                                                            onchange="previewSettingImage(this, '{{ $setting->key }}')">
+                                                    @error($setting->key) <div class="invalid-feedback">{{ $message }}</div> @enderror
                                                     <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
                                                     <div class="upload-text">اسحب الصورة هنا أو انقر للاختيار</div>
                                                     <div class="upload-hint">PNG, JPG, SVG — الحد الأقصى 2MB</div>
@@ -537,14 +541,15 @@
                                     {{-- COLOR (type=color OR appearance group with color key) --}}
                                     @elseif($setting->type === 'color' || ($setting->group === 'appearance' && preg_match('/color|_dark|_light|accent/i', $setting->key)))
                                         <div class="color-picker-wrapper">
-                                            <input type="color" name="{{ $setting->key }}" value="{{ $setting->value ?? '#4f46e5' }}"
+                                            <input type="color" name="{{ $setting->key }}" value="{{ old($setting->key, $setting->value ?? '#4f46e5') }}"
                                                    oninput="document.getElementById('color_text_{{ $loop->index }}').value = this.value; document.getElementById('color_preview_{{ $loop->index }}').style.background = this.value;">
                                             <input type="text" id="color_text_{{ $loop->index }}"
-                                                   class="form-control" value="{{ $setting->value ?? '#4f46e5' }}"
+                                                   class="form-control @error($setting->key) is-invalid @enderror" value="{{ old($setting->key, $setting->value ?? '#4f46e5') }}"
                                                    style="font-family: monospace; max-width: 140px;"
                                                    oninput="syncColorPicker(this, '{{ $setting->key }}')"
                                                    placeholder="#000000">
-                                            <div class="rounded-circle border" style="width:36px; height:36px; background:{{ $setting->value ?? '#4f46e5' }}; flex-shrink:0;" id="color_preview_{{ $loop->index }}"></div>
+                                            @error($setting->key) <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                            <div class="rounded-circle border" style="width:36px; height:36px; background:{{ old($setting->key, $setting->value ?? '#4f46e5') }}; flex-shrink:0;" id="color_preview_{{ $loop->index }}"></div>
                                         </div>
 
                                     {{-- SELECT / BOOLEAN --}}

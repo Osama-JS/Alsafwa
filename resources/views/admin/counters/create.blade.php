@@ -19,34 +19,40 @@
                 <div class="row g-4">
                     <div class="col-md-6">
                         <label class="form-label fw-bold">العنوان (بالعربية)</label>
-                        <input type="text" name="title_ar" class="form-control" value="{{ old('title_ar') }}" required placeholder="مثال: فرع معتمد">
+                        <input type="text" name="title_ar" class="form-control @error('title_ar') is-invalid @enderror" value="{{ old('title_ar') }}" required placeholder="مثال: فرع معتمد">
+                        @error('title_ar') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">العنوان (بالإنجليزية)</label>
-                        <input type="text" name="title_en" class="form-control" value="{{ old('title_en') }}" required placeholder="Ex: Certified Branches">
+                        <input type="text" name="title_en" class="form-control @error('title_en') is-invalid @enderror" value="{{ old('title_en') }}" required placeholder="Ex: Certified Branches">
+                        @error('title_en') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-md-4">
                         <label class="form-label fw-bold">القيمة</label>
-                        <input type="number" name="value" class="form-control" value="{{ old('value', 0) }}" required>
+                        <input type="number" name="value" class="form-control @error('value') is-invalid @enderror" value="{{ old('value', 0) }}" required>
+                        @error('value') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-md-4">
                         <label class="form-label fw-bold">الأيقونة (FontAwesome)</label>
                         <div class="input-group">
-                            <span class="input-group-text bg-light"><i class="fas fa-icons"></i></span>
-                            <input type="text" name="icon" class="form-control" value="{{ old('icon', 'fas fa-star') }}" required placeholder="مثال: fas fa-rocket">
+                            <span class="input-group-text bg-light @error('icon') border-danger @enderror"><i class="fas fa-icons"></i></span>
+                            <input type="text" name="icon" class="form-control @error('icon') is-invalid @enderror" value="{{ old('icon', 'fas fa-star') }}" required placeholder="مثال: fas fa-rocket">
+                            @error('icon') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
                         <small class="text-muted">نظام Font Awesome 6 متاح.</small>
                     </div>
                     <div class="col-md-4">
                         <label class="form-label fw-bold">الترتيب</label>
-                        <input type="number" name="order" class="form-control" value="{{ old('order', 0) }}">
+                        <input type="number" name="order" class="form-control @error('order') is-invalid @enderror" value="{{ old('order', 0) }}">
+                        @error('order') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">الحالة</label>
-                        <select name="status" class="form-select">
-                            <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>نشط (يظهر في الموقع)</option>
+                        <select name="status" class="form-select @error('status') is-invalid @enderror">
+                            <option value="active" {{ old('status', 'active') == 'active' ? 'selected' : '' }}>نشط (يظهر في الموقع)</option>
                             <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>معطل</option>
                         </select>
+                        @error('status') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                 </div>
 

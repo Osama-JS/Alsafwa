@@ -41,14 +41,14 @@ class ActivityController extends Controller
         }
 
         $activities = $query->orderBy('order')->paginate(10);
-        $categories = ActivityCategory::where('status', 1)->get(); // For filter dropdown
+        $categories = ActivityCategory::where('status', 'active')->get(); // For filter dropdown
 
         return view('admin.activities.index', compact('activities', 'stats', 'categories'));
     }
 
     public function create()
     {
-        $categories = ActivityCategory::where('status', 1)->get();
+        $categories = ActivityCategory::where('status', 'active')->get();
         return view('admin.activities.create', compact('categories'));
     }
 
@@ -88,7 +88,7 @@ class ActivityController extends Controller
 
     public function edit(Activity $activity)
     {
-        $categories = ActivityCategory::where('status', 1)->get();
+        $categories = ActivityCategory::where('status', 'active')->get();
         return view('admin.activities.edit', compact('activity', 'categories'));
     }
 
@@ -123,12 +123,17 @@ class ActivityController extends Controller
 
     public function destroy(Activity $activity)
     {
-        if ($activity->image) {
-            Storage::disk('public')->delete($activity->image);
-        }
+        try {
+            if ($activity->image) {
+                Storage::disk('public')->delete($activity->image);
+            }
 
-        $activity->delete();
-        return redirect()->route('admin.activities.index')
-            ->with('success', 'تم حذف النشاط بنجاح');
+            $activity->delete();
+            return redirect()->route('admin.activities.index')
+                ->with('success', 'تم حذف النشاط بنجاح');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.activities.index')
+                ->with('error', 'عذراً، لا يمكن حذف هذا النشاط لارتباطه ببيانات أخرى.');
+        }
     }
 }

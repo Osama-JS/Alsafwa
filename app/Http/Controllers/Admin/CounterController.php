@@ -60,8 +60,13 @@ class CounterController extends Controller
 
     public function destroy(Counter $counter)
     {
-        $counter->delete();
-        return redirect()->route('admin.counters.index')
-            ->with('success', 'تم حذف العداد بنجاح');
+        try {
+            $counter->delete();
+            return redirect()->route('admin.counters.index')
+                ->with('success', 'تم حذف العداد بنجاح');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.counters.index')
+                ->with('error', 'عذراً، لا يمكن حذف هذا العداد لارتباطه ببيانات أخرى.');
+        }
     }
 }

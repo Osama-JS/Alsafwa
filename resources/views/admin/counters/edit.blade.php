@@ -20,33 +20,39 @@
                 <div class="row g-4">
                     <div class="col-md-6">
                         <label class="form-label fw-bold">العنوان (بالعربية)</label>
-                        <input type="text" name="title_ar" class="form-control" value="{{ old('title_ar', $counter->title_ar) }}" required>
+                        <input type="text" name="title_ar" class="form-control @error('title_ar') is-invalid @enderror" value="{{ old('title_ar', $counter->title_ar) }}" required>
+                        @error('title_ar') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">العنوان (بالإنجليزية)</label>
-                        <input type="text" name="title_en" class="form-control" value="{{ old('title_en', $counter->title_en) }}" required>
+                        <input type="text" name="title_en" class="form-control @error('title_en') is-invalid @enderror" value="{{ old('title_en', $counter->title_en) }}" required>
+                        @error('title_en') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-md-4">
                         <label class="form-label fw-bold">القيمة</label>
-                        <input type="number" name="value" class="form-control" value="{{ old('value', $counter->value) }}" required>
+                        <input type="number" name="value" class="form-control @error('value') is-invalid @enderror" value="{{ old('value', $counter->value) }}" required>
+                        @error('value') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-md-4">
                         <label class="form-label fw-bold">الأيقونة (FontAwesome)</label>
                         <div class="input-group">
-                            <span class="input-group-text bg-light"><i class="{{ $counter->icon }}"></i></span>
-                            <input type="text" name="icon" class="form-control" value="{{ old('icon', $counter->icon) }}" required>
+                            <span class="input-group-text bg-light @error('icon') border-danger @enderror"><i class="{{ $counter->icon }}"></i></span>
+                            <input type="text" name="icon" class="form-control @error('icon') is-invalid @enderror" value="{{ old('icon', $counter->icon) }}" required>
+                            @error('icon') <div class="invalid-feedback">{{ $message }}</div> @enderror
                         </div>
                     </div>
                     <div class="col-md-4">
                         <label class="form-label fw-bold">الترتيب</label>
-                        <input type="number" name="order" class="form-control" value="{{ old('order', $counter->order) }}">
+                        <input type="number" name="order" class="form-control @error('order') is-invalid @enderror" value="{{ old('order', $counter->order) }}">
+                        @error('order') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                     <div class="col-md-6">
                         <label class="form-label fw-bold">الحالة</label>
-                        <select name="status" class="form-select">
+                        <select name="status" class="form-select @error('status') is-invalid @enderror">
                             <option value="active" {{ old('status', $counter->status) == 'active' ? 'selected' : '' }}>نشط (يظهر في الموقع)</option>
                             <option value="inactive" {{ old('status', $counter->status) == 'inactive' ? 'selected' : '' }}>معطل</option>
                         </select>
+                        @error('status') <div class="invalid-feedback">{{ $message }}</div> @enderror
                     </div>
                 </div>
 

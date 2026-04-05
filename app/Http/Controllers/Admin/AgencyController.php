@@ -119,12 +119,17 @@ class AgencyController extends Controller
 
     public function destroy(Agency $agency)
     {
-        if ($agency->logo) {
-            Storage::disk('public')->delete($agency->logo);
-        }
+        try {
+            if ($agency->logo) {
+                Storage::disk('public')->delete($agency->logo);
+            }
 
-        $agency->delete();
-        return redirect()->route('admin.agencies.index')
-            ->with('success', 'تم حذف الوكالة بنجاح');
+            $agency->delete();
+            return redirect()->route('admin.agencies.index')
+                ->with('success', 'تم حذف الوكالة بنجاح');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.agencies.index')
+                ->with('error', 'عذراً، لا يمكن حذف هذه الوكالة لارتباطها بمنتجات أو بيانات أخرى.');
+        }
     }
 }

@@ -104,12 +104,17 @@ class PageController extends Controller
 
     public function destroy(Page $page)
     {
-        if ($page->image) {
-            Storage::disk('public')->delete($page->image);
-        }
+        try {
+            if ($page->image) {
+                Storage::disk('public')->delete($page->image);
+            }
 
-        $page->delete();
-        return redirect()->route('admin.pages.index')
-            ->with('success', 'تم حذف الصفحة بنجاح');
+            $page->delete();
+            return redirect()->route('admin.pages.index')
+                ->with('success', 'تم حذف الصفحة بنجاح');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.pages.index')
+                ->with('error', 'عذراً، لا يمكن حذف هذه الصفحة لارتباطها ببيانات أخرى.');
+        }
     }
 }

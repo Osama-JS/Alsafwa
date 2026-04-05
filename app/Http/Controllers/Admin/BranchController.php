@@ -90,8 +90,13 @@ class BranchController extends Controller
 
     public function destroy(Branch $branch)
     {
-        $branch->delete();
-        return redirect()->route('admin.branches.index')
-            ->with('success', 'تم حذف الفرع بنجاح');
+        try {
+            $branch->delete();
+            return redirect()->route('admin.branches.index')
+                ->with('success', 'تم حذف الفرع بنجاح');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.branches.index')
+                ->with('error', 'عذراً، لا يمكن حذف هذا الفرع لارتباطه ببيانات أخرى.');
+        }
     }
 }

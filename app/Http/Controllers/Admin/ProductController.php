@@ -137,12 +137,23 @@ class ProductController extends Controller
 
     public function destroy(Product $product)
     {
-        if ($product->image) {
-            Storage::disk('public')->delete($product->image);
-        }
+        try {
+            if ($product->image) {
+                Storage::disk('public')->delete($product->image);
+            }
 
-        $product->delete();
-        return redirect()->route('admin.products.index')
-            ->with('success', 'تم حذف المنتج بنجاح');
+            if ($product->gallery) {
+                foreach ($product->gallery as $img) {
+                    Storage::disk('public')->delete($img);
+                }
+            }
+
+            $product->delete();
+            return redirect()->route('admin.products.index')
+                ->with('success', 'تم حذف المنتج بنجاح');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.products.index')
+                ->with('error', 'عذراً، لا يمكن حذف هذا المنتج لارتباطه ببيانات أخرى أو وجود خطأ في النظام.');
+        }
     }
 }
