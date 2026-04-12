@@ -114,7 +114,6 @@
                                                 </div>
                                             </a>
                                         </div>
-                                        {{-- Placeholder for future items --}}
                                         <div class="col-md-6">
                                             <a href="{{ route('distributors.index') }}" class="mega-service-item">
                                                 <div class="mega-service-icon">
@@ -126,6 +125,26 @@
                                                 </div>
                                             </a>
                                         </div>
+                                        {{-- Dynamic Pages --}}
+                                        @php
+                                            $navPages = \App\Models\Page::where('status', 'published')
+                                                        ->where('slug', '!=', 'about-us')
+                                                        ->orderBy('order')
+                                                        ->get();
+                                        @endphp
+                                        @foreach($navPages as $np)
+                                            <div class="col-md-6">
+                                                <a href="{{ route('pages.show', $np->slug) }}" class="mega-service-item">
+                                                    <div class="mega-service-icon">
+                                                        <i class="fas fa-file-alt"></i>
+                                                    </div>
+                                                    <div class="mega-service-text">
+                                                        <span class="d-block fw-bold text-dark fs-sm">{{ $np->{'title_' . app()->getLocale()} }}</span>
+                                                        <span class="text-xs text-secondary opacity-75">{{ __('معلومات إضافية') }}</span>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        @endforeach
                                     </div>
                                 </div>
                             </div>
@@ -204,6 +223,9 @@
             <a href="{{ route('about') }}">{{ __('قصتنا') }}</a>
             <a href="{{ route('activities.index') }}">{{ __('المركز الإعلامي') }}</a>
             <a href="{{ route('distributors.index') }}">{{ __('الموزعون') }}</a>
+            @foreach($navPages as $np)
+                <a href="{{ route('pages.show', $np->slug) }}">{{ $np->{'title_' . app()->getLocale()} }}</a>
+            @endforeach
         </div>
 
         <a href="{{ route('contact') }}" class="mobile-nav-link text-accent">

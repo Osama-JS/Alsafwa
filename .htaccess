@@ -13,6 +13,11 @@
     RewriteCond %{HTTP:x-xsrf-token} .
     RewriteRule .* - [E=HTTP_X_XSRF_TOKEN:%{HTTP:X-XSRF-Token}]
 
+    # Fix for root serving: Map /storage requests to the actual public disk
+    # Added condition to prevent infinite loop (error 500)
+    RewriteCond %{REQUEST_URI} !/app/public/
+    RewriteRule ^storage/(.*)$ storage/app/public/$1 [L]
+
     # Redirect Trailing Slashes If Not A Folder...
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_URI} (.+)/$
