@@ -38,16 +38,16 @@
         <div class="row g-4 masonry-grid">
             @forelse($images as $image)
                 <div class="col-lg-4 col-md-6 grid-item" data-aos="zoom-in" data-aos-delay="{{ $loop->index * 50 }}">
-                    <div class="gallery-item-v3">
-                        <img src="{{ asset('storage/' . $image->image) }}" alt="{{ $image->title_ar }}">
+                    <a href="{{ asset('storage/' . $image->image) }}" class="gallery-item-v3 d-block text-decoration-none" data-fancybox="gallery" data-caption="{{ $image->{'title_' . app()->getLocale()} }} - {{ optional($image->category)->{'name_' . app()->getLocale()} }}">
+                        <img src="{{ asset('storage/' . $image->image) }}" alt="{{ $image->{'title_' . app()->getLocale()} }}">
                         <div class="gallery-overlay-legend">
                             <h6 class="text-white fw-black mb-1">{{ $image->{'title_' . app()->getLocale()} }}</h6>
                             <span class="text-accent text-sm fw-bold">{{ optional($image->category)->{'name_' . app()->getLocale()} }}</span>
-                            <a href="{{ asset('storage/' . $image->image) }}" class="btn-zoom-gallery mt-3" data-fancybox="gallery">
+                            <div class="btn-zoom-gallery mt-3">
                                 <i class="fas fa-search-plus"></i>
-                            </a>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             @empty
                 <div class="col-12 text-center py-5">
@@ -64,6 +64,7 @@
 @endsection
 
 @push('styles')
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
 <style>
     .btn-filter {
         padding: 10px 25px;
@@ -108,4 +109,36 @@
         font-size: 1.2rem;
     }
 </style>
+@endpush
+
+@push('scripts')
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.umd.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        Fancybox.bind('[data-fancybox="gallery"]', {
+            compact: false,
+            idle: 8000,
+            animated: true,
+            showClass: "f-fadeInUp",
+            hideClass: "f-fadeOutDown",
+            Images: {
+                zoom: true,
+            },
+            Toolbar: {
+                display: {
+                    left: ["infobar"],
+                    middle: ["zoomIn", "zoomOut", "toggle1to1", "rotateCCW", "rotateCW", "flipX", "flipY"],
+                    right: ["slideshow", "thumbs", "close"]
+                }
+            },
+            Thumbs: {
+                type: "classic",
+                showOnStart: false
+            },
+            Carousel: {
+                transition: "classic"
+            }
+        });
+    });
+</script>
 @endpush

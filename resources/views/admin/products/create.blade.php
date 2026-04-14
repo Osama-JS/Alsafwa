@@ -66,7 +66,7 @@
 
                         <!-- Price & Discount -->
                         <div class="row g-3 mb-3">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label class="form-label fw-bold small">السعر (اختياري)</label>
                                 <div class="input-group">
                                     <input type="number" step="0.01" min="0" name="price" class="form-control @error('price') is-invalid @enderror" value="{{ old('price') }}" placeholder="0.00">
@@ -74,7 +74,7 @@
                                 </div>
                                 @error('price') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label class="form-label fw-bold small">الخصم (اختياري)</label>
                                 <div class="input-group">
                                     <input type="number" step="0.01" min="0" name="discount" class="form-control @error('discount') is-invalid @enderror" value="{{ old('discount') }}" placeholder="0.00">
@@ -82,7 +82,17 @@
                                 </div>
                                 @error('discount') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold small">القسم (اختياري)</label>
+                                <select name="product_category_id" class="form-select @error('product_category_id') is-invalid @enderror">
+                                    <option value="">بدون قسم</option>
+                                    @foreach($categories as $category)
+                                        <option value="{{ $category->id }}" {{ old('product_category_id') == $category->id ? 'selected' : '' }}>{{ $category->name_ar }}</option>
+                                    @endforeach
+                                </select>
+                                @error('product_category_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+                            <div class="col-md-3">
                                 <label class="form-label fw-bold small">الوكالة (اختياري)</label>
                                 <select name="agency_id" class="form-select @error('agency_id') is-invalid @enderror">
                                     <option value="">بدون وكالة</option>

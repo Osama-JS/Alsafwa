@@ -17,6 +17,9 @@
             </div>
         </div>
         <div class="hero-actions">
+            <a href="{{ route('admin.gallery-categories.index') }}" class="btn-hero">
+                <i class="fas fa-folder-open"></i> إدارة الأقسام
+            </a>
             <a href="{{ route('admin.gallery.bulk-upload') }}" class="btn-hero">
                 <i class="fas fa-cloud-upload-alt"></i> رفع متعدد
             </a>
@@ -101,7 +104,7 @@
                         </td>
                         <td>
                             <span style="background:#f1f5f9;color:#475569;padding:4px 12px;border-radius:20px;font-size:0.78rem;font-weight:600;">
-                                {{ optional($image->category)->title_ar ?? 'عام' }}
+                                {{ optional($image->category)->name_ar ?? 'عام' }}
                             </span>
                         </td>
                         <td>

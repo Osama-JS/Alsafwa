@@ -76,11 +76,23 @@
 
             {{-- Right Column: Product Info --}}
             <div class="col-lg-6" data-aos="fade-up" data-aos-delay="100">
-                @if($product->agency)
-                    <a href="{{ route('agencies.show', $product->agency->slug) }}" class="text-decoration-none">
-                        <span class="badge rounded-pill mb-3" style="background:var(--accent);color:#000;font-weight:700;padding:6px 16px;">{{ $product->agency->{'name_' . app()->getLocale()} }}</span>
-                    </a>
-                @endif
+                <div class="d-flex flex-wrap gap-2 mb-3">
+                    @if($product->agency)
+                        <a href="{{ route('agencies.show', $product->agency->slug) }}" class="text-decoration-none">
+                            <span class="badge rounded-pill" style="background:var(--accent);color:#000;font-weight:700;padding:6px 16px;">
+                                <i class="fas fa-building me-1"></i> {{ $product->agency->{'name_' . app()->getLocale()} }}
+                            </span>
+                        </a>
+                    @endif
+
+                    @if($product->productCategory)
+                        <a href="{{ route('products.index', ['category_id' => $product->productCategory->id]) }}" class="text-decoration-none">
+                            <span class="badge rounded-pill" style="background:#4f46e5;color:#fff;font-weight:700;padding:6px 16px;">
+                                <i class="fas fa-tag me-1"></i> {{ $product->productCategory->{'name_' . app()->getLocale()} }}
+                            </span>
+                        </a>
+                    @endif
+                </div>
 
                 <h2 class="fw-black mb-3" style="font-size:2.2rem;color:var(--primary-dark);">{{ $product->{'title_' . app()->getLocale()} }}</h2>
 

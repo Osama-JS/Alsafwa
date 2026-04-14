@@ -63,9 +63,14 @@
                 </select>
                 <button type="submit" class="btn btn-primary-custom"><i class="fas fa-search"></i></button>
             </form>
-            <a href="{{ route('admin.products.create') }}" class="btn btn-primary-custom">
-                <i class="fas fa-plus me-1"></i> إضافة منتج
-            </a>
+            <div class="d-flex gap-2">
+                <a href="{{ route('admin.product-categories.index') }}" class="btn btn-light border fw-bold text-primary">
+                    <i class="fas fa-folder-open me-1"></i> إدارة الأقسام
+                </a>
+                <a href="{{ route('admin.products.create') }}" class="btn btn-primary-custom">
+                    <i class="fas fa-plus me-1"></i> إضافة منتج
+                </a>
+            </div>
         </div>
     </div>
 
@@ -81,7 +86,7 @@
                             <th>العنوان (عربي)</th>
                             <th>العنوان (إنجليزي)</th>
                             <th>السعر</th>
-                            <th>الخصم</th>
+                            <th>القسم</th>
                             <th>الوكالة</th>
                             <th>الحالة</th>
                             <th style="width:130px;">إجراءات</th>
@@ -102,8 +107,15 @@
                                 </td>
                                 <td class="fw-bold">{{ Str::limit($product->title_ar, 30) }}</td>
                                 <td>{{ Str::limit($product->title_en, 30) }}</td>
-                                <td>{{ $product->price ? number_format($product->price, 2) . ' ر.س' : '—' }}</td>
-                                <td>{{ $product->discount ? number_format($product->discount, 2) . ' ر.س' : '—' }}</td>
+                                <td>
+                                    <div class="fw-bold">{{ $product->price ? number_format($product->price, 2) . ' ر.س' : '—' }}</div>
+                                    @if($product->discount)
+                                        <div class="text-danger small"><del>{{ $product->price }}</del> -{{ $product->discount }}</div>
+                                    @endif
+                                </td>
+                                <td>
+                                    {{ $product->productCategory ? $product->productCategory->name_ar : '—' }}
+                                </td>
                                 <td>{{ $product->agency ? $product->agency->name_ar : '—' }}</td>
                                 <td>
                                     @if($product->status === 'active')

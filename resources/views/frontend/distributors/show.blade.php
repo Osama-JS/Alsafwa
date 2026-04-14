@@ -114,6 +114,20 @@
                     @if($distributor->products->count() > 0)
                         <div class="mb-5 pt-4">
                             <h2 class="fw-black mb-4 text-primary-dark"><i class="fas fa-box text-accent me-2"></i> {{ __('المنتجات المتوفرة لوزعنا') }}</h2>
+
+                            @if(isset($categories) && count($categories) > 0)
+                            <div class="d-flex flex-wrap gap-2 mb-4">
+                                <a href="{{ route('distributors.show', $distributor->id) }}" class="btn rounded-pill px-4 py-1 {{ !request('category_id') ? 'btn-primary shadow-sm' : 'btn-light border fw-bold text-dark' }}">
+                                    {{ __('الكل') }}
+                                </a>
+                                @foreach($categories as $cat)
+                                    <a href="{{ route('distributors.show', ['id' => $distributor->id, 'category_id' => $cat->id]) }}" class="btn rounded-pill px-4 py-1 {{ request('category_id') == $cat->id ? 'btn-primary shadow-sm' : 'btn-light border fw-bold text-dark' }}">
+                                        {{ $cat->{'name_' . app()->getLocale()} }}
+                                    </a>
+                                @endforeach
+                            </div>
+                            @endif
+
                             <div class="row g-4">
                                 @foreach($distributor->products as $product)
                                     <div class="col-md-6">
@@ -127,6 +141,11 @@
                                                     @endif
                                                 </div>
                                                 <div class="product-info-mini">
+                                                    @if($product->productCategory)
+                                                        <span class="badge mb-1 px-2 py-1" style="background:#ede9fe; color:#4f46e5; border-radius:12px; font-size:0.65rem;">
+                                                            <i class="fas fa-tag"></i> {{ $product->productCategory->{'name_' . app()->getLocale()} }}
+                                                        </span>
+                                                    @endif
                                                     <h6 class="fw-bold mb-1 text-dark">{{ $product->{'title_' . app()->getLocale()} }}</h6>
                                                     @if($product->price)
                                                         <span class="text-accent small fw-bold">{{ number_format($product->final_price, 2) }} {{ __('ر.س') }}</span>

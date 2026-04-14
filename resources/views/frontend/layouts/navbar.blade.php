@@ -2,19 +2,26 @@
     <div class="navbar-inner">
         {{-- Brand --}}
         <a href="{{ route('home') }}" class="navbar-brand-wrap d-flex align-items-center gap-3">
-            @if(setting('company_logo'))
-                <img src="{{ asset('storage/' . setting('company_logo')) }}" alt="{{ setting('company_name_' . app()->getLocale()) }}" style="height:44px;width:auto;">
-            @else
-                <div class="brand-fallback-logo" style="width:40px;height:40px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:1.2rem;">
-                    {{ mb_substr(setting('company_name_' . app()->getLocale(), 'S'), 0, 1) }}
+            @php $brandStyle = setting('brand_display_style', 'both'); @endphp
+            
+            @if(in_array($brandStyle, ['both', 'logo_only']))
+                @if(setting('company_logo'))
+                    <img src="{{ asset('storage/' . setting('company_logo')) }}" alt="{{ setting('company_name_' . app()->getLocale()) }}" style="height:44px;width:auto;">
+                @else
+                    <div class="brand-fallback-logo" style="width:40px;height:40px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:1.2rem;">
+                        {{ mb_substr(setting('company_name_' . app()->getLocale(), 'S'), 0, 1) }}
+                    </div>
+                @endif
+            @endif
+
+            @if(in_array($brandStyle, ['both', 'name_only']))
+                <div class="d-none d-lg-flex flex-column line-height-1">
+                    <span class="navbar-brand-text">
+                        {{ setting('company_name_' . app()->getLocale(), __('الصفوة')) }}
+                    </span>
+                    <span class="text-xs opacity-50 fw-bold d-none d-md-block">{{ setting('company_tagline_' . app()->getLocale(), __('للتجارة والاستثمار')) }}</span>
                 </div>
             @endif
-            <div class="d-none d-lg-flex flex-column line-height-1">
-                <span class="navbar-brand-text">
-                    {{ setting('company_name_' . app()->getLocale(), __('الصفوة')) }}
-                </span>
-                <span class="text-xs opacity-50 fw-bold d-none d-md-block">{{ setting('company_tagline_' . app()->getLocale(), __('للتجارة والاستثمار')) }}</span>
-            </div>
         </a>
 
         {{-- Desktop Nav --}}
@@ -111,6 +118,17 @@
                                                 <div class="mega-service-text">
                                                     <span class="d-block fw-bold text-dark fs-sm">{{ __('المركز الإعلامي') }}</span>
                                                     <span class="text-xs text-secondary opacity-75">{{ __('أحدث مستجداتنا وأخبارنا') }}</span>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <a href="{{ route('gallery.index') }}" class="mega-service-item">
+                                                <div class="mega-service-icon">
+                                                    <i class="fas fa-images"></i>
+                                                </div>
+                                                <div class="mega-service-text">
+                                                    <span class="d-block fw-bold text-dark fs-sm">{{ __('معرض الصور') }}</span>
+                                                    <span class="text-xs text-secondary opacity-75">{{ __('تصفح لحظاتنا وإنجازاتنا الموثقة') }}</span>
                                                 </div>
                                             </a>
                                         </div>
@@ -222,6 +240,7 @@
         <div class="mobile-submenu" id="mobileAbout">
             <a href="{{ route('about') }}">{{ __('قصتنا') }}</a>
             <a href="{{ route('activities.index') }}">{{ __('المركز الإعلامي') }}</a>
+            <a href="{{ route('gallery.index') }}">{{ __('معرض الصور') }}</a>
             <a href="{{ route('distributors.index') }}">{{ __('الموزعون') }}</a>
             @foreach($navPages as $np)
                 <a href="{{ route('pages.show', $np->slug) }}">{{ $np->{'title_' . app()->getLocale()} }}</a>

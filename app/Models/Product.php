@@ -14,7 +14,7 @@ class Product extends Model
         'description_ar', 'description_en',
         'slug', 'image', 'gallery',
         'price', 'discount',
-        'agency_id',
+        'agency_id', 'product_category_id',
         'status', 'order',
     ];
 
@@ -28,6 +28,11 @@ class Product extends Model
     public function agency()
     {
         return $this->belongsTo(Agency::class);
+    }
+
+    public function productCategory()
+    {
+        return $this->belongsTo(ProductCategory::class);
     }
 
     public function distributors()

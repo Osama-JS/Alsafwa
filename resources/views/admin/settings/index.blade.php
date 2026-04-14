@@ -552,8 +552,21 @@
                                             <div class="rounded-circle border" style="width:36px; height:36px; background:{{ old($setting->key, $setting->value ?? '#4f46e5') }}; flex-shrink:0;" id="color_preview_{{ $loop->index }}"></div>
                                         </div>
 
-                                    {{-- SELECT / BOOLEAN --}}
+                                    {{-- BRAND DISPLAY STYLE (Special case for string type) --}}
+                                    @elseif($setting->key === 'brand_display_style')
+                                        <div class="input-group">
+                                            <span class="input-group-text" style="border-radius:10px 0 0 10px; border:1.5px solid #e2e8f0; border-left:none; background:#f8faff;">
+                                                <i class="fas fa-desktop text-muted"></i>
+                                            </span>
+                                            <select name="{{ $setting->key }}" class="form-select @error($setting->key) is-invalid @enderror" style="border-radius:0 10px 10px 0;">
+                                                <option value="both" {{ old($setting->key, $setting->value) == 'both' ? 'selected' : '' }}>الشعار والاسم معاً</option>
+                                                <option value="logo_only" {{ old($setting->key, $setting->value) == 'logo_only' ? 'selected' : '' }}>الشعار فقط</option>
+                                                <option value="name_only" {{ old($setting->key, $setting->value) == 'name_only' ? 'selected' : '' }}>الاسم فقط</option>
+                                            </select>
+                                            @error($setting->key) <div class="invalid-feedback">{{ $message }}</div> @enderror
+                                        </div>
 
+                                    {{-- SELECT / BOOLEAN --}}
                                     @elseif($setting->type === 'select' || $setting->type === 'boolean')
                                         <div class="toggle-setting">
                                             <div class="toggle-info">

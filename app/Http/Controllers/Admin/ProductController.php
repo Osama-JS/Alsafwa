@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\Agency;
+use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -19,7 +20,7 @@ class ProductController extends Controller
             'inactive' => Product::where('status', 'inactive')->count(),
         ];
 
-        $query = Product::with('agency');
+        $query = Product::with(['agency', 'productCategory']);
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -40,7 +41,8 @@ class ProductController extends Controller
     public function create()
     {
         $agencies = Agency::orderBy('name_ar')->get();
-        return view('admin.products.create', compact('agencies'));
+        $categories = ProductCategory::where('status', 'active')->orderBy('name_ar')->get();
+        return view('admin.products.create', compact('agencies', 'categories'));
     }
 
     public function store(Request $request)
@@ -55,6 +57,7 @@ class ProductController extends Controller
             'price' => 'nullable|numeric|min:0',
             'discount' => 'nullable|numeric|min:0',
             'agency_id' => 'nullable|exists:agencies,id',
+            'product_category_id' => 'nullable|exists:product_categories,id',
             'status' => 'required|in:active,inactive',
             'order' => 'nullable|integer',
         ]);
@@ -82,7 +85,8 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $agencies = Agency::orderBy('name_ar')->get();
-        return view('admin.products.edit', compact('product', 'agencies'));
+        $categories = ProductCategory::where('status', 'active')->orderBy('name_ar')->get();
+        return view('admin.products.edit', compact('product', 'agencies', 'categories'));
     }
 
     public function update(Request $request, Product $product)
@@ -98,6 +102,7 @@ class ProductController extends Controller
             'price' => 'nullable|numeric|min:0',
             'discount' => 'nullable|numeric|min:0',
             'agency_id' => 'nullable|exists:agencies,id',
+            'product_category_id' => 'nullable|exists:product_categories,id',
             'status' => 'required|in:active,inactive',
             'order' => 'nullable|integer',
         ]);

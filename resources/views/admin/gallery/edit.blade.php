@@ -44,12 +44,12 @@
                         <!-- Category -->
                         @if(isset($categories) && count($categories) > 0)
                         <div class="mb-3">
-                            <label class="form-label fw-bold small">القسم</label>
-                            <select name="gallery_category_id" class="form-select @error('gallery_category_id') is-invalid @enderror">
+                            <label class="form-label fw-bold small">القسم <span class="text-danger">*</span></label>
+                            <select name="gallery_category_id" class="form-select @error('gallery_category_id') is-invalid @enderror" required>
                                 <option value="">اختر القسم</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}" {{ $image->gallery_category_id == $category->id ? 'selected' : '' }}>
-                                        {{ $category->name }}
+                                        {{ $category->name_ar }}
                                     </option>
                                 @endforeach
                             </select>

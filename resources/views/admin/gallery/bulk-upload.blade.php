@@ -375,11 +375,11 @@
             </div>
             <div class="card-body">
                 <div class="mb-4">
-                    <label class="form-label fw-bold small">القسم</label>
-                    <select id="upload_category" class="form-select">
-                        <option value="">بدون قسم</option>
+                    <label class="form-label fw-bold small">القسم <span class="text-danger">*</span></label>
+                    <select id="upload_category" class="form-select" required>
+                        <option value="">اختر القسم</option>
                         @foreach($categories as $cat)
-                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                            <option value="{{ $cat->id }}">{{ $cat->name_ar }}</option>
                         @endforeach
                     </select>
                     <div class="form-text text-muted mt-1">سيُطبَّق على جميع الصور المرفوعة</div>
@@ -596,6 +596,15 @@ const myDropzone = new Dropzone('#myDropzone', {
 });
 
 function startUpload() {
+    if (document.getElementById('upload_category').value === '') {
+        Swal.fire({
+            icon: 'warning',
+            title: 'القسم مطلوب',
+            text: 'يرجى اختيار القسم قبل بدء الرفع',
+            confirmButtonColor: '#4f46e5',
+        });
+        return;
+    }
     if (myDropzone.getQueuedFiles().length === 0) {
         Swal.fire({
             icon: 'info',

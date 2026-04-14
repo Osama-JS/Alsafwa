@@ -43,11 +43,13 @@ Route::middleware(['admin'])->group(function () {
     Route::get('/gallery/bulk-upload', [\App\Http\Controllers\Admin\GalleryImageController::class, 'bulkUpload'])->name('gallery.bulk-upload');
     Route::post('/gallery/upload-multiple', [\App\Http\Controllers\Admin\GalleryImageController::class, 'uploadMultiple'])->name('gallery.upload-multiple');
     Route::resource('gallery', \App\Http\Controllers\Admin\GalleryImageController::class);
+    Route::resource('gallery-categories', \App\Http\Controllers\Admin\GalleryCategoryController::class);
     Route::resource('branches', \App\Http\Controllers\Admin\BranchController::class);
     Route::resource('counters', \App\Http\Controllers\Admin\CounterController::class);
     Route::resource('partners', \App\Http\Controllers\Admin\PartnerController::class);
     Route::resource('distributors', \App\Http\Controllers\Admin\DistributorController::class);
     Route::resource('products', \App\Http\Controllers\Admin\ProductController::class);
+    Route::resource('product-categories', \App\Http\Controllers\Admin\ProductCategoryController::class);
 
     // Reports
     Route::get('/reports', [\App\Http\Controllers\Admin\ReportController::class, 'index'])->name('reports.index');

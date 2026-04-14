@@ -22,9 +22,24 @@
     </div>
 </section>
 
-{{-- Products Grid --}}
+{{-- Products Grid & Filters --}}
 <section class="section-legendary">
     <div class="container">
+        {{-- Category Filters (Pills) --}}
+        @if(isset($categories) && count($categories) > 0)
+        <div class="row mb-5">
+            <div class="col-12 d-flex justify-content-center flex-wrap gap-2">
+                <a href="{{ route('products.index') }}" class="btn rounded-pill px-4 {{ !request('category_id') ? 'btn-primary shadow-sm' : 'btn-light border' }}">
+                    {{ __('الكل') }}
+                </a>
+                @foreach($categories as $cat)
+                    <a href="{{ route('products.index', ['category_id' => $cat->id]) }}" class="btn rounded-pill px-4 {{ request('category_id') == $cat->id ? 'btn-primary shadow-sm' : 'btn-light border' }}">
+                        {{ $cat->{'name_' . app()->getLocale()} }}
+                    </a>
+                @endforeach
+            </div>
+        </div>
+        @endif
         <div class="row g-4">
             @forelse($products as $product)
                 <div class="col-lg-3 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="{{ $loop->index * 50 }}">
@@ -45,6 +60,12 @@
 
                                 @if($product->agency)
                                     <span class="product-badge-agency">{{ $product->agency->{'name_' . app()->getLocale()} }}</span>
+                                @endif
+
+                                @if($product->productCategory)
+                                    <span class="product-badge-category" style="position:absolute; top:15px; left:15px; background:rgba(0,0,0,0.6); color:#fff; padding:4px 12px; border-radius:20px; font-size:0.75rem; font-weight:600; z-index:2; backdrop-filter:blur(4px);">
+                                        <i class="fas fa-tag me-1"></i> {{ $product->productCategory->{'name_' . app()->getLocale()} }}
+                                    </span>
                                 @endif
                             </div>
 

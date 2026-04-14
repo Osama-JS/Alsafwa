@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Distributor;
+use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 
 class DistributorController extends Controller
@@ -16,14 +17,23 @@ class DistributorController extends Controller
         return view('frontend.distributors.index', compact('distributors'));
     }
 
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $distributor = Distributor::active()
-            ->with(['products' => function($q) {
-                $q->active()->orderBy('order');
+            ->with(['products' => function($q) use ($request) {
+                $q->active()->with('productCategory')->orderBy('order');
+                if ($request->filled('category_id')) {
+                    $q->where('product_category_id', $request->category_id);
+                }
             }])
             ->findOrFail($id);
 
-        return view('frontend.distributors.show', compact('distributor'));
+        $categories = ProductCategory::whereHas('products', function($q) use ($distributor) {
+            $q->whereHas('distributors', function($dq) use ($distributor) {
+                $dq->where('distributor_id', $distributor->id);
+            })->active();
+        })->where('status', 'active')->orderBy('order')->get();
+
+        return view('frontend.distributors.show', compact('distributor', 'categories'));
     }
 }

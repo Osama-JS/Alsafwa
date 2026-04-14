@@ -52,7 +52,7 @@ class GalleryImageController extends Controller
     {
         $validated = $request->validate([
             'title'               => 'nullable|string|max:255',
-            'gallery_category_id' => 'nullable|exists:gallery_categories,id',
+            'gallery_category_id' => 'required|exists:gallery_categories,id',
             'image'               => 'required|image|max:5120',
             'status'              => 'required|in:published,draft',
             'order'               => 'nullable|integer',
@@ -83,7 +83,7 @@ class GalleryImageController extends Controller
     {
         $request->validate([
             'file'                => 'required|image|max:5120',
-            'gallery_category_id' => 'nullable|exists:gallery_categories,id',
+            'gallery_category_id' => 'required|exists:gallery_categories,id',
             'status'              => 'nullable|in:published,draft',
         ]);
 
@@ -125,7 +125,7 @@ class GalleryImageController extends Controller
 
         $validated = $request->validate([
             'title'               => 'nullable|string|max:255',
-            'gallery_category_id' => 'nullable|exists:gallery_categories,id',
+            'gallery_category_id' => 'required|exists:gallery_categories,id',
             'image'               => 'nullable|image|max:5120',
             'status'              => 'required|in:published,draft',
             'order'               => 'nullable|integer',

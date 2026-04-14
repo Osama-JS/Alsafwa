@@ -67,6 +67,19 @@
                         <span class="badge bg-primary px-3 py-2 rounded-pill">{{ $agency->products->count() }} {{ __('منتج') }}</span>
                     </div>
 
+                    @if(isset($categories) && count($categories) > 0)
+                    <div class="d-flex flex-wrap gap-2 mb-4">
+                        <a href="{{ route('agencies.show', $agency->slug) }}" class="btn rounded-pill px-4 {{ !request('category_id') ? 'btn-primary shadow-sm' : 'btn-light border fw-bold' }}">
+                            {{ __('الكل') }}
+                        </a>
+                        @foreach($categories as $cat)
+                            <a href="{{ route('agencies.show', ['slug' => $agency->slug, 'category_id' => $cat->id]) }}" class="btn rounded-pill px-4 {{ request('category_id') == $cat->id ? 'btn-primary shadow-sm' : 'btn-light border fw-bold text-dark' }}">
+                                {{ $cat->{'name_' . app()->getLocale()} }}
+                            </a>
+                        @endforeach
+                    </div>
+                    @endif
+
                     <div class="row g-4">
                         @forelse($agency->products as $product)
                             <div class="col-md-6 col-lg-4">
@@ -81,6 +94,11 @@
                                             @endif
                                         </div>
                                         <div class="product-body-v3 p-4">
+                                            @if($product->productCategory)
+                                                <span class="badge mb-2 px-2 py-1" style="background:#ede9fe; color:#4f46e5; border-radius:12px; font-size:0.75rem;">
+                                                    <i class="fas fa-tag me-1"></i> {{ $product->productCategory->{'name_' . app()->getLocale()} }}
+                                                </span>
+                                            @endif
                                             <h5 class="product-title-v3 fw-black text-dark mb-3 text-truncate">{{ $product->{'title_' . app()->getLocale()} }}</h5>
                                             <div class="d-flex justify-content-between align-items-center mt-3">
                                                 <div class="product-price-v3">
