@@ -68,3 +68,18 @@ Route::prefix('docs')->name('docs.')->group(function () {
 Route::get('/login', function () {
     return redirect()->route('admin.login');
 })->name('login');
+
+Route::get('/fix-logo', function () {
+    \App\Models\Setting::updateOrCreate(
+        ['key' => 'company_logo'],
+        [
+            'label' => 'شعار الشركة',
+            'type' => 'image',
+            'description' => 'ارفع شعار الشركة ليظهر في جميع أنحاء الموقع (القائمة العلوية والفوتر)',
+            'group' => 'appearance'
+        ]
+    );
+    \Illuminate\Support\Facades\Cache::forget('settings');
+    \Illuminate\Support\Facades\Cache::forget('site_settings');
+    return 'تم الحل بنجاح! اذهب الآن لصفحة الإعدادات وجرب تحديثها.';
+});

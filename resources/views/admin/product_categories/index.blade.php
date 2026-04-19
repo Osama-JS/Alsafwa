@@ -39,12 +39,13 @@
             <thead>
                 <tr>
                     <th width="5%">#</th>
-                    <th width="25%">الاسم (بالعربية)</th>
-                    <th width="25%">الاسم (بالإنجليزية)</th>
+                    <th width="20%">الاسم (بالعربية)</th>
+                    <th width="20%">الاسم (بالإنجليزية)</th>
+                    <th width="15%">القسم الأب</th>
                     <th width="10%">عدد المنتجات</th>
                     <th width="10%">الترتيب</th>
                     <th width="10%">الحالة</th>
-                    <th width="15%" class="text-end">الإجراءات</th>
+                    <th width="10%" class="text-end">الإجراءات</th>
                 </tr>
             </thead>
             <tbody>
@@ -52,10 +53,24 @@
                     <tr>
                         <td><div class="row-num">{{ $loop->iteration }}</div></td>
                         <td>
-                            <div class="fw-bold text-dark">{{ $category->name_ar }}</div>
+                            <div class="fw-bold text-dark">
+                                @if($category->parent_id)
+                                    <i class="fas fa-level-down-alt fa-rotate-180 text-muted me-2" style="font-size: 0.8rem;"></i>
+                                @endif
+                                {{ $category->name_ar }}
+                            </div>
                         </td>
                         <td>
                             <div class="text-muted">{{ $category->name_en }}</div>
+                        </td>
+                        <td>
+                            @if($category->parent)
+                                <span class="badge bg-soft-primary text-primary border-primary border-opacity-10" style="font-size: 0.75rem;">
+                                    <i class="fas fa-folder me-1"></i> {{ $category->parent->name_ar }}
+                                </span>
+                            @else
+                                <span class="text-muted small">---</span>
+                            @endif
                         </td>
                         <td>
                             <span class="badge bg-light text-dark fw-bold border" style="font-size: 0.8rem;">

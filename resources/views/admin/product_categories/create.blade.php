@@ -37,6 +37,21 @@
                             </div>
 
                             <div class="col-md-6">
+                                <label class="form-label fw-bold small text-muted">القسم الأب (اختياري)</label>
+                                <select name="parent_id" class="form-select @error('parent_id') is-invalid @enderror">
+                                    <option value="">-- بدون أب (قسم رئيسي) --</option>
+                                    @foreach($parents as $parent)
+                                        <option value="{{ $parent->id }}" {{ old('parent_id') == $parent->id ? 'selected' : '' }}>
+                                            {{ $parent->name_ar }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('parent_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6">
                                 <label class="form-label fw-bold small text-muted">الحالة <span class="text-danger">*</span></label>
                                 <select name="status" class="form-select @error('status') is-invalid @enderror" required>
                                     <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>نشط</option>

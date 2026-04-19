@@ -14,7 +14,7 @@ class ProductCategoryController extends Controller
      */
     public function index()
     {
-        $categories = ProductCategory::withCount('products')->orderBy('order')->paginate(20);
+        $categories = ProductCategory::with(['parent'])->withCount('products')->orderBy('order')->paginate(20);
         return view('admin.product_categories.index', compact('categories'));
     }
 
@@ -23,7 +23,8 @@ class ProductCategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.product_categories.create');
+        $parents = ProductCategory::whereNull('parent_id')->orderBy('name_ar')->get();
+        return view('admin.product_categories.create', compact('parents'));
     }
 
     /**
@@ -32,10 +33,11 @@ class ProductCategoryController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name_ar' => 'required|string|max:255',
-            'name_en' => 'required|string|max:255',
-            'status'  => 'required|in:active,inactive',
-            'order'   => 'nullable|integer',
+            'name_ar'   => 'required|string|max:255',
+            'name_en'   => 'required|string|max:255',
+            'parent_id' => 'nullable|exists:product_categories,id',
+            'status'    => 'required|in:active,inactive',
+            'order'     => 'nullable|integer',
         ]);
 
         $validated['slug'] = Str::slug($request->name_en);
@@ -60,7 +62,11 @@ class ProductCategoryController extends Controller
     public function edit(string $id)
     {
         $category = ProductCategory::findOrFail($id);
-        return view('admin.product_categories.edit', compact('category'));
+        $parents = ProductCategory::whereNull('parent_id')
+                    ->where('id', '!=', $id)
+                    ->orderBy('name_ar')
+                    ->get();
+        return view('admin.product_categories.edit', compact('category', 'parents'));
     }
 
     /**
@@ -71,10 +77,11 @@ class ProductCategoryController extends Controller
         $category = ProductCategory::findOrFail($id);
 
         $validated = $request->validate([
-            'name_ar' => 'required|string|max:255',
-            'name_en' => 'required|string|max:255',
-            'status'  => 'required|in:active,inactive',
-            'order'   => 'nullable|integer',
+            'name_ar'   => 'required|string|max:255',
+            'name_en'   => 'required|string|max:255',
+            'parent_id' => 'nullable|exists:product_categories,id',
+            'status'    => 'required|in:active,inactive',
+            'order'     => 'nullable|integer',
         ]);
 
         $validated['slug'] = Str::slug($request->name_en);
@@ -103,6 +110,11 @@ class ProductCategoryController extends Controller
         if ($category->products()->count() > 0) {
             return redirect()->route('admin.product-categories.index')
                 ->with('error', 'لا يمكن حذف القسم لأنه يحتوي على منتجات. الرجاء نقل المنتجات أو حذفها أولاً.');
+        }
+
+        if ($category->children()->count() > 0) {
+            return redirect()->route('admin.product-categories.index')
+                ->with('error', 'لا يمكن حذف القسم لأنه يحتوي على أقسام فرعية مرتبطة به. الرجاء حذف الأقسام الفرعية أو تغيير تبعيتها أولاً.');
         }
 
         $category->delete();

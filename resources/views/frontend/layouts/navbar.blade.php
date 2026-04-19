@@ -72,7 +72,64 @@
                     </div>
                 </li>
                 <li class="nav-item-wrap"><a href="{{ route('agencies.index') }}" class="nav-link-item {{ request()->routeIs('agencies.*') ? 'active' : '' }}">{{ __('الوكالات') }}</a></li>
-                <li class="nav-item-wrap"><a href="{{ route('products.index') }}" class="nav-link-item {{ request()->routeIs('products.*') ? 'active' : '' }}">{{ __('المنتجات') }}</a></li>
+                <li class="nav-item-wrap has-mega-menu">
+                    <a href="javascript:void(0)" class="nav-link-item mega-trigger {{ request()->routeIs('products.*') ? 'active' : '' }}">
+                        {{ __('المنتجات') }}
+                        <i class="fas fa-chevron-down ms-1 fs-xs opacity-50"></i>
+                    </a>
+
+                    {{-- Products Mega Menu --}}
+                    <div class="mega-menu-v3">
+                        <div class="mega-menu-inner p-4 p-lg-5">
+                            <div class="row g-4">
+                                {{-- Left Info Column --}}
+                                <div class="col-lg-3 border-end">
+                                    <h5 class="fw-black text-primary mb-3">{{ __('منتجاتنا') }}</h5>
+                                    <p class="text-sm text-secondary mb-4">{{ __('تصفح مجموعتنا الواسعة من المنتجات بجودة عالية') }}</p>
+                                    <a href="{{ route('products.index') }}" class="btn-legendary py-2 px-4 fs-xs">
+                                        {{ __('عرض كل المنتجات') }}
+                                    </a>
+                                </div>
+                                {{-- Categories Grid Column --}}
+                                <div class="col-lg-9">
+                                    <div class="row g-4">
+                                        @php 
+                                            $megaCategories = \App\Models\ProductCategory::whereNull('parent_id')
+                                                ->with(['children' => function($q) { $q->take(5); }])
+                                                ->take(8)
+                                                ->get(); 
+                                        @endphp
+                                        @foreach($megaCategories as $mcat)
+                                            <div class="col-lg-3 col-md-6">
+                                                <div class="mega-category-block">
+                                                    <a href="{{ route('products.index', ['category_id[]' => $mcat->id, 'navbar' => 1]) }}" class="d-block fw-bold text-dark fs-sm mb-2 hover-accent text-decoration-none">
+                                                        {{ $mcat->{'name_' . app()->getLocale()} }}
+                                                    </a>
+                                                    <ul class="list-unstyled p-0 m-0">
+                                                        @foreach($mcat->children as $mchild)
+                                                            <li class="mb-1">
+                                                                <a href="{{ route('products.index', ['category_id[]' => $mchild->id, 'navbar' => 1]) }}" class="text-xs text-secondary opacity-75 hover-primary text-decoration-none transition-03">
+                                                                    {{ $mchild->{'name_' . app()->getLocale()} }}
+                                                                </a>
+                                                            </li>
+                                                        @endforeach
+                                                        @if($mcat->children->count() > 0)
+                                                            <li>
+                                                                <a href="{{ route('products.index', ['category_id[]' => $mcat->id, 'navbar' => 1]) }}" class="text-xs text-primary fw-bold text-decoration-none">
+                                                                    {{ __('المزيد') }}...
+                                                                </a>
+                                                            </li>
+                                                        @endif
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
                 {{-- About Us with Mega Menu --}}
                 <li class="nav-item-wrap has-mega-menu">
                     <a href="javascript:void(0)" class="nav-link-item mega-trigger {{ request()->routeIs('about') || request()->routeIs('activities.*') ? 'active' : '' }}">
@@ -230,7 +287,26 @@
         </div>
 
         <a href="{{ route('agencies.index') }}" class="mobile-nav-link">{{ __('الوكالات') }}</a>
-        <a href="{{ route('products.index') }}" class="mobile-nav-link">{{ __('المنتجات') }}</a>
+        <a href="#" class="mobile-nav-link" data-submenu="mobileProducts">
+            <span>{{ __('المنتجات') }}</span>
+            <i class="fas fa-chevron-down fs-6 opacity-25"></i>
+        </a>
+        <div class="mobile-submenu" id="mobileProducts">
+             @php 
+                $mobileCats = \App\Models\ProductCategory::whereNull('parent_id')->with('children')->get();
+            @endphp
+            @foreach($mobileCats as $mc)
+                <div class="mb-2">
+                    <a href="{{ route('products.index', ['category_id[]' => $mc->id, 'navbar' => 1]) }}" class="fw-bold">{{ $mc->{'name_' . app()->getLocale()} }}</a>
+                    <div class="ps-3 border-start ms-2">
+                        @foreach($mc->children as $mcc)
+                             <a href="{{ route('products.index', ['category_id[]' => $mcc->id, 'navbar' => 1]) }}" class="py-1 text-xs opacity-75">{{ $mcc->{'name_' . app()->getLocale()} }}</a>
+                        @endforeach
+                    </div>
+                </div>
+            @endforeach
+            <a href="{{ route('products.index') }}" class="text-accent fw-bold">{{ __('عرض كل المنتجات') }}</a>
+        </div>
         <a href="{{ route('branches.index') }}" class="mobile-nav-link">{{ __('الفروع') }}</a>
 
         <a href="#" class="mobile-nav-link" data-submenu="mobileAbout">

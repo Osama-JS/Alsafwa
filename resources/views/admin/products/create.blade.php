@@ -82,16 +82,39 @@
                                 </div>
                                 @error('discount') <div class="text-danger small mt-1">{{ $message }}</div> @enderror
                             </div>
+                            @php
+                                $oldCatId = old('product_category_id');
+                                $oldParentId = null;
+                                if ($oldCatId) {
+                                    $oldCat = \App\Models\ProductCategory::find($oldCatId);
+                                    $oldParentId = $oldCat ? ($oldCat->parent_id ?: $oldCat->id) : null;
+                                }
+                            @endphp
+
                             <div class="col-md-3">
-                                <label class="form-label fw-bold small">القسم (اختياري)</label>
-                                <select name="product_category_id" class="form-select @error('product_category_id') is-invalid @enderror">
-                                    <option value="">بدون قسم</option>
+                                <label class="form-label fw-bold small">القسم الرئيسي <span class="text-danger">*</span></label>
+                                <select id="main_category" name="main_category_id" class="form-select @error('main_category_id') is-invalid @enderror" onchange="updateSubCategories()">
+                                    <option value="">اختر القسم الرئيسي</option>
                                     @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" {{ old('product_category_id') == $category->id ? 'selected' : '' }}>{{ $category->name_ar }}</option>
+                                        <option value="{{ $category->id }}" data-children='@json($category->children)' {{ $oldParentId == $category->id ? 'selected' : '' }}>{{ $category->name_ar }}</option>
                                     @endforeach
+                                </select>
+                                @error('main_category_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                            </div>
+
+                            <div class="col-md-3" id="sub_category_container" style="{{ $oldParentId && $categories->find($oldParentId)->children->count() > 0 ? '' : 'display: none;' }}">
+                                <label class="form-label fw-bold small">القسم الفرعي <span class="text-danger">*</span></label>
+                                <select id="sub_category" name="product_category_id" class="form-select @error('product_category_id') is-invalid @enderror">
+                                    <option value="">اختر القسم الفرعي</option>
+                                    @if($oldParentId && $categories->find($oldParentId))
+                                        @foreach($categories->find($oldParentId)->children as $child)
+                                            <option value="{{ $child->id }}" {{ $oldCatId == $child->id ? 'selected' : '' }}>{{ $child->name_ar }}</option>
+                                        @endforeach
+                                    @endif
                                 </select>
                                 @error('product_category_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
+
                             <div class="col-md-3">
                                 <label class="form-label fw-bold small">الوكالة (اختياري)</label>
                                 <select name="agency_id" class="form-select @error('agency_id') is-invalid @enderror">
@@ -133,4 +156,70 @@
             </div>
         </div>
     </div>
+@push('scripts')
+<script>
+    function previewImage(input, previewId) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                var preview = document.getElementById(previewId);
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    function updateSubCategories() {
+        const mainSelect = document.getElementById('main_category');
+        const subSelect = document.getElementById('sub_category');
+        const container = document.getElementById('sub_category_container');
+        
+        const selectedOption = mainSelect.options[mainSelect.selectedIndex];
+        if (!selectedOption || mainSelect.value === "") {
+            container.style.display = 'none';
+            subSelect.required = false;
+            subSelect.value = "";
+            return;
+        }
+
+        const childrenJson = selectedOption.getAttribute('data-children');
+        
+        // Reset sub categories
+        subSelect.innerHTML = '<option value="">اختر القسم الفرعي</option>';
+        
+        if (childrenJson) {
+            const children = JSON.parse(childrenJson);
+            
+            if (children.length > 0) {
+                children.forEach(child => {
+                    const opt = document.createElement('option');
+                    opt.value = child.id;
+                    opt.textContent = child.name_ar;
+                    subSelect.appendChild(opt);
+                });
+                
+                container.style.display = 'block';
+                subSelect.required = true;
+            } else {
+                container.style.display = 'none';
+                subSelect.required = false;
+                subSelect.value = "";
+            }
+        } else {
+            container.style.display = 'none';
+            subSelect.required = false;
+            subSelect.value = "";
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const subSelect = document.getElementById('sub_category');
+        const container = document.getElementById('sub_category_container');
+        if (container && container.style.display !== 'none') {
+            subSelect.required = true;
+        }
+    });
+</script>
+@endpush
 @endsection

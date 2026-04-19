@@ -114,7 +114,16 @@
                                     @endif
                                 </td>
                                 <td>
-                                    {{ $product->productCategory ? $product->productCategory->name_ar : '—' }}
+                                    @if($product->productCategory)
+                                        @if($product->productCategory->parent)
+                                            <div class="small text-muted mb-1">{{ $product->productCategory->parent->name_ar }}</div>
+                                            <div class="fw-bold"><i class="fas fa-level-down-alt fa-rotate-180 me-1 small opacity-50"></i> {{ $product->productCategory->name_ar }}</div>
+                                        @else
+                                            <div class="fw-bold text-primary">{{ $product->productCategory->name_ar }}</div>
+                                        @endif
+                                    @else
+                                        <span class="text-muted small">بدون قسم</span>
+                                    @endif
                                 </td>
                                 <td>{{ $product->agency ? $product->agency->name_ar : '—' }}</td>
                                 <td>

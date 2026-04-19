@@ -13,9 +13,20 @@ class ProductCategory extends Model
         'name_ar',
         'name_en',
         'slug',
+        'parent_id',
         'status',
         'order',
     ];
+
+    public function parent()
+    {
+        return $this->belongsTo(ProductCategory::class, 'parent_id');
+    }
+
+    public function children()
+    {
+        return $this->hasMany(ProductCategory::class, 'parent_id')->orderBy('order');
+    }
 
     public function products()
     {

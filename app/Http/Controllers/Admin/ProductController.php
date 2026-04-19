@@ -20,7 +20,7 @@ class ProductController extends Controller
             'inactive' => Product::where('status', 'inactive')->count(),
         ];
 
-        $query = Product::with(['agency', 'productCategory']);
+        $query = Product::with(['agency', 'productCategory.parent']);
 
         if ($request->filled('search')) {
             $search = $request->search;
@@ -41,26 +41,41 @@ class ProductController extends Controller
     public function create()
     {
         $agencies = Agency::orderBy('name_ar')->get();
-        $categories = ProductCategory::where('status', 'active')->orderBy('name_ar')->get();
+        // Load only main categories with their active sub-categories
+        $categories = ProductCategory::whereNull('parent_id')
+                        ->with(['children' => function($q) {
+                            $q->where('status', 'active')->orderBy('order');
+                        }])
+                        ->where('status', 'active')
+                        ->orderBy('name_ar')
+                        ->get();
         return view('admin.products.create', compact('agencies', 'categories'));
     }
 
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'title_ar' => 'required|string|max:255',
-            'title_en' => 'required|string|max:255',
-            'description_ar' => 'nullable|string',
-            'description_en' => 'nullable|string',
-            'image' => 'required|image|max:2048',
-            'gallery.*' => 'nullable|image|max:2048',
-            'price' => 'nullable|numeric|min:0',
-            'discount' => 'nullable|numeric|min:0',
-            'agency_id' => 'nullable|exists:agencies,id',
+            'title_ar'            => 'required|string|max:255',
+            'title_en'            => 'required|string|max:255',
+            'description_ar'      => 'nullable|string',
+            'description_en'      => 'nullable|string',
+            'image'               => 'required|image|max:2048',
+            'gallery.*'           => 'nullable|image|max:2048',
+            'price'               => 'nullable|numeric|min:0',
+            'discount'            => 'nullable|numeric|min:0',
+            'agency_id'           => 'nullable|exists:agencies,id',
+            'main_category_id'    => 'required|exists:product_categories,id',
             'product_category_id' => 'nullable|exists:product_categories,id',
-            'status' => 'required|in:active,inactive',
-            'order' => 'nullable|integer',
+            'status'              => 'required|in:active,inactive',
+            'order'               => 'nullable|integer',
         ]);
+
+        // If sub-category is selected, use it, otherwise use main category
+        if ($request->filled('product_category_id')) {
+            $validated['product_category_id'] = $request->product_category_id;
+        } else {
+            $validated['product_category_id'] = $request->main_category_id;
+        }
 
         $validated['slug'] = Str::slug($validated['title_en']) . '-' . Str::random(5);
 
@@ -85,27 +100,41 @@ class ProductController extends Controller
     public function edit(Product $product)
     {
         $agencies = Agency::orderBy('name_ar')->get();
-        $categories = ProductCategory::where('status', 'active')->orderBy('name_ar')->get();
+        $categories = ProductCategory::whereNull('parent_id')
+                        ->with(['children' => function($q) {
+                            $q->where('status', 'active')->orderBy('order');
+                        }])
+                        ->where('status', 'active')
+                        ->orderBy('name_ar')
+                        ->get();
         return view('admin.products.edit', compact('product', 'agencies', 'categories'));
     }
 
     public function update(Request $request, Product $product)
     {
         $validated = $request->validate([
-            'title_ar' => 'required|string|max:255',
-            'title_en' => 'required|string|max:255',
-            'description_ar' => 'nullable|string',
-            'description_en' => 'nullable|string',
-            'image' => 'nullable|image|max:2048',
-            'gallery.*' => 'nullable|image|max:2048',
+            'title_ar'            => 'required|string|max:255',
+            'title_en'            => 'required|string|max:255',
+            'description_ar'      => 'nullable|string',
+            'description_en'      => 'nullable|string',
+            'image'               => 'nullable|image|max:2048',
+            'gallery.*'           => 'nullable|image|max:2048',
             'remove_gallery_images' => 'nullable|array',
-            'price' => 'nullable|numeric|min:0',
-            'discount' => 'nullable|numeric|min:0',
-            'agency_id' => 'nullable|exists:agencies,id',
+            'price'               => 'nullable|numeric|min:0',
+            'discount'            => 'nullable|numeric|min:0',
+            'agency_id'           => 'nullable|exists:agencies,id',
+            'main_category_id'    => 'required|exists:product_categories,id',
             'product_category_id' => 'nullable|exists:product_categories,id',
-            'status' => 'required|in:active,inactive',
-            'order' => 'nullable|integer',
+            'status'              => 'required|in:active,inactive',
+            'order'               => 'nullable|integer',
         ]);
+
+        // If sub-category is selected, use it, otherwise use main category
+        if ($request->filled('product_category_id')) {
+            $validated['product_category_id'] = $request->product_category_id;
+        } else {
+            $validated['product_category_id'] = $request->main_category_id;
+        }
 
         // Handle Main Image
         if ($request->hasFile('image')) {
