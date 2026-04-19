@@ -193,19 +193,23 @@
             var reader = new FileReader();
             reader.onload = function(e) {
                 var preview = document.getElementById(previewId);
-                preview.src = e.target.result;
-                preview.style.display = 'block';
-            }
+                if (preview) {
+                    preview.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+            };
             reader.readAsDataURL(input.files[0]);
         }
     }
 
     function updateSubCategories() {
-        const mainSelect = document.getElementById('main_category');
-        const subSelect = document.getElementById('sub_category');
-        const container = document.getElementById('sub_category_container');
+        var mainSelect = document.getElementById('main_category');
+        var subSelect = document.getElementById('sub_category');
+        var container = document.getElementById('sub_category_container');
         
-        const selectedOption = mainSelect.options[mainSelect.selectedIndex];
+        if (!mainSelect || !subSelect || !container) return;
+
+        var selectedOption = mainSelect.options[mainSelect.selectedIndex];
         if (!selectedOption || mainSelect.value === "") {
             container.style.display = 'none';
             subSelect.required = false;
@@ -213,28 +217,28 @@
             return;
         }
 
-        const childrenJson = selectedOption.getAttribute('data-children');
-        
-        // Reset sub categories
+        var childrenJson = selectedOption.getAttribute('data-children');
         subSelect.innerHTML = '<option value="">اختر القسم الفرعي</option>';
         
         if (childrenJson) {
-            const children = JSON.parse(childrenJson);
-            
-            if (children.length > 0) {
-                children.forEach(child => {
-                    const opt = document.createElement('option');
-                    opt.value = child.id;
-                    opt.textContent = child.name_ar;
-                    subSelect.appendChild(opt);
-                });
-                
-                container.style.display = 'block';
-                subSelect.required = true;
-            } else {
-                container.style.display = 'none';
-                subSelect.required = false;
-                subSelect.value = "";
+            try {
+                var children = JSON.parse(childrenJson);
+                if (children && children.length > 0) {
+                    children.forEach(function(child) {
+                        var opt = document.createElement('option');
+                        opt.value = child.id;
+                        opt.textContent = child.name_ar;
+                        subSelect.appendChild(opt);
+                    });
+                    container.style.display = 'block';
+                    subSelect.required = true;
+                } else {
+                    container.style.display = 'none';
+                    subSelect.required = false;
+                    subSelect.value = "";
+                }
+            } catch (e) {
+                console.error("Error parsing children JSON", e);
             }
         } else {
             container.style.display = 'none';
@@ -244,9 +248,9 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        const subSelect = document.getElementById('sub_category');
-        const container = document.getElementById('sub_category_container');
-        if (container && container.style.display !== 'none') {
+        var subSelect = document.getElementById('sub_category');
+        var container = document.getElementById('sub_category_container');
+        if (container && subSelect && container.style.display !== 'none') {
             subSelect.required = true;
         }
     });
