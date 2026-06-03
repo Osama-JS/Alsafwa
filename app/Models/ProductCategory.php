@@ -28,6 +28,13 @@ class ProductCategory extends Model
         return $this->hasMany(ProductCategory::class, 'parent_id')->orderBy('order');
     }
 
+    public function allChildren()
+    {
+        return $this->children()->with(['allChildren' => function($q) {
+            $q->where('status', 'active')->orderBy('order');
+        }]);
+    }
+
     public function products()
     {
         return $this->hasMany(Product::class);

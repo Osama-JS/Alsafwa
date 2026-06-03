@@ -18,12 +18,33 @@ class ProductCategoryController extends Controller
         return view('admin.product_categories.index', compact('categories'));
     }
 
+    private function getCategoriesTree($excludeId = null)
+    {
+        $categories = ProductCategory::with('allChildren')->whereNull('parent_id')->orderBy('order')->get();
+        
+        $tree = [];
+        $traverse = function ($categories, $prefix = '') use (&$traverse, &$tree, $excludeId) {
+            foreach ($categories as $category) {
+                if ($category->id == $excludeId) {
+                    continue; // Skip the category itself and its children
+                }
+                $tree[$category->id] = $prefix . $category->name_ar;
+                if ($category->allChildren && $category->allChildren->count() > 0) {
+                    $traverse($category->allChildren, $prefix . '-- ');
+                }
+            }
+        };
+        
+        $traverse($categories);
+        return $tree;
+    }
+
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        $parents = ProductCategory::whereNull('parent_id')->orderBy('name_ar')->get();
+        $parents = $this->getCategoriesTree();
         return view('admin.product_categories.create', compact('parents'));
     }
 
@@ -62,10 +83,7 @@ class ProductCategoryController extends Controller
     public function edit(string $id)
     {
         $category = ProductCategory::findOrFail($id);
-        $parents = ProductCategory::whereNull('parent_id')
-                    ->where('id', '!=', $id)
-                    ->orderBy('name_ar')
-                    ->get();
+        $parents = $this->getCategoriesTree($category->id);
         return view('admin.product_categories.edit', compact('category', 'parents'));
     }
 

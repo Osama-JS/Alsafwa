@@ -14,7 +14,7 @@ class ProductController extends Controller
         // Get only main categories with their active sub-categories
         $categories = ProductCategory::whereNull('parent_id')
             ->where('status', 'active')
-            ->with(['children' => function($q) {
+            ->with(['allChildren' => function($q) {
                 $q->where('status', 'active')->orderBy('order');
             }])
             ->orderBy('order')
@@ -32,13 +32,22 @@ class ProductController extends Controller
             if ($request->filled('category_id')) {
                 $catIds = (array) $request->category_id;
                 $allCategoryIds = [];
+                
+                $getCategoryIds = function($category) use (&$getCategoryIds) {
+                    $ids = [$category->id];
+                    foreach ($category->allChildren as $child) {
+                        $ids = array_merge($ids, $getCategoryIds($child));
+                    }
+                    return $ids;
+                };
+
                 foreach ($catIds as $id) {
-                    $category = ProductCategory::with('children')->find($id);
+                    $category = ProductCategory::with(['allChildren' => function($q) {
+                        $q->where('status', 'active');
+                    }])->find($id);
+                    
                     if ($category) {
-                        $allCategoryIds[] = $category->id;
-                        if ($category->children->count() > 0) {
-                            $allCategoryIds = array_merge($allCategoryIds, $category->children->pluck('id')->toArray());
-                        }
+                        $allCategoryIds = array_merge($allCategoryIds, $getCategoryIds($category));
                     }
                 }
                 if (!empty($allCategoryIds)) {

@@ -40,9 +40,9 @@
                                 <label class="form-label fw-bold small text-muted">القسم الأب (اختياري)</label>
                                 <select name="parent_id" class="form-select @error('parent_id') is-invalid @enderror">
                                     <option value="">-- بدون أب (قسم رئيسي) --</option>
-                                    @foreach($parents as $parent)
-                                        <option value="{{ $parent->id }}" {{ old('parent_id') == $parent->id ? 'selected' : '' }}>
-                                            {{ $parent->name_ar }}
+                                    @foreach($parents as $id => $name)
+                                        <option value="{{ $id }}" {{ old('parent_id') == $id ? 'selected' : '' }}>
+                                            {{ $name }}
                                         </option>
                                     @endforeach
                                 </select>

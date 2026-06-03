@@ -95,7 +95,7 @@
                                     <div class="row g-4">
                                         @php 
                                             $megaCategories = \App\Models\ProductCategory::whereNull('parent_id')
-                                                ->with(['children' => function($q) { $q->take(5); }])
+                                                ->with(['allChildren'])
                                                 ->take(8)
                                                 ->get(); 
                                         @endphp
@@ -106,20 +106,9 @@
                                                         {{ $mcat->{'name_' . app()->getLocale()} }}
                                                     </a>
                                                     <ul class="list-unstyled p-0 m-0">
-                                                        @foreach($mcat->children as $mchild)
-                                                            <li class="mb-1">
-                                                                <a href="{{ route('products.index', ['category_id[]' => $mchild->id, 'navbar' => 1]) }}" class="text-xs text-secondary opacity-75 hover-primary text-decoration-none transition-03">
-                                                                    {{ $mchild->{'name_' . app()->getLocale()} }}
-                                                                </a>
-                                                            </li>
+                                                        @foreach($mcat->allChildren as $mchild)
+                                                            @include('frontend.layouts._mega_menu_category', ['category' => $mchild])
                                                         @endforeach
-                                                        @if($mcat->children->count() > 0)
-                                                            <li>
-                                                                <a href="{{ route('products.index', ['category_id[]' => $mcat->id, 'navbar' => 1]) }}" class="text-xs text-primary fw-bold text-decoration-none">
-                                                                    {{ __('المزيد') }}...
-                                                                </a>
-                                                            </li>
-                                                        @endif
                                                     </ul>
                                                 </div>
                                             </div>
@@ -293,14 +282,14 @@
         </a>
         <div class="mobile-submenu" id="mobileProducts">
              @php 
-                $mobileCats = \App\Models\ProductCategory::whereNull('parent_id')->with('children')->get();
+                $mobileCats = \App\Models\ProductCategory::whereNull('parent_id')->with('allChildren')->get();
             @endphp
             @foreach($mobileCats as $mc)
                 <div class="mb-2">
                     <a href="{{ route('products.index', ['category_id[]' => $mc->id, 'navbar' => 1]) }}" class="fw-bold">{{ $mc->{'name_' . app()->getLocale()} }}</a>
                     <div class="ps-3 border-start ms-2">
-                        @foreach($mc->children as $mcc)
-                             <a href="{{ route('products.index', ['category_id[]' => $mcc->id, 'navbar' => 1]) }}" class="py-1 text-xs opacity-75">{{ $mcc->{'name_' . app()->getLocale()} }}</a>
+                        @foreach($mc->allChildren as $mcc)
+                             @include('frontend.layouts._mobile_menu_category', ['category' => $mcc])
                         @endforeach
                     </div>
                 </div>
