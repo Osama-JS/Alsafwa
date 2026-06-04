@@ -43,7 +43,7 @@ class ProductController extends Controller
         $agencies = Agency::orderBy('name_ar')->get();
         // Load only main categories with their active sub-categories
         $categories = ProductCategory::whereNull('parent_id')
-                        ->with(['children' => function($q) {
+                        ->with(['allChildren' => function($q) {
                             $q->where('status', 'active')->orderBy('order');
                         }])
                         ->where('status', 'active')
@@ -101,7 +101,7 @@ class ProductController extends Controller
     {
         $agencies = Agency::orderBy('name_ar')->get();
         $categories = ProductCategory::whereNull('parent_id')
-                        ->with(['children' => function($q) {
+                        ->with(['allChildren' => function($q) {
                             $q->where('status', 'active')->orderBy('order');
                         }])
                         ->where('status', 'active')

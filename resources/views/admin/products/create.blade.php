@@ -87,8 +87,16 @@
                                 $oldParentId = null;
                                 if ($oldCatId) {
                                     $oldCat = \App\Models\ProductCategory::find($oldCatId);
-                                    $oldParentId = $oldCat ? ($oldCat->parent_id ?: $oldCat->id) : null;
+                                    if ($oldCat) {
+                                        $curr = $oldCat;
+                                        while ($curr->parent_id) {
+                                            $curr = \App\Models\ProductCategory::find($curr->parent_id);
+                                        }
+                                        $oldParentId = $curr->id;
+                                    }
                                 }
+                                $mainCategory = $oldParentId ? $categories->find($oldParentId) : null;
+                                $hasChildren = $mainCategory && $mainCategory->allChildren->count() > 0;
                             @endphp
 
                             <div class="col-md-3">
@@ -96,20 +104,29 @@
                                 <select id="main_category" name="main_category_id" class="form-select @error('main_category_id') is-invalid @enderror" onchange="updateSubCategories()">
                                     <option value="">اختر القسم الرئيسي</option>
                                     @foreach($categories as $category)
-                                        <option value="{{ $category->id }}" data-children='@json($category->children)' {{ $oldParentId == $category->id ? 'selected' : '' }}>{{ $category->name_ar }}</option>
+                                        <option value="{{ $category->id }}" data-children='@json($category->allChildren)' {{ $oldParentId == $category->id ? 'selected' : '' }}>{{ $category->name_ar }}</option>
                                     @endforeach
                                 </select>
                                 @error('main_category_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
                             </div>
 
-                            <div class="col-md-3" id="sub_category_container" style="{{ $oldParentId && $categories->find($oldParentId)->children->count() > 0 ? '' : 'display: none;' }}">
+                            <div class="col-md-3" id="sub_category_container" style="{{ $hasChildren ? '' : 'display: none;' }}">
                                 <label class="form-label fw-bold small">القسم الفرعي <span class="text-danger">*</span></label>
                                 <select id="sub_category" name="product_category_id" class="form-select @error('product_category_id') is-invalid @enderror">
                                     <option value="">اختر القسم الفرعي</option>
-                                    @if($oldParentId && $categories->find($oldParentId))
-                                        @foreach($categories->find($oldParentId)->children as $child)
-                                            <option value="{{ $child->id }}" {{ $oldCatId == $child->id ? 'selected' : '' }}>{{ $child->name_ar }}</option>
-                                        @endforeach
+                                    @if($hasChildren)
+                                        @php
+                                            $printChildren = function($childrenList, $prefix = '') use (&$printChildren, $oldCatId) {
+                                                foreach($childrenList as $child) {
+                                                    $selected = $oldCatId == $child->id ? 'selected' : '';
+                                                    echo '<option value="'.$child->id.'" '.$selected.'>'.$prefix.$child->name_ar.'</option>';
+                                                    if ($child->allChildren && $child->allChildren->count() > 0) {
+                                                        $printChildren($child->allChildren, $prefix . '&nbsp;&nbsp;&nbsp;&nbsp;-- ');
+                                                    }
+                                                }
+                                            };
+                                            $printChildren($mainCategory->allChildren);
+                                        @endphp
                                     @endif
                                 </select>
                                 @error('product_category_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
@@ -194,12 +211,20 @@
             try {
                 var children = JSON.parse(childrenJson);
                 if (children && children.length > 0) {
-                    children.forEach(function(child) {
-                        var opt = document.createElement('option');
-                        opt.value = child.id;
-                        opt.textContent = child.name_ar;
-                        subSelect.appendChild(opt);
-                    });
+                    function appendChildren(childrenList, prefix) {
+                        childrenList.forEach(function(child) {
+                            var opt = document.createElement('option');
+                            opt.value = child.id;
+                            opt.innerHTML = prefix + child.name_ar;
+                            subSelect.appendChild(opt);
+                            var nextChildren = child.allChildren || child.all_children;
+                            if (nextChildren && nextChildren.length > 0) {
+                                appendChildren(nextChildren, prefix + "&nbsp;&nbsp;&nbsp;&nbsp;-- ");
+                            }
+                        });
+                    }
+                    appendChildren(children, "");
+                    
                     container.style.display = 'block';
                     subSelect.required = true;
                 } else {

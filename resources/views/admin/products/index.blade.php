@@ -115,12 +115,29 @@
                                 </td>
                                 <td>
                                     @if($product->productCategory)
-                                        @if($product->productCategory->parent)
-                                            <div class="small text-muted mb-1">{{ $product->productCategory->parent->name_ar }}</div>
-                                            <div class="fw-bold"><i class="fas fa-level-down-alt fa-rotate-180 me-1 small opacity-50"></i> {{ $product->productCategory->name_ar }}</div>
-                                        @else
-                                            <div class="fw-bold text-primary">{{ $product->productCategory->name_ar }}</div>
-                                        @endif
+                                        @php
+                                            $chain = [];
+                                            $curr = $product->productCategory;
+                                            while ($curr) {
+                                                array_unshift($chain, $curr->name_ar);
+                                                $curr = $curr->parent;
+                                            }
+                                        @endphp
+                                        <div class="d-flex flex-column">
+                                            @foreach($chain as $index => $catName)
+                                                @if($loop->last)
+                                                    <div class="fw-bold text-primary" style="margin-right: {{ $index * 12 }}px;">
+                                                        @if($index > 0)<i class="fas fa-level-down-alt fa-rotate-180 me-1 small opacity-50"></i>@endif
+                                                        {{ $catName }}
+                                                    </div>
+                                                @else
+                                                    <div class="small text-muted mb-1" style="margin-right: {{ $index * 12 }}px;">
+                                                        @if($index > 0)<i class="fas fa-level-down-alt fa-rotate-180 me-1 small opacity-50"></i>@endif
+                                                        {{ $catName }}
+                                                    </div>
+                                                @endif
+                                            @endforeach
+                                        </div>
                                     @else
                                         <span class="text-muted small">بدون قسم</span>
                                     @endif

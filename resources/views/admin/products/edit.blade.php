@@ -110,11 +110,20 @@
                             @php
                                 $currentCatId = old('product_category_id', $product->product_category_id);
                                 $selectedCategory = \App\Models\ProductCategory::find($currentCatId);
-                                $parentCategoryId = $selectedCategory ? ($selectedCategory->parent_id ?: $selectedCategory->id) : null;
-                                $subCategoryId = ($selectedCategory && $selectedCategory->parent_id) ? $selectedCategory->id : null;
                                 
-                                $mainCategory = $parentCategoryId ? $categories->find($parentCategoryId) : null;
-                                $hasChildren = $mainCategory && $mainCategory->children->count() > 0;
+                                $rootCategoryId = null;
+                                if ($selectedCategory) {
+                                    $curr = $selectedCategory;
+                                    while ($curr->parent_id) {
+                                        $curr = \App\Models\ProductCategory::find($curr->parent_id);
+                                    }
+                                    $rootCategoryId = $curr->id;
+                                }
+                                
+                                $subCategoryId = $selectedCategory && $selectedCategory->id != $rootCategoryId ? $selectedCategory->id : null;
+                                
+                                $mainCategory = $rootCategoryId ? $categories->find($rootCategoryId) : null;
+                                $hasChildren = $mainCategory && $mainCategory->allChildren->count() > 0;
                             @endphp
 
                             <div class="col-md-3">
@@ -123,8 +132,8 @@
                                     <option value="">اختر القسم الرئيسي</option>
                                     @foreach($categories as $category)
                                         <option value="{{ $category->id }}" 
-                                            data-children='@json($category->children)'
-                                            {{ $parentCategoryId == $category->id ? 'selected' : '' }}>
+                                            data-children='@json($category->allChildren)'
+                                            {{ $rootCategoryId == $category->id ? 'selected' : '' }}>
                                             {{ $category->name_ar }}
                                         </option>
                                     @endforeach
@@ -137,9 +146,18 @@
                                 <select id="sub_category" name="product_category_id" class="form-select @error('product_category_id') is-invalid @enderror">
                                     <option value="">اختر القسم الفرعي</option>
                                     @if($hasChildren)
-                                        @foreach($mainCategory->children as $child)
-                                            <option value="{{ $child->id }}" {{ $subCategoryId == $child->id ? 'selected' : '' }}>{{ $child->name_ar }}</option>
-                                        @endforeach
+                                        @php
+                                            $printChildren = function($childrenList, $prefix = '') use (&$printChildren, $subCategoryId) {
+                                                foreach($childrenList as $child) {
+                                                    $selected = $subCategoryId == $child->id ? 'selected' : '';
+                                                    echo '<option value="'.$child->id.'" '.$selected.'>'.$prefix.$child->name_ar.'</option>';
+                                                    if ($child->allChildren && $child->allChildren->count() > 0) {
+                                                        $printChildren($child->allChildren, $prefix . '&nbsp;&nbsp;&nbsp;&nbsp;-- ');
+                                                    }
+                                                }
+                                            };
+                                            $printChildren($mainCategory->allChildren);
+                                        @endphp
                                     @endif
                                 </select>
                                 @error('product_category_id') <div class="invalid-feedback">{{ $message }}</div> @enderror
@@ -224,12 +242,20 @@
             try {
                 var children = JSON.parse(childrenJson);
                 if (children && children.length > 0) {
-                    children.forEach(function(child) {
-                        var opt = document.createElement('option');
-                        opt.value = child.id;
-                        opt.textContent = child.name_ar;
-                        subSelect.appendChild(opt);
-                    });
+                    function appendChildren(childrenList, prefix) {
+                        childrenList.forEach(function(child) {
+                            var opt = document.createElement('option');
+                            opt.value = child.id;
+                            opt.innerHTML = prefix + child.name_ar;
+                            subSelect.appendChild(opt);
+                            var nextChildren = child.allChildren || child.all_children;
+                            if (nextChildren && nextChildren.length > 0) {
+                                appendChildren(nextChildren, prefix + "&nbsp;&nbsp;&nbsp;&nbsp;-- ");
+                            }
+                        });
+                    }
+                    appendChildren(children, "");
+                    
                     container.style.display = 'block';
                     subSelect.required = true;
                 } else {
