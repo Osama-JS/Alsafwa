@@ -53,23 +53,73 @@
 
     <!-- Toolbar -->
     <div class="card border-0 shadow-sm mb-4">
-        <div class="card-body d-flex flex-wrap justify-content-between align-items-center gap-3">
-            <form class="d-flex gap-2" method="GET">
-                <input type="text" name="search" class="form-control" placeholder="ابحث بالاسم..." value="{{ request('search') }}" style="width:220px;">
-                <select name="status" class="form-select" style="width:140px;" onchange="this.form.submit()">
-                    <option value="">كل الحالات</option>
-                    <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>نشط</option>
-                    <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>غير نشط</option>
-                </select>
-                <button type="submit" class="btn btn-primary-custom"><i class="fas fa-search"></i></button>
-            </form>
-            <div class="d-flex gap-2">
-                <a href="{{ route('admin.product-categories.index') }}" class="btn btn-light border fw-bold text-primary">
-                    <i class="fas fa-folder-open me-1"></i> إدارة الأقسام
+        <div class="card-body">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-3">
+                <form class="d-flex gap-2" method="GET">
+                    @if(request('category_id'))
+                        <input type="hidden" name="category_id" value="{{ request('category_id') }}">
+                    @endif
+                    <input type="text" name="search" class="form-control" placeholder="ابحث بالاسم..." value="{{ request('search') }}" style="width:220px;">
+                    <select name="status" class="form-select" style="width:140px;" onchange="this.form.submit()">
+                        <option value="">كل الحالات</option>
+                        <option value="active" {{ request('status') == 'active' ? 'selected' : '' }}>نشط</option>
+                        <option value="inactive" {{ request('status') == 'inactive' ? 'selected' : '' }}>غير نشط</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary-custom"><i class="fas fa-search"></i></button>
+                </form>
+                <div class="d-flex gap-2">
+                    <a href="{{ route('admin.product-categories.index') }}" class="btn btn-light border fw-bold text-primary">
+                        <i class="fas fa-folder-open me-1"></i> إدارة الأقسام
+                    </a>
+                    <a href="{{ route('admin.products.create') }}" class="btn btn-primary-custom">
+                        <i class="fas fa-plus me-1"></i> إضافة منتج
+                    </a>
+                </div>
+            </div>
+
+            <!-- Horizontal Categories Filter -->
+            <style>
+                .horizontal-filters {
+                    display: flex;
+                    overflow-x: auto;
+                    gap: 10px;
+                    padding-bottom: 8px;
+                    scrollbar-width: thin;
+                }
+                .horizontal-filters::-webkit-scrollbar {
+                    height: 4px;
+                }
+                .horizontal-filters::-webkit-scrollbar-thumb {
+                    background: #cbd5e1;
+                    border-radius: 4px;
+                }
+                .filter-btn {
+                    white-space: nowrap;
+                    border-radius: 50px;
+                    padding: 6px 16px;
+                    border: 1px solid #e2e8f0;
+                    background: #f8fafc;
+                    color: #475569;
+                    font-size: 0.9rem;
+                    font-weight: 600;
+                    transition: all 0.2s;
+                    text-decoration: none;
+                }
+                .filter-btn:hover, .filter-btn.active {
+                    background: var(--primary-color, #4f46e5);
+                    color: #fff;
+                    border-color: var(--primary-color, #4f46e5);
+                }
+            </style>
+            <div class="horizontal-filters">
+                <a href="{{ route('admin.products.index', request()->except('category_id')) }}" class="filter-btn {{ !request('category_id') ? 'active' : '' }}">
+                    الكل
                 </a>
-                <a href="{{ route('admin.products.create') }}" class="btn btn-primary-custom">
-                    <i class="fas fa-plus me-1"></i> إضافة منتج
-                </a>
+                @foreach($categoriesWithProducts as $cat)
+                    <a href="{{ route('admin.products.index', array_merge(request()->query(), ['category_id' => $cat->id])) }}" class="filter-btn {{ request('category_id') == $cat->id ? 'active' : '' }}">
+                        {{ $cat->name_ar }} <span class="badge {{ request('category_id') == $cat->id ? 'bg-light text-primary' : 'bg-secondary' }} ms-1" style="font-size:0.75rem;">{{ $cat->products_count }}</span>
+                    </a>
+                @endforeach
             </div>
         </div>
     </div>

@@ -34,8 +34,14 @@ class ProductController extends Controller
             $query->where('status', $request->status);
         }
 
+        if ($request->filled('category_id')) {
+            $query->where('product_category_id', $request->category_id);
+        }
+
+        $categoriesWithProducts = ProductCategory::whereHas('products')->withCount('products')->get();
+
         $products = $query->orderBy('order')->paginate(12);
-        return view('admin.products.index', compact('products', 'stats'));
+        return view('admin.products.index', compact('products', 'stats', 'categoriesWithProducts'));
     }
 
     public function create()

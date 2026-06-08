@@ -132,7 +132,7 @@
                                     <option value="">اختر القسم الرئيسي</option>
                                     @foreach($categories as $category)
                                         <option value="{{ $category->id }}" 
-                                            data-children='@json($category->allChildren)'
+                                            data-children="{{ json_encode($category->allChildren) }}"
                                             {{ $rootCategoryId == $category->id ? 'selected' : '' }}>
                                             {{ $category->name_ar }}
                                         </option>
@@ -232,6 +232,7 @@
             container.style.display = 'none';
             subSelect.required = false;
             subSelect.value = "";
+            $('#sub_category').trigger('change');
             return;
         }
 
@@ -271,13 +272,30 @@
             subSelect.required = false;
             subSelect.value = "";
         }
+        
+        $('#sub_category').trigger('change');
     }
 
-    document.addEventListener('DOMContentLoaded', function() {
+    $(document).ready(function() {
         var subSelect = document.getElementById('sub_category');
         var container = document.getElementById('sub_category_container');
         if (container && subSelect && container.style.display !== 'none') {
             subSelect.required = true;
+        }
+
+        /* Initialize Select2 */
+        if ($.fn.select2) {
+            $('#main_category').select2({ theme: 'bootstrap-5', width: '100%', dir: 'rtl' });
+            $('#sub_category').select2({ theme: 'bootstrap-5', width: '100%', dir: 'rtl' });
+            $('select[name="agency_id"]').select2({ theme: 'bootstrap-5', width: '100%', dir: 'rtl' });
+            $('select[name="status"]').select2({ theme: 'bootstrap-5', width: '100%', dir: 'rtl', minimumResultsForSearch: -1 });
+
+            /* Since Select2 overrides the original select, we must bind the change event using jQuery */
+            $('#main_category').on('change', function() {
+                updateSubCategories();
+            });
+        } else {
+            console.error('Select2 is not loaded!');
         }
     });
 </script>
