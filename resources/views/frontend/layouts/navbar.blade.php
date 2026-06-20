@@ -286,12 +286,23 @@
             @endphp
             @foreach($mobileCats as $mc)
                 <div class="mb-2">
-                    <a href="{{ route('products.index', ['category_id[]' => $mc->id, 'navbar' => 1]) }}" class="fw-bold">{{ $mc->{'name_' . app()->getLocale()} }}</a>
-                    <div class="ps-3 border-start ms-2">
-                        @foreach($mc->allChildren as $mcc)
-                             @include('frontend.layouts._mobile_menu_category', ['category' => $mcc])
-                        @endforeach
+                    <div class="d-flex align-items-center justify-content-between py-2 transition-03">
+                        <a href="{{ route('products.index', ['category_id[]' => $mc->id, 'navbar' => 1]) }}" class="text-white fw-bold text-decoration-none flex-grow-1">
+                            {{ $mc->{'name_' . app()->getLocale()} }}
+                        </a>
+                        @if($mc->allChildren && $mc->allChildren->count() > 0)
+                            <button class="btn btn-sm btn-link text-white opacity-50 p-0 ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#mobileCat-{{ $mc->id }}" aria-expanded="false" onclick="this.querySelector('i').classList.toggle('fa-chevron-down'); this.querySelector('i').classList.toggle('fa-chevron-up');">
+                                <i class="fas fa-chevron-down" style="font-size: 0.8em;"></i>
+                            </button>
+                        @endif
                     </div>
+                    @if($mc->allChildren && $mc->allChildren->count() > 0)
+                        <div class="collapse ps-3 border-start border-light border-opacity-25 mt-1 ms-2" id="mobileCat-{{ $mc->id }}">
+                            @foreach($mc->allChildren as $mcc)
+                                 @include('frontend.layouts._mobile_menu_category', ['category' => $mcc])
+                            @endforeach
+                        </div>
+                    @endif
                 </div>
             @endforeach
             <a href="{{ route('products.index') }}" class="text-accent fw-bold">{{ __('عرض كل المنتجات') }}</a>

@@ -880,7 +880,7 @@ img {
     margin-top: -8px;
 }
 .mobile-submenu.open {
-    max-height: 500px;
+    max-height: 8000px !important;
     padding: 1rem 1.25rem 1.25rem;
     margin-bottom: 0.25rem;
 }

@@ -1,5 +1,5 @@
 <div class="mb-2">
-    <div class="d-flex align-items-center justify-content-between py-2 border-bottom border-light border-opacity-10 transition-03">
+    <div class="d-flex align-items-center justify-content-between py-2 transition-03">
         <a href="{{ route('products.index', ['category_id[]' => $category->id, 'navbar' => 1]) }}" 
            class="text-sm text-white opacity-75 hover-primary text-decoration-none flex-grow-1">
             <span class="fw-medium">{{ $category->{'name_' . app()->getLocale()} }}</span>
