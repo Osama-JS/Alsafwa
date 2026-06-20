@@ -34,7 +34,7 @@
                     <h3 class="product-title">{{ $product->{'title_' . app()->getLocale()} }}</h3>
 
                     @if($product->{'description_' . app()->getLocale()})
-                        <p class="product-desc">{{ Str::limit($product->{'description_' . app()->getLocale()}, 80) }}</p>
+                        <div class="product-desc" style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">{!! $product->{'description_' . app()->getLocale()} !!}</div>
                     @endif
 
                     @if($product->price)
