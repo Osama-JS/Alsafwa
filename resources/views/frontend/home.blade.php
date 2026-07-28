@@ -542,7 +542,7 @@
         box-shadow: var(--shadow-strong); text-align: center;
     }
     .cta-box-legendary {
-        background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+        background: #1c3e6b;
         padding: 100px 50px; border-radius: var(--radius-xl); box-shadow: var(--shadow-strong);
         position: relative; overflow: hidden;
     }

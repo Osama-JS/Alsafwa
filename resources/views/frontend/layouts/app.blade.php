@@ -34,10 +34,10 @@
     {{-- ── Dynamic Theme Colors from Admin Settings ── --}}
     <style>
         :root {
-            --primary:       {{ setting('theme_primary_color', '#1a3a6b') }};
-            --primary-dark:  {{ setting('theme_primary_dark', '#0f2347') }};
+            --primary:       {{ setting('theme_primary_color', '#1c3e6b') }};
+            --primary-dark:  {{ setting('theme_primary_dark', '#1c3e6b') }};
             --primary-light: {{ setting('theme_primary_light', '#2a5298') }};
-            --accent:        {{ setting('theme_accent_color', '#c9a84c') }};
+            --accent:        {{ setting('theme_accent_color', '#f3de7a') }};
             --accent-dark:   {{ setting('theme_accent_dark', '#a8893a') }};
             --accent-light:  {{ setting('theme_accent_light', '#e8c96a') }};
         }
