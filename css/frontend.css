@@ -190,7 +190,7 @@ img {
 }
 
 .navbar-cta {
-    background: var(--black);
+    background: var(--primary-dark);
     color: #fff !important;
     padding: 0.8rem 1.8rem;
     border-radius: 100px;
