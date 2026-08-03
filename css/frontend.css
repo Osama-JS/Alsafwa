@@ -185,7 +185,7 @@ img {
         font-size: 1.1rem;
     }
     .navbar-brand-wrap img {
-        height: 36px !important;
+        height: 50px !important;
     }
 }
 
@@ -703,14 +703,14 @@ img {
 /* ── Tablet & below (<992px) ─────────────────────────────────── */
 @media (max-width: 991px) {
     .site-navbar {
-        top: 0;
+        top: 42px;
         width: 100%;
         border-radius: 0;
         height: 72px;
         padding: 0 1rem;
     }
     .site-navbar.scrolled {
-        top: 0;
+        top: 42px;
         width: 100%;
         border-radius: 0;
     }

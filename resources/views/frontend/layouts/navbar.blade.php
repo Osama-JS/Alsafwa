@@ -1,3 +1,27 @@
+{{-- Mobile Top Header (Socials) --}}
+<div class="mobile-top-header d-flex d-lg-none justify-content-center align-items-center w-100" style="position: fixed; top: 0; left: 0; z-index: 2001; background-color: var(--primary-dark); height: 42px; border-bottom: 1px solid rgba(255,255,255,0.05); box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+    <div class="social-links d-flex gap-3">
+        @php
+            $socials = [
+                'facebook' => ['url' => setting('facebook_url'), 'icon' => 'fab fa-facebook-f'],
+                'twitter' => ['url' => setting('twitter_url'), 'icon' => 'fab fa-x-twitter'],
+                'instagram' => ['url' => setting('instagram_url'), 'icon' => 'fab fa-instagram'],
+                'linkedin' => ['url' => setting('linkedin_url'), 'icon' => 'fab fa-linkedin-in'],
+                'snapchat' => ['url' => setting('snapchat_url'), 'icon' => 'fab fa-snapchat-ghost'],
+                'tiktok' => ['url' => setting('tiktok_url'), 'icon' => 'fab fa-tiktok'],
+                'youtube' => ['url' => setting('youtube_url'), 'icon' => 'fab fa-youtube'],
+            ];
+        @endphp
+        @foreach($socials as $name => $data)
+            @if(!empty($data['url']))
+                <a href="{{ $data['url'] }}" target="_blank" style="width: 30px; height: 30px; background: rgba(255,255,255,0.08); border-radius: 50%; color: var(--accent); display: flex; justify-content: center; align-items: center; text-decoration: none; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1);">
+                    <i class="{{ $data['icon'] }}" style="font-size: 1rem;"></i>
+                </a>
+            @endif
+        @endforeach
+    </div>
+</div>
+
 <nav class="site-navbar" id="siteNavbar">
     <div class="navbar-inner">
         {{-- Brand --}}
@@ -6,7 +30,7 @@
             
             @if(in_array($brandStyle, ['both', 'logo_only']))
                 @if(setting('company_logo'))
-                    <img src="{{ asset('storage/' . setting('company_logo')) }}" alt="{{ setting('company_name_' . app()->getLocale()) }}" style="height:44px;width:auto;">
+                    <img src="{{ asset('storage/' . setting('company_logo')) }}" alt="{{ setting('company_name_' . app()->getLocale()) }}" style="height:60px;width:auto;">
                 @else
                     <div class="brand-fallback-logo" style="width:40px;height:40px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:900;font-size:1.2rem;">
                         {{ mb_substr(setting('company_name_' . app()->getLocale(), 'S'), 0, 1) }}
@@ -219,14 +243,14 @@
         </div>
 
         <div class="d-flex align-items-center gap-2 gap-md-3">
-            <a href="{{ route('contact') }}" class="navbar-cta d-flex align-items-center gap-2">
+            <a href="{{ route('contact') }}" class="navbar-cta d-none d-lg-flex align-items-center gap-2">
                 <span class="d-none d-sm-inline">{{ __('تواصل معنا') }}</span>
                 <span class="d-inline d-sm-none">{{ __('اتصل بنا') }}</span>
                 <i class="fas fa-phone-alt fs-xs"></i>
             </a>
 
             {{-- Lang --}}
-            <div class="dropdown">
+            <div class="dropdown d-none d-lg-block">
                 <button class="nav-link-item border-0 bg-transparent px-2 px-md-3" data-bs-toggle="dropdown">
                     <i class="fas fa-globe"></i>
                 </button>
@@ -244,6 +268,18 @@
         </div>
     </div>
 </nav>
+
+{{-- Floating Language Switcher for Mobile --}}
+<div class="floating-lang-mobile d-lg-none dropup" style="position: fixed; bottom: 20px; left: 20px; z-index: 1050;">
+    <button class="btn btn-primary rounded-circle shadow-lg d-flex align-items-center justify-content-center" data-bs-toggle="dropdown" style="width: 55px; height: 55px; background: var(--primary-dark); border-color: var(--accent); border-width: 2px;">
+        <i class="fas fa-globe fs-4 text-white"></i>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-start shadow-strong border-0 p-2 mb-2" style="border-radius:20px; min-width: 120px; left: 0;">
+        @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
+            <li><a class="dropdown-item rounded-4 py-2 text-center {{ app()->getLocale() == $localeCode ? 'bg-primary-dark text-white' : '' }}" rel="alternate" hreflang="{{ $localeCode }}" href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}">{{ $properties['native'] }}</a></li>
+        @endforeach
+    </ul>
+</div>
 
 {{-- Mobile Menu --}}
 <div class="mobile-menu" id="mobileMenu">

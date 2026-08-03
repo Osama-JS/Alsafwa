@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
 
     <!-- Frontend CSS -->
-    <link rel="stylesheet" href="{{ asset('css/frontend.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/frontend.css') }}?v={{ time() }}">
 
     {{-- ── Dynamic Theme Colors from Admin Settings ── --}}
     <style>
