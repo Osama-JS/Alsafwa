@@ -160,21 +160,68 @@
                 <div class="row g-4">
                     @foreach($relatedProducts as $related)
                         <div class="col-lg-3 col-md-6" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
-                            <a href="{{ route('products.show', $related->slug) }}" class="text-decoration-none d-block h-100">
-                                <div class="product-card-v3">
-                                    <div class="product-img-wrap">
-                                        @if($related->image)
-                                            <img src="{{ asset('storage/' . $related->image) }}" class="product-img" alt="{{ $related->{'title_' . app()->getLocale()} }}">
+                            <div class="product-card-v3">
+                                <a href="{{ route('products.show', $related->slug) }}" class="product-img-wrap text-decoration-none">
+                                    @if($related->image)
+                                        <img src="{{ asset('storage/' . $related->image) }}" class="product-img" alt="{{ $related->{'title_' . app()->getLocale()} }}">
+                                    @else
+                                        <div class="product-img-placeholder">
+                                            <i class="fas fa-box fs-1 opacity-25"></i>
+                                        </div>
+                                    @endif
+
+                                    @if($related->discount && $related->price)
+                                        <span class="product-badge-sale">{{ __('خصم') }}</span>
+                                    @endif
+                                </a>
+
+                                <div class="product-body">
+                                    <div class="product-meta-tags">
+                                        @if($related->agency)
+                                            <a href="{{ route('agencies.show', $related->agency->slug) }}" class="product-badge-agency">
+                                                <i class="fas fa-building me-1 opacity-75"></i> {{ $related->agency->{'name_' . app()->getLocale()} }}
+                                            </a>
+                                        @endif
+
+                                        @if($related->productCategory)
+                                            <a href="{{ route('products.index', ['category_id' => $related->productCategory->id]) }}" class="product-badge-category">
+                                                <i class="fas fa-tag me-1 opacity-75"></i> {{ $related->productCategory->{'name_' . app()->getLocale()} }}
+                                            </a>
                                         @endif
                                     </div>
-                                    <div class="product-body">
-                                        <h3 class="product-title">{{ $related->{'title_' . app()->getLocale()} }}</h3>
-                                        @if($related->price)
-                                            <span class="product-price-current">{{ number_format($related->final_price, 2) }} {{ __('ر.س') }}</span>
-                                        @endif
+
+                                    <h3 class="product-title">
+                                        <a href="{{ route('products.show', $related->slug) }}">
+                                            {{ $related->{'title_' . app()->getLocale()} }}
+                                        </a>
+                                    </h3>
+
+                                    @if($related->price)
+                                        <div class="product-price-wrap">
+                                            @if($related->discount)
+                                                <span class="product-price-old">{{ number_format($related->price, 2) }} {{ __('ر.س') }}</span>
+                                                <span class="product-price-current">{{ number_format($related->final_price, 2) }} {{ __('ر.س') }}</span>
+                                            @else
+                                                <span class="product-price-current">{{ number_format($related->price, 2) }} {{ __('ر.س') }}</span>
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    <div class="product-card-actions">
+                                        <a href="{{ route('products.show', $related->slug) }}" class="btn-order-now">
+                                            <span>{{ __('اطلب الآن') }}</span>
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </a>
+                                        @php
+                                            $waNum = preg_replace('/[^0-9]/', '', setting('whatsapp_number', ''));
+                                            $waText = urlencode(__('مرحباً، أود الاستفسار عن: ') . $related->{'title_' . app()->getLocale()});
+                                        @endphp
+                                        <a href="{{ $waNum ? 'https://wa.me/' . $waNum . '?text=' . $waText : 'https://wa.me/' . setting('whatsapp_number') }}" target="_blank" class="btn-whatsapp-card" title="{{ __('استفسر عبر الواتساب') }}">
+                                            <i class="fab fa-whatsapp fs-5"></i>
+                                        </a>
                                     </div>
                                 </div>
-                            </a>
+                            </div>
                         </div>
                     @endforeach
                 </div>

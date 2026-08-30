@@ -83,36 +83,67 @@
                     <div class="row g-4">
                         @forelse($agency->products as $product)
                             <div class="col-md-6 col-lg-4">
-                                <div class="product-card-v3 h-100 bg-white shadow-soft rounded-4 overflow-hidden border border-light position-relative">
-                                    <div class="product-badge-premium">
-                                        {{ $agency->{'name_' . app()->getLocale()} }}
-                                    </div>
-                                    <a href="{{ route('products.show', $product->slug) }}" class="text-decoration-none">
-                                        <div class="product-img-wrapper p-3">
-                                            @if($product->image)
-                                                <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->{'title_' . app()->getLocale()} }}" class="product-img-v3">
-                                            @endif
-                                        </div>
-                                        <div class="product-body-v3 p-4">
-                                            @if($product->productCategory)
-                                                <span class="badge mb-2 px-2 py-1" style="background:#ede9fe; color:#4f46e5; border-radius:12px; font-size:0.75rem;">
-                                                    <i class="fas fa-tag me-1"></i> {{ $product->productCategory->{'name_' . app()->getLocale()} }}
+                                <div class="product-card-v3">
+                                    <a href="{{ route('products.show', $product->slug) }}" class="product-img-wrap text-decoration-none">
+                                        @if($product->image)
+                                            <img src="{{ asset('storage/' . $product->image) }}" class="product-img" alt="{{ $product->{'title_' . app()->getLocale()} }}">
+                                        @else
+                                            <div class="product-img-placeholder">
+                                                <i class="fas fa-box fs-1 opacity-25"></i>
+                                            </div>
+                                        @endif
+
+                                        @if($product->discount && $product->price)
+                                            <span class="product-badge-sale">{{ __('خصم') }}</span>
+                                        @endif
+                                    </a>
+
+                                    <div class="product-body">
+                                        <div class="product-meta-tags">
+                                            @if($product->agency)
+                                                <span class="product-badge-agency">
+                                                    <i class="fas fa-building me-1 opacity-75"></i> {{ $product->agency->{'name_' . app()->getLocale()} }}
                                                 </span>
                                             @endif
-                                            <h5 class="product-title-v3 fw-black text-dark mb-3 text-truncate">{{ $product->{'title_' . app()->getLocale()} }}</h5>
-                                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                                <div class="product-price-v3">
-                                                    @if($product->discount)
-                                                        <span class="old-price text-muted text-decoration-line-through me-2 fs-6 opacity-50">{{ number_format($product->price, 2) }}</span>
-                                                        <span class="current-price fw-black text-primary fs-5">{{ number_format($product->final_price, 2) }}</span>
-                                                    @else
-                                                        <span class="current-price fw-black text-primary fs-5">{{ number_format($product->price, 2) }}</span>
-                                                    @endif
-                                                </div>
-                                                <span class="btn-product-view"><i class="fas fa-arrow-left"></i></span>
-                                            </div>
+
+                                            @if($product->productCategory)
+                                                <a href="{{ route('products.index', ['category_id' => $product->productCategory->id]) }}" class="product-badge-category">
+                                                    <i class="fas fa-tag me-1 opacity-75"></i> {{ $product->productCategory->{'name_' . app()->getLocale()} }}
+                                                </a>
+                                            @endif
                                         </div>
-                                    </a>
+
+                                        <h3 class="product-title">
+                                            <a href="{{ route('products.show', $product->slug) }}">
+                                                {{ $product->{'title_' . app()->getLocale()} }}
+                                            </a>
+                                        </h3>
+
+                                        @if($product->price)
+                                            <div class="product-price-wrap">
+                                                @if($product->discount)
+                                                    <span class="product-price-old">{{ number_format($product->price, 2) }} {{ __('ر.س') }}</span>
+                                                    <span class="product-price-current">{{ number_format($product->final_price, 2) }} {{ __('ر.س') }}</span>
+                                                @else
+                                                    <span class="product-price-current">{{ number_format($product->price, 2) }} {{ __('ر.س') }}</span>
+                                                @endif
+                                            </div>
+                                        @endif
+
+                                        <div class="product-card-actions">
+                                            <a href="{{ route('products.show', $product->slug) }}" class="btn-order-now">
+                                                <span>{{ __('اطلب الآن') }}</span>
+                                                <i class="fas fa-shopping-cart"></i>
+                                            </a>
+                                            @php
+                                                $waNum = preg_replace('/[^0-9]/', '', setting('whatsapp_number', ''));
+                                                $waText = urlencode(__('مرحباً، أود الاستفسار عن: ') . $product->{'title_' . app()->getLocale()});
+                                            @endphp
+                                            <a href="{{ $waNum ? 'https://wa.me/' . $waNum . '?text=' . $waText : 'https://wa.me/' . setting('whatsapp_number') }}" target="_blank" class="btn-whatsapp-card" title="{{ __('استفسر عبر الواتساب') }}">
+                                                <i class="fab fa-whatsapp fs-5"></i>
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         @empty
@@ -182,46 +213,6 @@
 <style>
     .agency-detail-logo-v2 img {
         object-fit: contain;
-    }
-    .product-card-v3 {
-        transition: 0.3s ease;
-    }
-    .product-card-v3:hover {
-        transform: translateY(-10px);
-    }
-    .product-img-v3 {
-        width: 100%;
-        height: 200px;
-        object-fit: contain;
-        transition: 0.5s;
-    }
-    .product-card-v3:hover .product-img-v3 {
-        transform: scale(1.1);
-    }
-    .btn-product-view {
-        width: 40px; height: 40px;
-        background: var(--off-white);
-        border-radius: 12px;
-        display: flex; align-items: center; justify-content: center;
-        color: var(--primary);
-        transition: 0.3s;
-    }
-    .product-card-v3:hover .btn-product-view {
-        background: var(--primary);
-        color: #fff;
-    }
-    .product-badge-premium {
-        position: absolute;
-        top: 1rem; right: 1rem;
-        background: rgba(255,255,255,0.9);
-        backdrop-filter: blur(5px);
-        padding: 0.4rem 1rem;
-        border-radius: 50px;
-        font-size: 0.7rem;
-        font-weight: 800;
-        color: var(--primary);
-        z-index: 2;
-        border: 1px solid var(--border-color);
     }
     .btn-white {
         background: #fff;

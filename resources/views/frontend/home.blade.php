@@ -216,43 +216,159 @@
             </div>
         </div>
 
-        <div class="row g-4">
+        {{-- Desktop Products Grid (Large Screens) --}}
+        <div class="row g-4 d-none d-lg-flex">
             @foreach($products as $product)
-                <div class="col-lg-3 col-md-4 col-sm-6" data-aos="fade-up" data-aos-delay="{{ $loop->index * 80 }}">
-                    <a href="{{ route('products.show', $product->slug) }}" class="text-decoration-none">
-                        <div class="product-card-home">
-                            <div class="product-card-home-img-wrap">
-                                @if($product->image)
-                                    <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->{'title_' . app()->getLocale()} }}">
-                                @else
-                                    <div class="d-flex align-items-center justify-content-center h-100 bg-light">
-                                        <i class="fas fa-box fs-1 opacity-25"></i>
-                                    </div>
+                <div class="col-lg-3" data-aos="fade-up" data-aos-delay="{{ $loop->index * 80 }}">
+                    <div class="product-card-v3">
+                        <a href="{{ route('products.show', $product->slug) }}" class="product-img-wrap text-decoration-none">
+                            @if($product->image)
+                                <img src="{{ asset('storage/' . $product->image) }}" class="product-img" alt="{{ $product->{'title_' . app()->getLocale()} }}">
+                            @else
+                                <div class="product-img-placeholder">
+                                    <i class="fas fa-box fs-1 opacity-25"></i>
+                                </div>
+                            @endif
+
+                            @if($product->discount && $product->price)
+                                <span class="product-badge-sale">{{ __('خصم') }}</span>
+                            @endif
+                        </a>
+
+                        <div class="product-body">
+                            <div class="product-meta-tags">
+                                @if($product->agency)
+                                    <a href="{{ route('agencies.show', $product->agency->slug) }}" class="product-badge-agency">
+                                        <i class="fas fa-building me-1 opacity-75"></i> {{ $product->agency->{'name_' . app()->getLocale()} }}
+                                    </a>
                                 @endif
-                                @if($product->discount && $product->price)
-                                    <span class="product-sale-badge">{{ __('خصم') }}</span>
+
+                                @if($product->productCategory)
+                                    <a href="{{ route('products.index', ['category_id' => $product->productCategory->id]) }}" class="product-badge-category">
+                                        <i class="fas fa-tag me-1 opacity-75"></i> {{ $product->productCategory->{'name_' . app()->getLocale()} }}
+                                    </a>
                                 @endif
                             </div>
-                            <div class="product-card-home-body">
-                                @if($product->agency)
-                                    <span class="product-agency-tag">{{ $product->agency->{'name_' . app()->getLocale()} }}</span>
-                                @endif
-                                <h4 class="product-card-home-title">{{ $product->{'title_' . app()->getLocale()} }}</h4>
-                                @if($product->price)
-                                    <div class="d-flex align-items-center gap-2">
-                                        @if($product->discount)
-                                            <span class="text-decoration-line-through opacity-50 small">{{ number_format($product->price, 2) }}</span>
-                                            <span class="fw-black" style="color:var(--accent-dark);">{{ number_format($product->final_price, 2) }} {{ __('ر.س') }}</span>
-                                        @else
-                                            <span class="fw-black" style="color:var(--accent-dark);">{{ number_format($product->price, 2) }} {{ __('ر.س') }}</span>
-                                        @endif
-                                    </div>
-                                @endif
+
+                            <h3 class="product-title">
+                                <a href="{{ route('products.show', $product->slug) }}">
+                                    {{ $product->{'title_' . app()->getLocale()} }}
+                                </a>
+                            </h3>
+
+                            @if($product->price)
+                                <div class="product-price-wrap">
+                                    @if($product->discount)
+                                        <span class="product-price-old">{{ number_format($product->price, 2) }} {{ __('ر.س') }}</span>
+                                        <span class="product-price-current">{{ number_format($product->final_price, 2) }} {{ __('ر.س') }}</span>
+                                    @else
+                                        <span class="product-price-current">{{ number_format($product->price, 2) }} {{ __('ر.س') }}</span>
+                                    @endif
+                                </div>
+                            @endif
+
+                            <div class="product-card-actions">
+                                <a href="{{ route('products.show', $product->slug) }}" class="btn-order-now">
+                                    <span>{{ __('اطلب الآن') }}</span>
+                                    <i class="fas fa-shopping-cart"></i>
+                                </a>
+                                @php
+                                    $waNum = preg_replace('/[^0-9]/', '', setting('whatsapp_number', ''));
+                                    $waText = urlencode(__('مرحباً، أود الاستفسار عن: ') . $product->{'title_' . app()->getLocale()});
+                                @endphp
+                                <a href="{{ $waNum ? 'https://wa.me/' . $waNum . '?text=' . $waText : 'https://wa.me/' . setting('whatsapp_number') }}" target="_blank" class="btn-whatsapp-card" title="{{ __('استفسر عبر الواتساب') }}">
+                                    <i class="fab fa-whatsapp fs-5"></i>
+                                </a>
                             </div>
                         </div>
-                    </a>
+                    </div>
                 </div>
             @endforeach
+        </div>
+
+        {{-- Mobile / Tablet Products Swiper Carousel (Small Screens Only) --}}
+        <div class="d-block d-lg-none">
+            <div class="swiper productsSwiper pb-4" data-aos="fade-up" data-aos-delay="150">
+                <div class="swiper-wrapper py-2">
+                    @foreach($products as $product)
+                        <div class="swiper-slide h-auto">
+                            <div class="product-card-v3">
+                                <a href="{{ route('products.show', $product->slug) }}" class="product-img-wrap text-decoration-none">
+                                    @if($product->image)
+                                        <img src="{{ asset('storage/' . $product->image) }}" class="product-img" alt="{{ $product->{'title_' . app()->getLocale()} }}">
+                                    @else
+                                        <div class="product-img-placeholder">
+                                            <i class="fas fa-box fs-1 opacity-25"></i>
+                                        </div>
+                                    @endif
+
+                                    @if($product->discount && $product->price)
+                                        <span class="product-badge-sale">{{ __('خصم') }}</span>
+                                    @endif
+                                </a>
+
+                                <div class="product-body">
+                                    <div class="product-meta-tags">
+                                        @if($product->agency)
+                                            <a href="{{ route('agencies.show', $product->agency->slug) }}" class="product-badge-agency">
+                                                <i class="fas fa-building me-1 opacity-75"></i> {{ $product->agency->{'name_' . app()->getLocale()} }}
+                                            </a>
+                                        @endif
+
+                                        @if($product->productCategory)
+                                            <a href="{{ route('products.index', ['category_id' => $product->productCategory->id]) }}" class="product-badge-category">
+                                                <i class="fas fa-tag me-1 opacity-75"></i> {{ $product->productCategory->{'name_' . app()->getLocale()} }}
+                                            </a>
+                                        @endif
+                                    </div>
+
+                                    <h3 class="product-title">
+                                        <a href="{{ route('products.show', $product->slug) }}">
+                                            {{ $product->{'title_' . app()->getLocale()} }}
+                                        </a>
+                                    </h3>
+
+                                    @if($product->price)
+                                        <div class="product-price-wrap">
+                                            @if($product->discount)
+                                                <span class="product-price-old">{{ number_format($product->price, 2) }} {{ __('ر.س') }}</span>
+                                                <span class="product-price-current">{{ number_format($product->final_price, 2) }} {{ __('ر.س') }}</span>
+                                            @else
+                                                <span class="product-price-current">{{ number_format($product->price, 2) }} {{ __('ر.س') }}</span>
+                                            @endif
+                                        </div>
+                                    @endif
+
+                                    <div class="product-card-actions">
+                                        <a href="{{ route('products.show', $product->slug) }}" class="btn-order-now">
+                                            <span>{{ __('اطلب الآن') }}</span>
+                                            <i class="fas fa-shopping-cart"></i>
+                                        </a>
+                                        @php
+                                            $waNum = preg_replace('/[^0-9]/', '', setting('whatsapp_number', ''));
+                                            $waText = urlencode(__('مرحباً، أود الاستفسار عن: ') . $product->{'title_' . app()->getLocale()});
+                                        @endphp
+                                        <a href="{{ $waNum ? 'https://wa.me/' . $waNum . '?text=' . $waText : 'https://wa.me/' . setting('whatsapp_number') }}" target="_blank" class="btn-whatsapp-card" title="{{ __('استفسر عبر الواتساب') }}">
+                                            <i class="fab fa-whatsapp fs-5"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+
+                {{-- Navigation & Pagination for Products Slider --}}
+                <div class="d-flex align-items-center justify-content-center gap-3 mt-4">
+                    <button type="button" class="btn btn-outline-dark rounded-circle d-flex align-items-center justify-content-center products-nav-prev" style="width: 44px; height: 44px; border-color: rgba(28, 62, 107, 0.2); color: var(--primary-dark);">
+                        <i class="fas fa-chevron-right fs-6"></i>
+                    </button>
+                    <div class="swiper-pagination products-pagination position-relative w-auto mx-2"></div>
+                    <button type="button" class="btn btn-outline-dark rounded-circle d-flex align-items-center justify-content-center products-nav-next" style="width: 44px; height: 44px; border-color: rgba(28, 62, 107, 0.2); color: var(--primary-dark);">
+                        <i class="fas fa-chevron-left fs-6"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </section>
@@ -591,6 +707,33 @@ window.addEventListener('load', function() {
         
         const partnersBox = document.querySelector('.partnersSwiper');
         if (partnersBox) new Swiper(partnersBox, { slidesPerView: 2, loop: true, autoplay: true, breakpoints: { 992: { slidesPerView: 5 } } });
+
+        const productsBox = document.querySelector('.productsSwiper');
+        if (productsBox) {
+            new Swiper(productsBox, {
+                slidesPerView: 1,
+                spaceBetween: 16,
+                loop: {{ $products->count() > 2 ? 'true' : 'false' }},
+                speed: 800,
+                autoplay: {
+                    delay: 3500,
+                    disableOnInteraction: false,
+                    pauseOnMouseEnter: true
+                },
+                pagination: {
+                    el: '.products-pagination',
+                    clickable: true
+                },
+                navigation: {
+                    nextEl: '.products-nav-next',
+                    prevEl: '.products-nav-prev'
+                },
+                breakpoints: {
+                    576: { slidesPerView: 2, spaceBetween: 20 },
+                    768: { slidesPerView: 2, spaceBetween: 24 }
+                }
+            });
+        }
 
     } catch (err) { console.error("Swiper Error:", err); }
 });
